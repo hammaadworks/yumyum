@@ -7,7 +7,7 @@
     /* Colors from front-end-spec.md */
     --background: 27 80% 94%; /* #FEF3E2 */
     --foreground: 240 10% 3.9%; /* #0B0B0B */
-    
+
     --card: 0 0% 100%; /* #FFFFFF */
     --card-foreground: 240 10% 3.9%;
 
@@ -23,7 +23,7 @@
 
     --accent: 45 100% 67%; /* #FFC857 */
     --accent-foreground: 240 10% 3.9%;
-    
+
     --destructive: 0 98% 40%; /* #DD0303 */
     --destructive-foreground: 0 0% 98%;
 
@@ -32,7 +32,7 @@
 
     --border: 0 0% 90%; /* #E6E6E6 */
     --input: 0 0% 90%;
-    
+
     --muted: 220 9% 61%; /* #9CA3AF */
     --muted-foreground: 220 9% 41%;
 
