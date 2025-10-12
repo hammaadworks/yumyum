@@ -74,7 +74,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
     | `custom` | Optional | A custom link (will use a generic 'link' icon). |
     | `full_menu_pic`| Optional | URL to a single, static image of the full menu for offline fallback. |
 
-*   **`Dishes` Tab:**
+*   **`dishes` Tab:**
     | Column | Description |
     | :--- | :--- |
     | `category` | The menu category this dish belongs to. |

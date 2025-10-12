@@ -19,12 +19,6 @@ This document defines the user experience goals, information architecture, user 
     3.  **Delight in the Details:** Use thoughtful micro-interactions and polished animations to make the experience feel premium and engaging.
     4.  **Mobile-First, Always:** The experience must be flawless on a mobile device, for both the vendor and the customer.
 
-### Change Log
-
-| Date | Version | Description | Author |
-| :--- | :--- | :--- | :--- |
-| 2025-10-11 | 1.0 | Initial Draft | Sally (UX Expert) |
-
 ## Information Architecture (IA)
 
 The information architecture for YumYum is designed to be flat and intuitive, centered around two primary user experiences: the vendor's profile (the "shopfront") and the full-screen reel view (the "menu").
@@ -35,6 +29,8 @@ The information architecture for YumYum is designed to be flat and intuitive, ce
 graph TD
     subgraph "Main Application"
         A[Profile Page] --> B{Reel View};
+        A(Profile Page) -- QR Code --> A;
+        B -- Add to Cart --> C;
         A --> C{Cart Summary};
         C --> D[WhatsApp Order];
         C --> E[UPI Pay];
@@ -46,9 +42,6 @@ graph TD
     subgraph "Utility Pages"
         U[/vendor/upload]
     end
-
-    A(Profile Page) -- QR Code --> A;
-    B -- Add to Cart --> C;
 ```
 
 ### Navigation Structure
@@ -61,7 +54,6 @@ graph TD
     *   On the Profile Page, the **Category Highlights Bar** allows users to jump directly into the Reel View filtered by a specific category.
     *   The **Controls Bar** (Veg Only, Sort, Search) provides filtering for the main dish grid.
     *   Within the Reel View, the **Right-Side Action Bar** provides access to description, filtering, and sharing functionality.
-*   **Breadcrumb Strategy:** A traditional breadcrumb trail is not necessary for this application due to its shallow, hub-and-spoke navigation model.
 
 ## User Flows
 
@@ -92,11 +84,7 @@ graph TD
 #### Edge Cases & Error Handling:
 *   An item is marked as `instock: 'no'`: It will be displayed as visually greyed out and disabled, preventing it from being added to the cart.
 *   The user's cart is empty: The "Place Order on WhatsApp" button in the Cart Summary will be disabled.
-*   Initial data fetch fails: A user-friendly error message is displayed, and a critical alert is sent to the backend (as per Story 1.2).
-
-## Wireframes & Mockups
-
-*   **Primary Design Files:** Detailed visual designs and prototypes will be created and maintained in Figma. A shared link will be provided here once the initial designs are drafted.
+*   Initial data fetch fails: A user-friendly error message is displayed, and a critical alert is sent to the Lark webhook.
 
 ### Key Screen Layouts
 
@@ -108,7 +96,6 @@ graph TD
     3.  **Controls Bar:** (Below categories) A simple bar containing the "Veg Only" toggle, a "Sort by Price" control, and a Search input field.
     4.  **Dish Grid:** (Main content area) A responsive 3-column grid of square dish images that fills the rest of the screen.
 *   **Interaction Notes:** Tapping a category button or a dish card smoothly transitions the user into the full-screen "Reel View". The controls in the `ControlsBar` filter the `DishGrid` instantly on the client-side.
-*   **Design File Reference:** `[Link to specific Figma frame to be added]`
 
 ## Component Library / Design System
 
@@ -126,16 +113,38 @@ graph TD
 ### Visual Identity
 *   **Brand Guidelines:** The overall aesthetic is clean, modern, and "food-centric," inspired by the visual language of apps like Instagram.
 
-### Color Palette
-| Color Type | Hex Code | Usage |
-| :--- | :--- | :--- |
-| Primary | `#FF6B00` | Main CTAs, accents, active states. A warm, energetic orange. |
-| Secondary | `#2A2A2A` | Headlines, secondary buttons. A dark, near-black for strong contrast. |
-| Accent | `#FFD700` | Special tags (`bestseller`), highlights. A vibrant gold/yellow. |
-| Success | `#28A745` | Confirmation messages, success states. |
-| Warning | `#FFC107` | Important notices, non-critical alerts. |
-| Error | `#DC3545` | Error messages, destructive action confirmation. |
-| Neutral | `#F8F9FA`, `#6C757D`, `#212529` | Backgrounds, body text, borders. |
+### Color Palette - Color Usage Guide
+
+| **Color Type**                      | **Hex Code**               | **Usage**                                                                          |
+| ----------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------- |
+| **Background / App Canvas**         | `#FEF3E2`                  | Warm cream background for pages and app base. Sets the inviting, food-friendly tone.         |
+| **Surface / Card**                  | `#FFFFFF`                  | Clean white for cards, sheets, and containers — improves content contrast.                   |
+| **Primary**                         | `#FAB12F`                  | Main brand orange — used for CTAs (e.g. “Order Now”), highlights, icons, active states.      |
+| **Primary Strong (Hover / Active)** | `#FA812F`                  | Slightly deeper orange for hover or pressed states of primary buttons.                       |
+| **Primary Foreground**              | `#0B0B0B`                  | Text/icon color on primary backgrounds (ensures strong readability).                         |
+| **Secondary**                       | `#0B0B0B`                  | Headlines, secondary buttons, key typography — high-contrast dark text.                      |
+| **Secondary Foreground**            | `#FEF3E2`                  | Used on dark secondary backgrounds (inverse contrast).                                       |
+| **Accent**                          | `#FFC857`                  | Highlight tags like “Bestseller”, small badges, or promo chips — complements primary orange. |
+| **Success**                         | `#16A34A`                  | Positive confirmations (e.g. “Order placed!”), success toasts.                               |
+| **Warning**                         | `#F59E0B`                  | Non-critical alerts (e.g. “Low stock”).                                                      |
+| **Error / Destructive**             | `#DD0303`                  | Error messages, delete actions, destructive confirmation buttons.                            |
+| **Text Primary**                    | `#111827`                  | Default readable text color for body content.                                                |
+| **Text Secondary**                  | `#6B7280`                  | Secondary labels, helper text, timestamps, muted info.                                       |
+| **Muted / Disabled**                | `#9CA3AF`                  | Disabled buttons, placeholders, less prominent UI text.                                      |
+| **Border / Divider**                | `#E6E6E6`                  | Dividers, card outlines, and input borders for subtle separation.                            |
+| **Focus Ring**                      | `rgba(255, 200, 87, 0.25)` | Soft gold focus ring for accessible focus indication.                                        |
+
+---
+
+### 💡 Quick Design Tips
+
+* **Buttons:** Use `#FAB12F` background with `#0B0B0B` text → hover `#FA812F`.
+* **Cards:** Use `#FFFFFF` surface on `#FEF3E2` page background for depth.
+* **Headlines:** Use `#0B0B0B` for strong contrast.
+* **Error states:** Use `#DD0303` only for destructive or true errors.
+* **Highlight tags:** Use `#FFC857` to stand out from primary actions without competing.
+
+---
 
 ### Typography
 *   **Font Families:**
@@ -176,7 +185,7 @@ graph TD
 
 *   **Motion Principles:** Motion should be purposeful, fluid, and fast, enhancing the user's sense of control and providing clear feedback. We will follow Material Design's principles for motion.
 *   **Key Animations:**
-    *   **Add to Cart:** A subtle "plus" icon animation appears over the dish when added via double-tap.
+    *   **Add to Cart:** A subtle "cooking-pot" icon animation appears over the dish when added via double-tap.
     *   **Page/View Transitions:** Smooth, fading transitions between the Profile page and the Reel View.
     *   **Drawer Animation:** The Cart Summary and other bottom sheets will slide in and out smoothly.
     *   **Button Feedback:** All buttons will have a subtle press/tap animation.
