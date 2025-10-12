@@ -77,8 +77,9 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **`dishes` Tab:**
     | Column | Description |
     | :--- | :--- |
+    | `id` | **System-Generated.** A unique, stable, URL-friendly identifier (e.g., "spicy-paneer-pizza"). Automatically created from the `name`. This is not a column in the Google Sheet but is added to the data model upon fetch. |
     | `category` | The menu category this dish belongs to. |
-    | `name` | The name of the dish. |
+    | `name` | The name of the dish. Used to generate the `id`. |
     | `image` | URL for the primary dish image. |
     | `reel` | (Optional) URL for a short video/reel of the dish. |
     | `description`| A short, appealing description. |
@@ -140,16 +141,17 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 
 *   **Story 1.1: Project & CI/CD Setup**
     *   **Acceptance Criteria:** `pnpm` workspace is configured; Next.js (latest stable) is installed; `shadcn-ui` is installed; Git repo is initialized; Vercel project is linked and deploys on push to `main`; ESLint/Prettier are configured.
-*   **Story 1.2: Client-Side Data Fetching & Caching Service (v5)**
-    *   **Description:** A service that fetches data from the Google Sheet. To optimize performance, it implements a short-term client-side cache for **brand and dish data**, while **status data** is fetched fresh on every load.
+*   **Story 1.2: Resilient Data Fetching & Caching Service (v6)**
+    *   **Description:** Implement a robust "stale-while-revalidate" data fetching and caching strategy to ensure the application is fast and resilient to network errors. The service will prioritize showing cached data for an instant loading experience and will include a multi-level fallback system.
     *   **Acceptance Criteria:**
-        1.  Brand and Dish data are cached on the client after the first successful fetch.
-        2.  The cache duration is configurable and defaults to **5 minutes**.
-        3.  Status data is **never** cached and is fetched on every page load.
-        4.  The service returns a fully-typed object containing all fetched data.
-        5.  The result is stored in a client-side state variable.
-        6.  The service includes robust error handling for failed fetches.
-        7.  If the data fetch from Google Sheets fails, a critical alert must be sent via the Lark webhook.
+        1.  **Caching Layer:** All fetched `brand` and `dishes` data, including the `full_menu_pic` URL, must be stored in the browser's **local storage**.
+        2.  **Instant UI Rendering:** On page load, the service must first attempt to load data from the local storage cache. If data exists, it is returned immediately to the UI for instant rendering.
+        3.  **Background Revalidation:** After returning cached data, the service must automatically trigger a background fetch to Google Sheets for fresh data.
+        4.  **Successful Revalidation:** If the background fetch succeeds, the local storage cache is silently updated with the new data.
+        5.  **Failed Revalidation:** If the background fetch fails, the existing stale data in the cache is kept, and the error is logged without disrupting the user.
+        6.  **Initial Load Failure (with Fallback):** On a first-time visit (or with an empty cache), if the network fetch fails, the service must check the cache for a `full_menu_pic` URL from a previous session and display it as a static image fallback.
+        7.  **Initial Load Failure (No Fallback):** If the cache is empty and the initial network fetch fails, a user-friendly error message must be displayed.
+        8.  **Alerting:** All critical fetch failures must trigger an alert to the configured Lark webhook.
 
 **   **Story 1.3: Brand Header UI**
     *   **Description:** Create the main brand header component, which acts as the "bio" section of the vendor's profile page. It will display the vendor's logo, core information, and contact/social media links.
