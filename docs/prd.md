@@ -362,3 +362,5 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
         1.  On the first successful page load, if a `full_menu_pic` URL is present in the brand data, the application saves this image to the browser's persistent storage (e.g., IndexedDB).
         2.  When a user revisits the page with no network connectivity, the application detects the offline status.
         3.  Instead of a browser error, the page displays the saved static menu image with a message like "You are currently offline. Here is a static version of the menu."
+
+---
