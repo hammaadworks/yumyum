@@ -138,8 +138,6 @@ YumYum is a mobile-first digital menu platform designed to be the "Instagram for
 *   **Analytics:** Google Analytics 4 (GA4).
 *   **Data Access Method:** The chosen `gviz` endpoint simplifies development by **avoiding the need for the Google Sheets API and OAuth**. The key trade-off is that the vendor's sheet must be publicly accessible ("Anyone with the link can view").
 *   **Multi-tenancy:** A `vendor_id` will be used as a GA4 Custom Dimension for per-vendor reporting.
-*   **Data Model (Google Sheets):**
-    *   An `Admin_Config` sheet maps a `vendor_slug` to a `vendor_sheet_url`.
-    *   Each vendor's sheet contains tabs for `Brand_Info`, `Menu_Items`, and `Categories`.
+*   **Data Model (Google Sheets):** The definitive data model is defined in the PRD. The structure consists of an `Admin_Config` sheet for mapping vendors and individual vendor sheets containing `brand` and `dishes` tabs. This structure is the single source of truth for development.
 
 ---

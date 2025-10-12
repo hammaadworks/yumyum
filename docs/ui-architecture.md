@@ -35,7 +35,7 @@ This stack was chosen for its performance, developer experience, and strong alig
 | Build Tool | SWC (via Next.js) | latest | Fast code compilation and bundling | Integrated into Next.js for optimal performance. |
 | Styling | Tailwind CSS | latest | Utility-first CSS framework | Allows for rapid UI development and easy maintenance. |
 | Testing | Jest & React Testing Library | latest | Unit and integration testing | Industry-standard tools for testing React applications. |
-| Component Library | Shadcn UI, Magic UI, Aceternity UI, React Bits, PatternCraft | latest | Base components, advanced animations, and UI patterns | Leverages a rich ecosystem of pre-built components to accelerate development and achieve a high-quality, modern finish. |
+| Component Library | Shadcn UI, Magic UI, Aceternity UI, React Bits, PatternCraft, Unicorn Studio | latest | Base components, advanced animations, and UI patterns | Leverages a rich ecosystem of pre-built components to accelerate development and achieve a high-quality, modern finish. |
 | Form Handling | React Hook Form | latest | Managing form state and validation | Performant, flexible, and easy to use with controlled or uncontrolled components. |
 | Animation | Framer Motion | latest | UI animations and micro-interactions | A powerful and easy-to-use animation library for React. |
 | Dev Tools | ESLint, Prettier | latest | Code linting and formatting | Enforce code quality and consistency. |

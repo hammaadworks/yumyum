@@ -64,7 +64,7 @@ graph TD
 
     subgraph "Vercel Platform"
         B[Next.js Frontend App]
-        C[Vercel Edge Network / CDN]
+        C[Cloudinary CDN]
     end
 
     subgraph "External Services"
@@ -104,13 +104,13 @@ graph TD
 | :--- | :--- | :--- | :--- | :--- |
 | Frontend Language | TypeScript | latest | Type safety and scalability | Industry standard for modern web development, reduces errors. |
 | Frontend Framework | Next.js | latest | Core application framework | Provides SSR, SSG, and a great developer experience. |
-| UI Component Library | Shadcn UI, Magic UI, Aceternity UI | latest | UI components and animations | A rich ecosystem to accelerate development and achieve a high-quality, modern finish. |
+| UI Component Library | Shadcn UI, Magic UI, Aceternity UI, React Bits, PatternCraft, Unicorn Studio | latest | UI components and animations | A rich ecosystem to accelerate development and achieve a high-quality, modern finish. |
 | State Management | Zustand | latest | Global state management | A small, fast, and scalable solution with a simple hook-based API. |
 | Backend Language | N/A | N/A | No custom backend logic | The backend is a Google Sheet, simplifying the stack. |
 | Backend Framework | N/A | N/A | No custom backend logic | Data is fetched via a simple URL endpoint. |
 | API Style | REST-like (CSV endpoint) | N/A | Data fetching from Google Sheets | The `gviz/tq` endpoint provides a simple, REST-like way to get data without APIs. |
 | Database | Google Sheets | N/A | Primary data store for vendors | Radically simple for the target user (vendors) to manage their menu. |
-| Cache | Local Storage | N/A | Caching data and static assets | Browser's built-in local storage and caching will be used to ensure performance. |
+| Cache | Local Storage (SWR) | N/A | Caching application data client-side | Implements a 'Stale-While-Revalidate' strategy for an offline-capable, app-like experience. |
 | File Storage | Cloudinary | N/A | Media hosting and optimization | A powerful solution for managing and serving images efficiently. |
 | Authentication | N/A | N/A | All pages are public | The MVP focuses on a public-facing menu, no user authentication is required. |
 | Frontend Testing | Jest & React Testing Library | latest | Unit and integration testing | Industry-standard tools for testing React applications. |
@@ -202,7 +202,7 @@ The UI is composed of a set of modular components, organized by feature and reus
 
 #### `CategoryHighlights`
 *   **Responsibility:** Renders the horizontally-scrolling, Instagram-style category bubbles.
-*   **Dependencies:** `Category` data model.
+*   **Dependencies:** `Dish[]` data model (derives categories from the list of dishes).
 
 #### `DishGrid` / `DishCard`
 *   **Responsibility:** Displays the main grid of menu items on the profile page.
@@ -241,6 +241,11 @@ The UI is composed of a set of modular components, organized by feature and reus
 *   **Purpose:** Tracks user interactions, menu conversions, and other key performance indicators.
 *   **Documentation:** [https://developers.google.com/analytics/devguides/collection/ga4](https://developers.google.com/analytics/devguides/collection/ga4)
 *   **Authentication:** Measurement ID (public).
+
+#### Lark Webhook API
+*   **Purpose:** Used for sending critical system alerts (e.g., data fetch failures, low ratings) to the development team's communication channel.
+*   **Documentation:** Specific to the configured incoming webhook URL.
+*   **Authentication:** None (relies on the secrecy of the webhook URL).
 
 ---
 
@@ -413,7 +418,7 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 #### Performance Optimization
 *   **Loading Strategy:** Next.js provides automatic code splitting, static site generation (SSG), and server-side rendering (SSR) to ensure fast initial page loads.
 *   **Media Optimization:** All images are served via Cloudinary for automatic optimization and format selection.
-*   **Caching:** Data fetched from Google Sheets will be cached at the Vercel Edge to reduce latency and minimize redundant requests.
+*   **Caching:** Data fetched from Google Sheets is cached on the client-side using a Local Storage-based "Stale-While-Revalidate" (SWR) strategy. Static assets are cached at browser.
 
 ---
 
