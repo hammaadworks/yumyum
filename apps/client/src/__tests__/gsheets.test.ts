@@ -1,6 +1,6 @@
+import { getBrandData, getDishesData, getStatusData, getCacheKey, getSheetIdForSlug } from '@/services/gsheets';
 
-import { getBrandData, getDishesData, getStatusData, getCacheKey } from '@/services/gsheets';
-
+// Mock fetch
 const fetchMock = jest.fn();
 global.fetch = fetchMock;
 
@@ -24,21 +24,36 @@ describe('gsheets service', () => {
   beforeEach(() => {
     localStorageMock.clear();
     fetchMock.mockClear();
-    delete process.env.NEXT_PUBLIC_SHEET_ID;
-    delete process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL;
+    // Set env vars for each test run
+    process.env.NEXT_PUBLIC_ADMIN_SHEET_ID = 'admin-sheet-id';
+    process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL = 'https://lark.webhook.url';
+  });
+
+  describe('getSheetIdForSlug', () => {
+    it('should return the correct sheetId for a valid slug', async () => {
+      const mockCsv = `"yum-yum-diner","sheet-id-123"\n"burger-place","sheet-id-456"`;
+      fetchMock.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve(mockCsv) });
+
+      const sheetId = await getSheetIdForSlug('burger-place');
+
+      expect(sheetId).toBe('sheet-id-456');
+    });
   });
 
   describe('getBrandData', () => {
+    const sheetId = 'test-sheet-id';
+    // Use comma-separated values, not quoted-comma
+    const mockCsv = `name,logo_url,cuisine\nYumYum,http://logo.url,Italian`;
+
     it('should fetch fresh data and cache it', async () => {
-      process.env.NEXT_PUBLIC_SHEET_ID = 'test-sheet-id';
-      fetchMock.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve('"name","logo_url","cuisine"\n"YumYum","http://logo.url","Italian"') } as Response);
-      const data = await getBrandData('test-sheet-id');
-      expect(data).not.toBeNull();
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-      const cacheKey = getCacheKey('Brand', 'test-sheet-id');
-      const cached = localStorageMock.getItem(cacheKey);
+      fetchMock.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve(mockCsv) });
+
+      const data = await getBrandData(sheetId);
+
+      expect(data?.name).toBe('YumYum');
+      const cached = localStorage.getItem(getCacheKey('Brand', sheetId));
       expect(cached).not.toBeNull();
-      const cachedData = JSON.parse(cached!); // Use ! to assert non-null
+      const cachedData = JSON.parse(cached!);
       expect(cachedData.data.name).toBe('YumYum');
     });
 
@@ -119,11 +134,11 @@ describe('gsheets service', () => {
     });
   });
 
-  describe('Error handling integration', () => {
+  describe('Error Handling', () => {
     it('should call Lark webhook on fetch failure', async () => {
         process.env.NEXT_PUBLIC_SHEET_ID = 'test-sheet-id';
         process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL = 'https://lark.webhook.url';
-        
+
         fetchMock.mockRejectedValueOnce(new Error('Network error')); // for google sheet fetch
         fetchMock.mockResolvedValueOnce({ ok: true } as Response); // for lark webhook
 

@@ -5,6 +5,7 @@ import { getSheetIdForSlug, getBrandData, getDishesData } from '@/services/gshee
 import { Brand, Dish } from '@/lib/types';
 import { BrandHeader } from '@/components/shared/brand-header';
 import { CategoryHighlights } from '@/components/features/categories/category-highlights';
+import { ControlsBar } from '@/components/shared/controls-bar';
 import { DishGrid } from '@/components/features/dishes/DishGrid';
 
 export default function VendorPage({ params }: { params: { vendor_slug: string } }) {
@@ -75,6 +76,7 @@ export default function VendorPage({ params }: { params: { vendor_slug: string }
           onCategorySelect={handleCategorySelect}
         />
       </div>
+      <ControlsBar />
       <DishGrid dishes={filteredDishes} />
     </main>
   );

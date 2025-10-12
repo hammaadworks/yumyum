@@ -55,7 +55,7 @@ export async function getSheetIdForSlug(slug: string): Promise<string | null> {
     }
     const csvText = await response.text();
     const rows = parseCSV(csvText);
-    
+
     const slugRow = rows.find(row => row[0] === slug);
     if (slugRow && slugRow[1]) {
       return slugRow[1];
@@ -113,9 +113,9 @@ interface CacheEntry<T> {
 const inflightRequests = new Map<string, Promise<any>>();
 
 async function swrFetch<T>(
-  sheetName: string, 
-  sheetId: string, 
-  ttl: number, 
+  sheetName: string,
+  sheetId: string,
+  ttl: number,
   parser: (data: string[][]) => T
 ): Promise<T | null> {
   const cacheKey = getCacheKey(sheetName, sheetId);
