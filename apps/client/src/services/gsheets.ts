@@ -1,7 +1,7 @@
 import { Brand, Dish } from '@/lib/types';
 import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
 
-const SHEET_ID = process.env.NEXT_PUBLIC_SHEET_ID;
+
 const LARK_WEBHOOK_URL = process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL;
 const ADMIN_SHEET_ID = process.env.NEXT_PUBLIC_ADMIN_SHEET_ID;
 
@@ -103,12 +103,75 @@ async function swrFetch<T>(sheetName: string, sheetId: string, ttl: number, pars
   }
 }
 
-// ... (parser functions remain the same)
+
+function parseBrandData(data: string[][]): Brand | null {
+  if (data.length < 2) {
+    console.error("Brand data is unexpectedly short.");
+    return null;
+  }
+  const headers = data[0].map(h => h.trim());
+  const values = data[1];
+  const brandObject: { [key: string]: string } = {};
+  headers.forEach((header, index) => {
+    brandObject[header] = values[index];
+  });
+
+  return {
+    name: brandObject.name,
+    logo_url: brandObject.logo_url,
+    cuisine: brandObject.cuisine,
+    description: brandObject.description,
+    payment_link: brandObject.payment_link,
+    whatsapp: brandObject.whatsapp,
+    contact: brandObject.contact,
+    location_link: brandObject.location_link,
+    review_link: brandObject.review_link,
+    instagram: brandObject.instagram,
+    facebook: brandObject.facebook,
+    youtube: brandObject.youtube,
+    custom: brandObject.custom,
+    full_menu_pic: brandObject.full_menu_pic,
+  } as Brand;
+}
+
+function parseDishesData(data: string[][]): Dish[] {
+  if (data.length < 2) return [];
+  const headers = data[0].map(h => h.trim());
+  const rows = data.slice(1);
+
+  const dishes: Dish[] = rows.map(row => {
+    const dishObject: { [key: string]: string } = {};
+    headers.forEach((header, index) => {
+      dishObject[header] = row[index];
+    });
+
+    return {
+      id: dishObject.name.toLowerCase().replace(/\s+/g, '-'), // System-Generated
+      category: dishObject.category,
+      name: dishObject.name,
+      image: dishObject.image,
+      reel: dishObject.reel,
+      description: dishObject.description,
+      price: parseFloat(dishObject.price),
+      instock: dishObject.instock as 'yes' | 'no' | 'hide',
+      veg: dishObject.veg as 'veg' | 'non-veg',
+      tag: dishObject.tag as 'bestseller' | "chef's special" | 'new' | 'limited edition' | 'normal',
+    };
+  }).filter(dish => dish.name); // Filter out empty rows
+
+  return dishes;
+}
+
+function parseStatusData(data: string[][]): string[] {
+  if (data.length < 1) return [];
+  return data.flat().filter(item => item && item.trim() !== '');
+}
+
 
 export async function getBrandData(sheetId: string): Promise<Brand | null> {
   try {
     return await swrFetch('Brand', sheetId, BRAND_TTL, parseBrandData);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -118,15 +181,15 @@ export async function getDishesData(sheetId: string): Promise<Dish[]> {
     const dishes = await swrFetch('Dishes', sheetId, DISHES_TTL, parseDishesData);
     return dishes || [];
   }
-  catch (error) {
+  catch {
     return [];
   }
 }
 
-export async function getStatusData(sheetId: string): Promise<any> {
+export async function getStatusData(sheetId: string): Promise<string[] | null> {
   try {
     return await swrFetch('Status', sheetId, STATUS_TTL, parseStatusData);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
