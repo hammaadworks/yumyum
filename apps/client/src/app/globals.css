@@ -4,31 +4,42 @@
 
 @layer base {
   :root {
-    --background: 27 80% 94%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
+    /* Colors from front-end-spec.md */
+    --background: 27 80% 94%; /* #FEF3E2 */
+    --foreground: 240 10% 3.9%; /* #0B0B0B */
+    
+    --card: 0 0% 100%; /* #FFFFFF */
     --card-foreground: 240 10% 3.9%;
+
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 35 95% 58%;
+
+    --primary: 38 96% 59%; /* #FAB12F */
     --primary-foreground: 240 10% 3.9%;
-    --primary-strong: 35 95% 58%;
+    --primary-strong: 25 95% 58%; /* #FA812F */
+
     --secondary: 240 10% 3.9%;
     --secondary-foreground: 27 80% 94%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 40 95% 67%;
-    --accent-foreground: 240 10% 3.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 35 95% 58%;
-    --radius: 0.5rem;
-  }
 
-  .dark {
-    /* ... (dark mode colors if needed) */
+    --accent: 45 100% 67%; /* #FFC857 */
+    --accent-foreground: 240 10% 3.9%;
+    
+    --destructive: 0 98% 40%; /* #DD0303 */
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 71% 45%; /* #16A34A */
+    --warning: 38 92% 50%; /* #F59E0B */
+
+    --border: 0 0% 90%; /* #E6E6E6 */
+    --input: 0 0% 90%;
+    
+    --muted: 220 9% 61%; /* #9CA3AF */
+    --muted-foreground: 220 9% 41%;
+
+    --ring: 38 96% 59%; /* For focus rings */
+
+    /* Sizing */
+    --radius: 0.5rem;
   }
 }
 
@@ -37,6 +48,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-text-primary;
+    @apply bg-background text-foreground;
   }
 }
