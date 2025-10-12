@@ -141,17 +141,17 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 
 *   **Story 1.1: Project & CI/CD Setup**
     *   **Acceptance Criteria:** `pnpm` workspace is configured; Next.js (latest stable) is installed; `shadcn-ui` is installed; Git repo is initialized; Vercel project is linked and deploys on push to `main`; ESLint/Prettier are configured.
-*   **Story 1.2: Resilient Data Fetching & Caching Service (v6)**
-    *   **Description:** Implement a robust "stale-while-revalidate" data fetching and caching strategy to ensure the application is fast and resilient to network errors. The service will prioritize showing cached data for an instant loading experience and will include a multi-level fallback system.
+
+*   **Story 1.2: Modular & Resilient Data Service (v7)**
+    *   **Description:** Implement a modular, resilient "stale-while-revalidate" data fetching service. Each data type (brand, dishes, status) will be fetched and cached independently with its own configurable TTL. The service will support a multi-level UI fallback strategy for a graceful offline experience.
     *   **Acceptance Criteria:**
-        1.  **Caching Layer:** All fetched `brand` and `dishes` data, including the `full_menu_pic` URL, must be stored in the browser's **local storage**.
-        2.  **Instant UI Rendering:** On page load, the service must first attempt to load data from the local storage cache. If data exists, it is returned immediately to the UI for instant rendering.
-        3.  **Background Revalidation:** After returning cached data, the service must automatically trigger a background fetch to Google Sheets for fresh data.
-        4.  **Successful Revalidation:** If the background fetch succeeds, the local storage cache is silently updated with the new data.
-        5.  **Failed Revalidation:** If the background fetch fails, the existing stale data in the cache is kept, and the error is logged without disrupting the user.
-        6.  **Initial Load Failure (with Fallback):** On a first-time visit (or with an empty cache), if the network fetch fails, the service must check the cache for a `full_menu_pic` URL from a previous session and display it as a static image fallback.
-        7.  **Initial Load Failure (No Fallback):** If the cache is empty and the initial network fetch fails, a user-friendly error message must be displayed.
-        8.  **Alerting:** All critical fetch failures must trigger an alert to the configured Lark webhook.
+        1.  **Modular Caching:** `brand`, `dishes`, and `status` data must be stored in three separate local storage entries, each with its own timestamp.
+        2.  **Configurable TTLs:** The cache revalidation times (Time-To-Live) must be configurable, defaulting to: `brand` (10 minutes), `dishes` (5 minutes), and `status` (2 minutes).
+        3.  **Stale-While-Revalidate:** For each data type, the service must first return cached data (if available and not expired) for an instant UI load, then trigger a silent background fetch to update the cache.
+        4.  **Offline UI Logic - Full Experience:** If `brand` and `dishes` data are available from the cache, the full interactive menu must be rendered. The status indicator is displayed only if `status` data is also available.
+        5.  **Offline UI Logic - Fallback Experience:** If only `brand` data is available from the cache (and `dishes` data is missing/stale), the UI must render the `BrandHeader` and display the `full_menu_pic` as a static fallback.
+        6.  **Offline UI Logic - Error Page:** In all other scenarios (e.g., `brand` data is missing), a full-page, user-friendly error message must be displayed.
+        7.  **Alerting:** All critical fetch failures must trigger an alert to the configured Lark webhook.
 
 **   **Story 1.3: Brand Header UI**
     *   **Description:** Create the main brand header component, which acts as the "bio" section of the vendor's profile page. It will display the vendor's logo, core information, and contact/social media links.
