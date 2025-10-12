@@ -46,6 +46,8 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({
             key={category}
             onClick={() => onCategorySelect(category)}
             className="flex-shrink-0"
+            aria-label={`Filter by ${category} category`}
+            type="button"
           >
             <div
               className={cn(

@@ -30,7 +30,8 @@ export default function VendorPage({ params }: { params: { vendor_slug: string }
 
         setBrand(brandData);
         setDishes(dishesData);
-      } catch {
+      } catch (err) {
+        console.error('Failed to load menu data:', err);
         setError('Failed to load menu data.');
       } finally {
         setLoading(false);
