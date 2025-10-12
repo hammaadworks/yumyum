@@ -5,6 +5,14 @@ import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
 const LARK_WEBHOOK_URL = process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL;
 const ADMIN_SHEET_ID = process.env.NEXT_PUBLIC_ADMIN_SHEET_ID;
 
+/**
+ * Parse a CSV-formatted string into a two-dimensional array of cells.
+ *
+ * Handles quoted fields, escaped double quotes (""), commas, and newlines; trims surrounding quotes from quoted fields and unescapes embedded quotes.
+ *
+ * @param csvText - The CSV input text to parse
+ * @returns A 2D array where each inner array represents a row and each element is a cell value
+ */
 function parseCSV(csvText: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
@@ -43,6 +51,15 @@ function parseCSV(csvText: string): string[][] {
   return rows.map(r => r.map(c => c.startsWith('"') && c.endsWith('"') ? c.slice(1, -1).replace(/""/g, '"') : c));
 }
 
+/**
+ * Resolve a vendor slug to its corresponding admin sheet ID by looking up the "vendors" sheet.
+ *
+ * Looks for a row whose first column equals `slug`. If a matching row is found returns the second column as the sheet ID. On fetch failures the function logs the error, sends a Lark alert, and returns `null`.
+ *
+ * @param slug - The vendor slug to look up in the admin "vendors" sheet
+ * @returns The sheet ID string when a matching row is found, `null` if no match exists or an error occurs
+ * @throws If the admin sheet ID is not configured
+ */
 export async function getSheetIdForSlug(slug: string): Promise<string | null> {
   if (!ADMIN_SHEET_ID) {
     throw new Error('Admin sheet ID is not configured.');
@@ -68,7 +85,14 @@ export async function getSheetIdForSlug(slug: string): Promise<string | null> {
   }
 }
 
-// --- Helper Functions ---
+/**
+ * Fetches a named tab from a Google Spreadsheet and parses its CSV into a 2D array of cell strings.
+ *
+ * @param sheetName - The name of the sheet (tab) to fetch within the spreadsheet.
+ * @param sheetId - The Google Spreadsheet ID.
+ * @returns A two-dimensional array where each inner array represents a row of cell strings from the sheet.
+ * @throws If the network request fails or the response is not OK, or if the CSV cannot be retrieved.
+ */
 
 async function fetchSheetData(sheetName: string, sheetId: string): Promise<string[][]> {
   const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
@@ -86,6 +110,14 @@ async function fetchSheetData(sheetName: string, sheetId: string): Promise<strin
   }
 }
 
+/**
+ * Send a plain-text alert message to the configured Lark webhook.
+ *
+ * If no webhook URL is configured, the function does nothing. Network or delivery
+ * failures are caught and logged to the console; errors are not rethrown.
+ *
+ * @param message - The text message to send to Lark
+ */
 async function sendLarkAlert(message: string) {
   if (!LARK_WEBHOOK_URL) return;
   try {
@@ -99,6 +131,13 @@ async function sendLarkAlert(message: string) {
   }
 }
 
+/**
+ * Constructs a stable localStorage cache key for a specific sheet.
+ *
+ * @param sheetName - The sheet tab name; it will be lowercased when included in the key
+ * @param sheetId - The sheet's identifier (spreadsheet ID or configured sheet ID)
+ * @returns The cache key in the form `yumyum-<lowercased sheetName>-<sheetId>`
+ */
 export function getCacheKey(sheetName: string, sheetId: string): string {
     return `yumyum-${sheetName.toLowerCase()}-${sheetId}`;
 }
@@ -112,6 +151,19 @@ interface CacheEntry<T> {
 
 const inflightRequests = new Map<string, Promise<any>>();
 
+/**
+ * Fetches and caches a Google Sheets tab using a stale-while-revalidate strategy with in-flight deduplication.
+ *
+ * Attempts to return a fresh cached value from localStorage when available; if the cached value is within
+ * `ttl`, it is returned immediately and a background revalidation updates the cache. When no fresh cache
+ * is available, the sheet is fetched, parsed with `parser`, stored in cache, and the parsed value is returned.
+ *
+ * @param sheetName - The name of the sheet/tab to fetch within the Google Sheet
+ * @param sheetId - The Google Sheet ID
+ * @param ttl - Cache time-to-live in milliseconds; values younger than `ttl` are considered fresh
+ * @param parser - Function that converts the raw CSV rows (`string[][]`) into the desired type `T`
+ * @returns The parsed value of type `T` (or `null` if the provided `parser` returns `null`)
+ */
 async function swrFetch<T>(
   sheetName: string, 
   sheetId: string, 
@@ -162,6 +214,12 @@ async function swrFetch<T>(
 }
 
 
+/**
+ * Parse CSV-style rows for a brand sheet into a Brand object.
+ *
+ * @param data - Two-dimensional array of cell strings where the first row is header names and the second row contains the corresponding brand values; additional rows are ignored.
+ * @returns A `Brand` populated from the header/value row pair, or `null` if the input has fewer than two rows or required fields (`name`, `logo_url`, `cuisine`) are missing or empty.
+ */
 function parseBrandData(data: string[][]): Brand | null {
   if (data.length < 2) {
     console.error("Brand data is unexpectedly short.");
@@ -200,6 +258,18 @@ function parseBrandData(data: string[][]): Brand | null {
   } as Brand;
 }
 
+/**
+ * Convert CSV-style rows into an array of Dish objects by mapping headers to row values.
+ *
+ * The first row of `data` is treated as headers and subsequent rows as records. Produces a Dish for each record with:
+ * - `id` generated from `name` by lowercasing and replacing spaces with hyphens,
+ * - `price` parsed as a number,
+ * - categorical fields (`instock`, `veg`, `tag`) cast to their expected literal values.
+ * Rows with an empty `name` are omitted. If `data` has fewer than two rows, returns an empty array.
+ *
+ * @param data - A 2D array where the first row is header names and each following row is a record.
+ * @returns An array of parsed Dish objects.
+ */
 function parseDishesData(data: string[][]): Dish[] {
   if (data.length < 2) return [];
   const headers = data[0].map(h => h.trim());
@@ -228,12 +298,24 @@ function parseDishesData(data: string[][]): Dish[] {
   return dishes;
 }
 
+/**
+ * Convert a status sheet's rows into a flat list of non-empty status strings.
+ *
+ * @param data - Two-dimensional array of sheet cells (rows and columns)
+ * @returns An array of status strings with empty or whitespace-only entries removed
+ */
 function parseStatusData(data: string[][]): string[] {
   if (data.length < 1) return [];
   return data.flat().filter(item => item && item.trim() !== '');
 }
 
 
+/**
+ * Fetches and returns brand information from the specified Google Sheet.
+ *
+ * @param sheetId - The Google Sheet ID that contains the Brand tab
+ * @returns The parsed `Brand` object from the sheet, or `null` if no valid brand data is present
+ */
 export async function getBrandData(sheetId: string): Promise<Brand | null> {
   try {
     return await swrFetch('Brand', sheetId, BRAND_TTL, parseBrandData);
@@ -242,6 +324,12 @@ export async function getBrandData(sheetId: string): Promise<Brand | null> {
   }
 }
 
+/**
+ * Retrieve and parse dishes from the "Dishes" tab of the specified Google Sheet.
+ *
+ * @param sheetId - The Google Sheet ID containing the Dishes tab
+ * @returns An array of parsed `Dish` objects; returns an empty array if no dishes are found or on error
+ */
 export async function getDishesData(sheetId: string): Promise<Dish[]> {
   try {
     const dishes = await swrFetch('Dishes', sheetId, DISHES_TTL, parseDishesData);
@@ -252,6 +340,12 @@ export async function getDishesData(sheetId: string): Promise<Dish[]> {
   }
 }
 
+/**
+ * Fetches the status list from the "Status" tab of the specified Google Sheet.
+ *
+ * @param sheetId - The Google Sheet ID containing the Status sheet.
+ * @returns An array of non-empty status strings parsed from the sheet, or `null` if fetching fails.
+ */
 export async function getStatusData(sheetId: string): Promise<string[] | null> {
   try {
     return await swrFetch('Status', sheetId, STATUS_TTL, parseStatusData);

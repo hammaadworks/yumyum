@@ -7,6 +7,17 @@ import { BrandHeader } from '@/components/shared/brand-header';
 import { CategoryHighlights } from '@/components/features/categories/category-highlights';
 import { DishGrid } from '@/components/features/dishes/DishGrid';
 
+/**
+ * Render the vendor menu page for the given vendor slug.
+ *
+ * Fetches brand and dish data for the vendor, manages loading and error states,
+ * supports category selection and filtering, and renders the brand header,
+ * category highlights, and a grid of (filtered) dishes.
+ *
+ * @param params - Route parameters object.
+ * @param params.vendor_slug - The vendor's slug used to resolve sheet data.
+ * @returns The page's React element displaying brand information, category highlights, and a dish grid filtered by the selected category.
+ */
 export default function VendorPage({ params }: { params: { vendor_slug: string } }) {
   const { vendor_slug } = params;
   const [brand, setBrand] = useState<Brand | null>(null);
