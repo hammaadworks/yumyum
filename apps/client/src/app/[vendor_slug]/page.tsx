@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getSheetIdForSlug, getBrandData, getDishesData } from '@/services/gsheets';
 import { Brand, Dish } from '@/lib/types';
 import { BrandHeader } from '@/components/shared/brand-header';
+import { CategoryHighlights } from '@/components/features/categories/category-highlights';
 import { DishGrid } from '@/components/features/dishes/DishGrid';
 
 export default function VendorPage({ params }: { params: { vendor_slug: string } }) {
@@ -12,6 +13,7 @@ export default function VendorPage({ params }: { params: { vendor_slug: string }
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData(slug: string) {
@@ -50,10 +52,29 @@ export default function VendorPage({ params }: { params: { vendor_slug: string }
     return <div>Could not load brand information.</div>;
   }
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category === selectedCategory ? null : category);
+  };
+
+  const filteredDishes = selectedCategory
+    ? dishes.filter((dish) => {
+        if (selectedCategory === "Specials") {
+          return dish.tag && dish.tag !== "normal";
+        }
+        return dish.category === selectedCategory;
+      })
+    : dishes;
+
   return (
     <main className="container mx-auto p-4">
       <BrandHeader brand={brand} />
-      <DishGrid dishes={dishes} />
+      <div className="my-8">
+        <CategoryHighlights
+          dishes={dishes}
+          onCategorySelect={handleCategorySelect}
+        />
+      </div>
+      <DishGrid dishes={filteredDishes} />
     </main>
   );
 }
