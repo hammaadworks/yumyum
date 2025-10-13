@@ -8,49 +8,109 @@ import { Search, ArrowUpDown } from 'lucide-react';
 import { useFilterStore } from '@/store/use-filter.store';
 
 export function ControlsBar() {
+
   const {
+
     isVegOnly,
+
     sortOrder,
+
     searchQuery,
+
     toggleVegOnly,
+
     toggleSortOrder,
+
     setSearchQuery,
+
   } = useFilterStore();
 
+
+
+  const sortLabel = `Sort by price, currently ${sortOrder === 'asc' ? 'Low to High' : 'High to Low'}`;
+
+
+
   return (
+
     <div className="flex flex-wrap items-center gap-4 p-4 my-4 bg-card rounded-lg shadow-sm">
+
       {/* Search Input */}
+
       <div className="relative flex-grow min-w-[200px]">
+
+        <Label htmlFor="search-menu" className="sr-only">
+
+          Search menu
+
+        </Label>
+
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+
         <Input
+
+          id="search-menu"
+
           placeholder="Search menu..."
+
           className="pl-10"
+
           value={searchQuery}
+
           onChange={(e) => setSearchQuery(e.target.value)}
+
         />
+
       </div>
+
+
 
       <div className="flex items-center space-x-4">
+
         {/* Veg Only Toggle */}
+
         <div className="flex items-center space-x-2">
+
           <Switch
+
             id="veg-only"
+
             checked={isVegOnly}
+
             onCheckedChange={toggleVegOnly}
+
           />
+
           <Label htmlFor="veg-only">Veg Only</Label>
+
         </div>
 
+
+
         {/* Sort Button */}
+
         <Button
+
           variant="outline"
+
           className="flex items-center space-x-2"
+
           onClick={toggleSortOrder}
+
+          aria-label={sortLabel}
+
         >
+
           <ArrowUpDown className="h-4 w-4" />
+
           <span>Price: {sortOrder === 'asc' ? 'Low to High' : 'High to Low'}</span>
+
         </Button>
+
       </div>
+
     </div>
+
   );
+
 }

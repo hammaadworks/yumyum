@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { Dish } from '@/lib/types';
 import { useFilterStore } from '@/store/use-filter.store';
+import { useUiStore } from '@/store/use-ui.store';
 import { DishCard } from './DishCard';
 
 interface DishGridProps {
@@ -11,6 +12,7 @@ interface DishGridProps {
 
 export function DishGrid({ dishes }: DishGridProps) {
   const { isVegOnly, sortOrder, searchQuery } = useFilterStore();
+  const openReelView = useUiStore((state) => state.openReelView);
 
   const filteredAndSortedDishes = useMemo(() => {
     let filtered = [...dishes];
@@ -22,8 +24,11 @@ export function DishGrid({ dishes }: DishGridProps) {
 
     // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter((dish) =>
-        dish.name.toLowerCase().includes(searchQuery.toLowerCase())
+      const lowercasedQuery = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (dish) =>
+          dish.name.toLowerCase().includes(lowercasedQuery) ||
+          dish.description.toLowerCase().includes(lowercasedQuery),
       );
     }
 
@@ -39,8 +44,7 @@ export function DishGrid({ dishes }: DishGridProps) {
   }, [dishes, isVegOnly, sortOrder, searchQuery]);
 
   const handleCardClick = (dishId: string) => {
-    // Placeholder for reel view logic
-    console.log(`Open reel view for dish: ${dishId}`);
+    openReelView({ initialDishId: dishId });
   };
 
   if (filteredAndSortedDishes.length === 0) {
@@ -52,14 +56,23 @@ export function DishGrid({ dishes }: DishGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {filteredAndSortedDishes.map((dish) => (
         <DishCard
           key={dish.id}
-          dish={dish}
-          onClick={() => handleCardClick(dish.id)}
-        />
-      ))}
-    </div>
-  );
-}
+
+              dish={dish}
+
+              onClick={() => handleCardClick(dish.id)}
+
+            />
+
+          ))}
+
+        </div>
+
+      );
+
+    }
+
+    
