@@ -10,7 +10,15 @@ interface DishGridProps {
   dishes: Dish[];
 }
 
-export function DishGrid({ dishes }: DishGridProps) {
+/**
+     * Renders a responsive grid of dishes after applying active filters and sorting.
+     *
+     * Filters the provided dishes by veg-only and search query, sorts them by price according to the current sort order, and renders a DishCard for each result. Clicking a card opens the reel view with that dish as the initial selection. If no dishes remain after filtering, renders a centered "No dishes match your current filters." message.
+     *
+     * @param dishes - The list of dishes to filter, sort, and display.
+     * @returns A JSX element containing either a responsive grid of DishCard components or an empty-state message.
+     */
+    export function DishGrid({ dishes }: DishGridProps) {
   const { isVegOnly, sortOrder, searchQuery } = useFilterStore();
   const openReelView = useUiStore((state) => state.openReelView);
 

@@ -10,6 +10,18 @@ import { DishGrid } from '@/components/features/dishes/DishGrid';
 import { useUiStore } from '@/store/use-ui.store';
 import { ReelView } from '@/components/features/reel/ReelView';
 
+/**
+ * Render the vendor menu page for a given vendor slug.
+ *
+ * Fetches brand and dish data for the provided route param and renders the appropriate UI:
+ * shows a loading indicator while fetching, an error message on failure, a fallback if brand
+ * data is missing, or the full menu view with BrandHeader, CategoryHighlights, ControlsBar,
+ * DishGrid, and a conditional ReelView when the UI store enables it.
+ *
+ * @param params - Route parameters object
+ * @param params.vendor_slug - The vendor slug used to resolve the sheet ID and load brand and dishes
+ * @returns The JSX element for the vendor page
+ */
 export default function VendorPage({ params }: { params: { vendor_slug: string } }) {
   const { vendor_slug } = params;
   const [brand, setBrand] = useState<Brand | null>(null);
