@@ -7,6 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Search, ArrowUpDown } from 'lucide-react';
 import { useFilterStore } from '@/store/use-filter.store';
 
+/**
+ * Render a controls bar with a search input, a "Veg Only" toggle, and a price sort button connected to the filter store.
+ *
+ * The search input updates the store's query, the switch toggles the vegetarian-only filter, and the sort button toggles price sort order; the sort button's accessible label reflects the current sort direction.
+ *
+ * @returns A React element containing the search field, veg-only switch, and price sort control.
+ */
 export function ControlsBar() {
 
   const {

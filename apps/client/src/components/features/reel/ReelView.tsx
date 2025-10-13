@@ -11,6 +11,15 @@ interface ReelViewProps {
   dishes: Dish[];
 }
 
+/**
+ * Render a full-screen, snap-scrolling reel of dishes with in-stock items shown first.
+ *
+ * The component sorts `dishes` so entries with `instock === 'yes'` appear before those with `instock === 'no'`,
+ * renders a translucent backdrop with a top-mounted GlobalCart, and exposes a close control that triggers the UI close action.
+ *
+ * @param dishes - Array of Dish objects to display; items are presented in-stock first, then out-of-stock.
+ * @returns The React element for the full-screen reel overlay containing snap-scrolling dish pages.
+ */
 export function ReelView({ dishes }: ReelViewProps) {
   const { closeReelView, initialDishId } = useUiStore();
 

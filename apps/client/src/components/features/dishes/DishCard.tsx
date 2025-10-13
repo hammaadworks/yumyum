@@ -7,6 +7,15 @@ interface DishCardProps {
   onClick: () => void;
 }
 
+/**
+ * Render a square, clickable dish card that shows the dish image, an optional tag indicator, and the dish name.
+ *
+ * If `dish.tag` exists and is not `"normal"`, a pulsing tag indicator appears in the top-right corner.
+ *
+ * @param dish - The dish to display (image, name, and optional tag).
+ * @param onClick - Callback invoked when the card is clicked.
+ * @returns The JSX element for the dish card.
+ */
 export function DishCard({ dish, onClick }: DishCardProps) {
   const hasTag = dish.tag && dish.tag !== 'normal';
 
