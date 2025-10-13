@@ -43,6 +43,13 @@ function parseCSV(csvText: string): string[][] {
   return rows.map(r => r.map(c => c.startsWith('"') && c.endsWith('"') ? c.slice(1, -1).replace(/""/g, '"') : c));
 }
 
+/**
+ * Resolves the Google Sheet ID corresponding to a vendor slug from the admin "vendors" sheet.
+ *
+ * @param slug - The vendor slug to look up in the admin sheet's first column.
+ * @returns The sheet ID from the second column if a matching slug is found, `null` if not found or on error.
+ * @throws Error if the ADMIN_SHEET_ID environment variable is not configured.
+ */
 export async function getSheetIdForSlug(slug: string): Promise<string | null> {
   if (!ADMIN_SHEET_ID) {
     throw new Error('Admin sheet ID is not configured.');
@@ -55,7 +62,7 @@ export async function getSheetIdForSlug(slug: string): Promise<string | null> {
     }
     const csvText = await response.text();
     const rows = parseCSV(csvText);
-    
+
     const slugRow = rows.find(row => row[0] === slug);
     if (slugRow && slugRow[1]) {
       return slugRow[1];
@@ -112,10 +119,22 @@ interface CacheEntry<T> {
 
 const inflightRequests = new Map<string, Promise<any>>();
 
+/**
+ * Fetches parsed sheet data using an SWR-style cache with in-flight deduplication.
+ *
+ * When cached data is fresh it is returned immediately and a background revalidation is started;
+ * concurrent requests for the same sheet are deduplicated so only one network fetch runs at a time.
+ *
+ * @param sheetName - The named sheet within the Google Sheet (e.g., "Brand", "Dishes", "Status")
+ * @param sheetId - The Google Sheet ID containing the target sheet
+ * @param ttl - Time-to-live for cached entries in milliseconds; values older than this are considered stale
+ * @param parser - A function that converts the fetched CSV grid (`string[][]`) into the desired return shape `T`
+ * @returns The parsed sheet data of type `T`, or `null` when the parser returns `null`
+ */
 async function swrFetch<T>(
-  sheetName: string, 
-  sheetId: string, 
-  ttl: number, 
+  sheetName: string,
+  sheetId: string,
+  ttl: number,
   parser: (data: string[][]) => T
 ): Promise<T | null> {
   const cacheKey = getCacheKey(sheetName, sheetId);

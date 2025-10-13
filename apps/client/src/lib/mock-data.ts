@@ -1,97 +1,23 @@
-import { Brand, Dish } from './types';
+import { Dish, Brand } from './types';
 
-export const brandData: Brand = {
-  name: 'The Burger Den',
-  logo_url: '/images/logo.png', // Replace with a real image path in /public
-  cuisine: 'American, Burgers',
-  description:
-    'The best burgers in town, made with 100% Angus beef. Taste the difference.',
-  payment_link: 'upi://pay?pa=burgerden@example',
-  whatsapp: '+1234567890',
-  contact: '+1234567890',
-  location_link: 'https://maps.app.goo.gl/12345',
-  review_link: 'https://g.page/r/12345/review',
-  instagram: 'https://instagram.com/burgerden',
-  facebook: 'https://facebook.com/burgerden',
+export const mockDish: Dish = {
+  id: 'mock-dish-1',
+  category: 'Mock Category',
+  name: 'Mock Dish',
+  image: 'https://via.placeholder.com/150',
+  description: 'A delicious mock dish.',
+  price: 10.99,
+  instock: 'yes',
+  veg: 'veg',
+  tag: 'bestseller',
 };
 
-export const dishData: Dish[] = [
-  {
-    id: 'classic-cheeseburger',
-    category: 'Burgers',
-    name: 'Classic Cheeseburger',
-    image: '/images/burger1.jpg',
-    description:
-      'A timeless classic with a juicy beef patty, melted cheddar, lettuce, tomato, and our secret sauce.',
-    price: 12.99,
-    instock: 'yes',
-    veg: 'non-veg',
-    tag: 'bestseller',
-  },
-  {
-    id: 'veggie-delight-burger',
-    category: 'Burgers',
-    name: 'Veggie Delight Burger',
-    image: '/images/burger2.jpg',
-    description:
-      'A delicious and hearty veggie patty with all the classic fixings.',
-    price: 11.99,
-    instock: 'yes',
-    veg: 'veg',
-  },
-  {
-    id: 'spicy-jalapeno-burger',
-    category: 'Burgers',
-    name: 'Spicy Jalapeño Burger',
-    image: '/images/burger3.jpg',
-    description:
-      'For those who like it hot! A beef patty topped with jalapeños, pepper jack cheese, and spicy mayo.',
-    price: 13.99,
-    instock: 'yes',
-    veg: 'non-veg',
-    tag: "chef's special",
-  },
-  {
-    id: 'loaded-fries',
-    category: 'Sides',
-    name: 'Loaded Fries',
-    image: '/images/fries1.jpg',
-    description:
-      'Crispy fries smothered in cheese sauce, bacon bits, and green onions.',
-    price: 7.99,
-    instock: 'yes',
-    veg: 'non-veg',
-  },
-  {
-    id: 'onion-rings',
-    category: 'Sides',
-    name: 'Onion Rings',
-    image: '/images/onion-rings.jpg',
-    description: 'Golden and crispy beer-battered onion rings.',
-    price: 6.99,
-    instock: 'no',
-    veg: 'veg',
-  },
-  {
-    id: 'chocolate-milkshake',
-    category: 'Drinks',
-    name: 'Chocolate Milkshake',
-    image: '/images/shake1.jpg',
-    description:
-      'A thick and creamy chocolate milkshake, topped with whipped cream.',
-    price: 5.99,
-    instock: 'yes',
-    veg: 'veg',
-  },
-  {
-    id: 'strawberry-lemonade',
-    category: 'Drinks',
-    name: 'Strawberry Lemonade',
-    image: '/images/lemonade.jpg',
-    description: 'A refreshing blend of sweet strawberries and tart lemonade.',
-    price: 4.99,
-    instock: 'yes',
-    veg: 'veg',
-    tag: 'new',
-  },
-];
+export const mockBrand: Brand = {
+  name: 'Mock Brand',
+  logo_url: 'https://via.placeholder.com/100',
+  cuisine: 'Mock Cuisine',
+  description: 'The best mock food in town.',
+  payment_link: 'https://example.com/pay',
+  whatsapp: '1234567890',
+  contact: '1234567890',
+};

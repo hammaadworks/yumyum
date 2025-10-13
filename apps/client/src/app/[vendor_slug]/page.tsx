@@ -5,15 +5,31 @@ import { getSheetIdForSlug, getBrandData, getDishesData } from '@/services/gshee
 import { Brand, Dish } from '@/lib/types';
 import { BrandHeader } from '@/components/shared/brand-header';
 import { CategoryHighlights } from '@/components/features/categories/category-highlights';
+import { ControlsBar } from '@/components/shared/controls-bar';
 import { DishGrid } from '@/components/features/dishes/DishGrid';
+import { useUiStore } from '@/store/use-ui.store';
+import { ReelView } from '@/components/features/reel/ReelView';
 
+/**
+ * Render the vendor menu page for a given vendor slug.
+ *
+ * Fetches brand and dish data for the provided route param and renders the appropriate UI:
+ * shows a loading indicator while fetching, an error message on failure, a fallback if brand
+ * data is missing, or the full menu view with BrandHeader, CategoryHighlights, ControlsBar,
+ * DishGrid, and a conditional ReelView when the UI store enables it.
+ *
+ * @param params - Route parameters object
+ * @param params.vendor_slug - The vendor slug used to resolve the sheet ID and load brand and dishes
+ * @returns The JSX element for the vendor page
+ */
 export default function VendorPage({ params }: { params: { vendor_slug: string } }) {
   const { vendor_slug } = params;
   const [brand, setBrand] = useState<Brand | null>(null);
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const isReelViewOpen = useUiStore((state) => state.isReelViewOpen);
 
   useEffect(() => {
     async function fetchData(slug: string) {
@@ -53,29 +69,16 @@ export default function VendorPage({ params }: { params: { vendor_slug: string }
     return <div>Could not load brand information.</div>;
   }
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category === selectedCategory ? null : category);
-  };
-
-  const filteredDishes = selectedCategory
-    ? dishes.filter((dish) => {
-        if (selectedCategory === "Specials") {
-          return dish.tag && dish.tag !== "normal";
-        }
-        return dish.category === selectedCategory;
-      })
-    : dishes;
-
   return (
     <main className="container mx-auto p-4">
       <BrandHeader brand={brand} />
       <div className="my-8">
-        <CategoryHighlights
-          dishes={dishes}
-          onCategorySelect={handleCategorySelect}
-        />
+        <CategoryHighlights dishes={dishes} />
       </div>
-      <DishGrid dishes={filteredDishes} />
+      <ControlsBar />
+      <DishGrid dishes={dishes} />
+
+      {isReelViewOpen && <ReelView dishes={dishes} />}
     </main>
   );
 }
