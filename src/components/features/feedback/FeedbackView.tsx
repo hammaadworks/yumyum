@@ -17,27 +17,74 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
 
   const [error, setError] = useState<string | null>(null);
 
+  const isValidHttpUrl = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
+  const normalizeWhatsapp = (number: string) => number.replace(/[^+\d]/g, '');
+
+  const validateWhatsapp = (number: string) => {
+    const normalized = normalizeWhatsapp(number);
+    return /^(\+)?[1-9]\d{7,14}$/.test(normalized);
+  };
+
+  const openPopup = (url: string): boolean => {
+    const popup = window.open(url, '_blank');
+    return popup !== null;
+  };
+
   const handleRating = (rate: number) => {
     setRating(rate);
-    try {
-      if (rate >= 4) {
-        if (brand.review_link) {
-          window.open(brand.review_link, '_blank');
-          closeFeedbackView();
-        } else {
-          setError('Review link not available');
-        }
-      } else {
-        if (brand.whatsapp) {
-          const message = encodeURIComponent(`Feedback for ${brand.name}`);
-          window.open(`https://wa.me/${brand.whatsapp}?text=${message}`, '_blank');
-          closeFeedbackView();
-        } else {
-          setError('WhatsApp contact not available');
-        }
+    
+    if (rate >= 4) {
+      if (!brand.review_link) {
+        setError('Review link not available');
+        return;
       }
-    } catch (e) {
-      setError('Could not open link');
+      if (!isValidHttpUrl(brand.review_link)) {
+        setError('Invalid review URL provided');
+        return;
+      }
+
+      try {
+        if (!openPopup(brand.review_link)) {
+          setError('Popup blocked by browser. Please allow popups for this site.');
+          return;
+        }
+        closeFeedbackView();
+      } catch (err) {
+        console.error('Failed to open review link:', err);
+        setError('Could not open review link. Please try again.');
+      }
+    } else {
+      if (!brand.whatsapp) {
+        setError('WhatsApp contact not available');
+        return;
+      }
+      if (!validateWhatsapp(brand.whatsapp)) {
+        setError('Invalid WhatsApp number provided');
+        return;
+      }
+
+      try {
+        const normalized = normalizeWhatsapp(brand.whatsapp);
+        const message = encodeURIComponent(`Feedback for ${brand.name}`);
+        const whatsappUrl = `https://wa.me/${normalized}?text=${message}`;
+        
+        if (!openPopup(whatsappUrl)) {
+          setError('Popup blocked by browser. Please allow popups for this site.');
+          return;
+        }
+        closeFeedbackView();
+      } catch (err) {
+        console.error('Failed to open WhatsApp:', err);
+        setError('Could not open WhatsApp. Please try again.');
+      }
     }
   };
 

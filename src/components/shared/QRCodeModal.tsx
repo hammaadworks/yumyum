@@ -9,28 +9,53 @@ export function QRCodeModal() {
   const qrCodeRef = useRef<HTMLDivElement>(null);
 
   const downloadQRCode = () => {
-    if (qrCodeRef.current) {
-      const svg = qrCodeRef.current.querySelector('svg');
-      if (svg) {
-        const svgData = new XMLSerializer().serializeToString(svg);
+    if (!qrCodeRef.current) return;
+    const svg = qrCodeRef.current.querySelector('svg');
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+
+    // Create a blob from the SVG string (handles unicode safely) and create an object URL
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    const img = new Image();
+    img.onload = () => {
+      try {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.onload = () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx?.drawImage(img, 0, 0);
-          const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-          let downloadLink = document.createElement('a');
+        if (!ctx) {
+          console.error('Unable to get 2D context for canvas when exporting QR code');
+          URL.revokeObjectURL(url);
+          return;
+        }
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            console.error('Failed to create blob from canvas');
+            URL.revokeObjectURL(url);
+            return;
+          }
+          const pngUrl = URL.createObjectURL(blob);
+          const downloadLink = document.createElement('a');
           downloadLink.href = pngUrl;
           downloadLink.download = 'qrcode.png';
           document.body.appendChild(downloadLink);
           downloadLink.click();
           document.body.removeChild(downloadLink);
-        };
-        img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+          // Clean up object URLs
+          URL.revokeObjectURL(pngUrl);
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      } catch (err) {
+        console.error('Failed to export QR code as PNG:', err);
+        URL.revokeObjectURL(url);
       }
-    }
+    };
+    // Use the object URL as an image source to avoid btoa unicode issues
+    img.src = url;
   };
 
   const copyLink = () => {
@@ -55,9 +80,10 @@ export function QRCodeModal() {
           console.log('Share successful');
         })
         .catch((err) => {
-          // User cancelled or share failed
-          if (err.name !== 'AbortError') {
+          // User cancelled: AbortError. For other errors, log and fallback to clipboard copy.
+          if ((err as Error).name !== 'AbortError') {
             console.error('Share failed:', err);
+            copyLink();
           }
         });
     } else {

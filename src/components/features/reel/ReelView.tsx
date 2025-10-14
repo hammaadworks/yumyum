@@ -32,7 +32,7 @@ export function ReelView({ dishes }: ReelViewProps) {
   // TODO: Scroll to the initialDishId
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm animate-in fade-in-0">
+    <div data-testid="reel-view-container" className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm animate-in fade-in-0">
       <GlobalCart />
       <button
         onClick={closeReelView}
@@ -45,6 +45,7 @@ export function ReelView({ dishes }: ReelViewProps) {
       <div className="h-full w-full overflow-y-auto snap-y snap-mandatory">
         {sortedDishes.map((dish, index) => (
           <div
+            data-testid="dish-item"
             key={dish.id}
             className={cn(
               'h-full w-full flex flex-col items-center justify-center snap-start text-white',

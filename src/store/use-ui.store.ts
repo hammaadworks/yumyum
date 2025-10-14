@@ -2,7 +2,9 @@ import { create } from 'zustand';
 
 interface UIState {
   isReelViewOpen: boolean;
-  openReelView: () => void;
+  // optional id of the dish to open inside the reel view
+  currentReelDishId?: string | null;
+  openReelView: (dishId?: string | null) => void;
   closeReelView: () => void;
   isCartSummaryOpen: boolean;
   openCartSummary: () => void;
@@ -20,8 +22,9 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   isReelViewOpen: false,
-  openReelView: () => set({ isReelViewOpen: true }),
-  closeReelView: () => set({ isReelViewOpen: false }),
+  currentReelDishId: null,
+  openReelView: (dishId?: string | null) => set({ isReelViewOpen: true, currentReelDishId: dishId || null }),
+  closeReelView: () => set({ isReelViewOpen: false, currentReelDishId: null }),
   isCartSummaryOpen: false,
   openCartSummary: () => set({ isCartSummaryOpen: true }),
   closeCartSummary: () => set({ isCartSummaryOpen: false }),

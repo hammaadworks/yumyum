@@ -1,4 +1,4 @@
-import { Brand, Dish, Status } from '@/lib/types';
+import { Brand, Dish, Status, StatusItem } from '@/lib/types';
 import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
 import { sendLarkMessage } from './lark';
 import Papa from 'papaparse';
@@ -215,24 +215,64 @@ function parseDishesData(data: string[][]): Dish[] {
   return dishes;
 }
 
-function parseStatusData(data: string[][]): Status | null {
-    if (data.length < 1) {
-      sendLarkMessage('Critical Error: Status data CSV is empty or malformed.');
+  const parseStatusData = (data: any[][]): Status => {
+    // Validate input data structure
+    if (!Array.isArray(data)) {
+      console.error('parseStatusData: Invalid input - not an array', data);
       return [];
     }
-    const items = data.flat().filter(item => item && item.trim() !== '');
 
-    return items.map(item => {
-        // Simple heuristic: if it's a URL, it's media. Otherwise, text.
-        // Story 3.3 will require a more robust implementation.
-        const isMedia = item.startsWith('http') && (item.includes('cloudinary') || item.match(/\.(jpeg|jpg|gif|png|mp4)$/));
-        return {
-            type: isMedia ? 'image' : 'text',
-            content: item,
-            duration: isMedia ? 10000 : 5000, // Default durations
-        };
-    });
-}
+    if (data.length === 0) {
+      console.error('parseStatusData: Empty data');
+      return [];
+    }
+
+    try {
+      // Skip header row if present
+      const dataRows = data.length > 1 ? data.slice(1) : data;
+      
+      return dataRows.map((row, index) => {
+        try {
+          const [type = '', content = '', duration = '5'] = row;
+
+          // Validate type
+          if (typeof type !== 'string' || !['image', 'video', 'text'].includes(type as string)) {
+            console.error(`parseStatusData: Invalid type at row ${index}`, { type });
+            return null;
+          }
+
+          // Validate content
+          if (typeof content !== 'string' || !content.trim()) {
+            console.error(`parseStatusData: Invalid or empty content at row ${index}`, { content });
+            return null;
+          }
+
+          // Validate and parse duration
+          const parsedDuration = parseInt(duration, 10);
+          if (isNaN(parsedDuration) || parsedDuration < 1) {
+            console.warn(`parseStatusData: Invalid duration at row ${index}, using default`, { duration });
+            return {
+              type: type as 'image' | 'video' | 'text',
+              content: content.trim(),
+              duration: 5
+            };
+          }
+
+          return {
+            type: type as 'image' | 'video' | 'text',
+            content: content.trim(),
+            duration: parsedDuration
+          };
+        } catch (err) {
+          console.error(`parseStatusData: Failed to parse row ${index}:`, err, { row });
+          return null;
+        }
+      }).filter((item): item is StatusItem => item !== null);
+    } catch (err) {
+      console.error('parseStatusData: Failed to parse status data:', err, { data });
+      return [];
+    }
+  };
 
 export async function getBrandData(sheetId: string): Promise<Brand | null> {
   return swrFetch('Brand', sheetId, BRAND_TTL, parseBrandData);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MediaDisplay } from '@/components/features/reel/media-display';
 import { ReelActionBar } from '@/components/features/reel/reel-action-bar';
@@ -36,11 +36,12 @@ describe('Core Ordering Interactions', () => {
       expect(cartItems[0].id).toBe(MOCK_DISH.id);
     });
 
-    it('should show a confirmation animation on double-tap', () => {
-        render(<MediaDisplay dish={MOCK_DISH} />);
-        fireEvent.doubleClick(screen.getByRole('img'));
-        expect(screen.getByTestId('plus-animation')).toBeInTheDocument();
-    });
+  it('should show a confirmation animation on double-tap', async () => {
+    render(<MediaDisplay dish={MOCK_DISH} />);
+    fireEvent.doubleClick(screen.getByRole('img'));
+    // Wait for the animation element to appear; this avoids flaky synchronous timing assumptions
+    await waitFor(() => expect(screen.getByTestId('plus-animation')).toBeInTheDocument());
+  });
   });
 
   // Test Cases for ReelActionBar Button

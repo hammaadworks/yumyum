@@ -44,7 +44,7 @@ export function DishGrid({ dishes }: DishGridProps) {
   }, [dishes, vegOnly, sortBy, searchQuery]);
 
   const handleCardClick = (dishId: string) => {
-    openReelView();
+    openReelView(dishId);
   };
 
   if (filteredAndSortedDishes.length === 0) {

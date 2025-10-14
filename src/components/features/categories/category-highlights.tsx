@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dish } from '@/lib/types';
 
 interface CategoryHighlightsProps {
@@ -21,7 +20,11 @@ const generateGradient = (category: string) => {
 const CategoryButton = ({ category, onCategorySelect }: { category: string; onCategorySelect: (category: string) => void; }) => {
   const gradientStyle = generateGradient(category);
   return (
-    <button onClick={() => onCategorySelect(category)} className="flex flex-col items-center space-y-1 focus:outline-none" aria-label={`View ${category} category`}>
+    <button
+      onClick={() => onCategorySelect(category)}
+      className="flex flex-col items-center space-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary rounded-lg"
+      aria-label={`View ${category} category`}
+    >
       <div style={gradientStyle} className={`w-16 h-16 rounded-full p-0.5`}>
         <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
           {/* In the future, this could be an icon or image */}

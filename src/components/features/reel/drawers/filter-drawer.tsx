@@ -10,7 +10,6 @@ import {
 import { ControlsBar } from '@/components/shared/controls-bar';
 
 interface FilterDrawerProps {
-  children: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
