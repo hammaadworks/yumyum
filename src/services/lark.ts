@@ -25,7 +25,10 @@ function formatLarkMessage(message: string): string {
  * @returns Promise resolving to success status
  * @throws Error if all retries fail
  */
-export async function sendLarkMessage(message: string, retryCount = 2): Promise<boolean> {
+export async function sendLarkMessage(
+  message: string,
+  retryCount = 2,
+): Promise<boolean> {
   const webhookUrl = process.env.LARK_WEBHOOK_URL;
   const maxRetries = Math.max(0, retryCount);
   const retryDelays = [1000, 3000, 5000]; // Increasing delays for retries
@@ -36,7 +39,9 @@ export async function sendLarkMessage(message: string, retryCount = 2): Promise<
   }
 
   if (!message || typeof message !== 'string') {
-    console.error('Invalid message format. Message must be a non-empty string.');
+    console.error(
+      'Invalid message format. Message must be a non-empty string.',
+    );
     return false;
   }
 
@@ -65,11 +70,13 @@ export async function sendLarkMessage(message: string, retryCount = 2): Promise<
       clearTimeout(timeout);
 
       if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Failed to read error response');
+        const errorText = await response
+          .text()
+          .catch(() => 'Failed to read error response');
         throw new Error(`HTTP error ${response.status}: ${errorText}`);
       }
 
-      const data = await response.json() as LarkResponse;
+      const data = (await response.json()) as LarkResponse;
       if (data.code !== 0) {
         throw new Error(`Lark API error: ${data.msg}`);
       }
@@ -77,11 +84,12 @@ export async function sendLarkMessage(message: string, retryCount = 2): Promise<
       return true;
     } catch (error) {
       const isLastAttempt = attempt === maxRetries;
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
 
       console.error(
         `Lark message ${isLastAttempt ? 'failed' : 'attempt failed'} (${attempt + 1}/${maxRetries + 1}):`,
-        errorMessage
+        errorMessage,
       );
 
       if (isLastAttempt) {
@@ -93,7 +101,9 @@ export async function sendLarkMessage(message: string, retryCount = 2): Promise<
       }
 
       // Wait before retrying, with exponential backoff
-      await new Promise(resolve => setTimeout(resolve, retryDelays[attempt] || 5000));
+      await new Promise((resolve) =>
+        setTimeout(resolve, retryDelays[attempt] || 5000),
+      );
     }
   }
 

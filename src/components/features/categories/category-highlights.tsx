@@ -17,7 +17,13 @@ const generateGradient = (category: string) => {
   };
 };
 
-const CategoryButton = ({ category, onCategorySelect }: { category: string; onCategorySelect: (category: string) => void; }) => {
+const CategoryButton = ({
+  category,
+  onCategorySelect,
+}: {
+  category: string;
+  onCategorySelect: (category: string) => void;
+}) => {
   const gradientStyle = generateGradient(category);
   return (
     <button
@@ -35,9 +41,12 @@ const CategoryButton = ({ category, onCategorySelect }: { category: string; onCa
   );
 };
 
-export function CategoryHighlights({ dishes, onCategorySelect }: CategoryHighlightsProps) {
-  const hasSpecials = dishes.some(dish => dish.tag && dish.tag !== 'normal');
-  const categories = [...new Set(dishes.map(dish => dish.category))].sort();
+export function CategoryHighlights({
+  dishes,
+  onCategorySelect,
+}: CategoryHighlightsProps) {
+  const hasSpecials = dishes.some((dish) => dish.tag && dish.tag !== 'normal');
+  const categories = [...new Set(dishes.map((dish) => dish.category))].sort();
 
   const allCategories = hasSpecials ? ['Specials', ...categories] : categories;
 
@@ -48,8 +57,12 @@ export function CategoryHighlights({ dishes, onCategorySelect }: CategoryHighlig
   return (
     <div className="w-full overflow-x-auto pb-4 hide-scrollbar">
       <div className="flex space-x-4 px-4">
-        {allCategories.map(category => (
-          <CategoryButton key={category} category={category} onCategorySelect={onCategorySelect} />
+        {allCategories.map((category) => (
+          <CategoryButton
+            key={category}
+            category={category}
+            onCategorySelect={onCategorySelect}
+          />
         ))}
       </div>
     </div>

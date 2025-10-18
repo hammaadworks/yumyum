@@ -1,10 +1,8 @@
-import React from 'react';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from '@/components/ui/drawer';
 
 import { ControlsBar } from '@/components/shared/controls-bar';
@@ -19,10 +17,10 @@ export function FilterDrawer({ open, onOpenChange }: FilterDrawerProps) {
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="bg-background/80 backdrop-blur-sm">
         <div className="p-4" data-testid="filter-drawer-content">
-            <DrawerHeader>
-                <DrawerTitle>Filter & Sort</DrawerTitle>
-            </DrawerHeader>
-            <ControlsBar />
+          <DrawerHeader>
+            <DrawerTitle>Filter & Sort</DrawerTitle>
+          </DrawerHeader>
+          <ControlsBar />
         </div>
       </DrawerContent>
     </Drawer>

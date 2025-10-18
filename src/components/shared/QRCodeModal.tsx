@@ -1,8 +1,13 @@
-import React, { useRef } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { useUIStore } from '@/store/use-ui.store';
+import { QRCodeSVG } from 'qrcode.react';
+import { useRef } from 'react';
 
 export function QRCodeModal() {
   const { isQRCodeModalOpen, closeQRCodeModal } = useUIStore();
@@ -16,7 +21,9 @@ export function QRCodeModal() {
     const svgData = new XMLSerializer().serializeToString(svg);
 
     // Create a blob from the SVG string (handles unicode safely) and create an object URL
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const svgBlob = new Blob([svgData], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
     const url = URL.createObjectURL(svgBlob);
 
     const img = new Image();
@@ -25,7 +32,9 @@ export function QRCodeModal() {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         if (!ctx) {
-          console.error('Unable to get 2D context for canvas when exporting QR code');
+          console.error(
+            'Unable to get 2D context for canvas when exporting QR code',
+          );
           URL.revokeObjectURL(url);
           return;
         }
@@ -59,7 +68,8 @@ export function QRCodeModal() {
   };
 
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href)
+    navigator.clipboard
+      .writeText(window.location.href)
       .then(() => {
         // TODO: Show success toast/notification
         console.log('Link copied to clipboard');
@@ -72,10 +82,11 @@ export function QRCodeModal() {
 
   const shareLink = () => {
     if (navigator.share) {
-      navigator.share({
-        title: document.title,
-        url: window.location.href,
-      })
+      navigator
+        .share({
+          title: document.title,
+          url: window.location.href,
+        })
         .then(() => {
           console.log('Share successful');
         })

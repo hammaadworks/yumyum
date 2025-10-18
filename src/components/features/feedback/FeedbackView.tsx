@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
+import { useState } from 'react';
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Brand } from '@/lib/types';
 import { useUIStore } from '@/store/use-ui.store';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface FeedbackViewProps {
   brand: Brand;
@@ -40,7 +45,7 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
 
   const handleRating = (rate: number) => {
     setRating(rate);
-    
+
     if (rate >= 4) {
       if (!brand.review_link) {
         setError('Review link not available');
@@ -53,7 +58,9 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
 
       try {
         if (!openPopup(brand.review_link)) {
-          setError('Popup blocked by browser. Please allow popups for this site.');
+          setError(
+            'Popup blocked by browser. Please allow popups for this site.',
+          );
           return;
         }
         closeFeedbackView();
@@ -75,9 +82,11 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
         const normalized = normalizeWhatsapp(brand.whatsapp);
         const message = encodeURIComponent(`Feedback for ${brand.name}`);
         const whatsappUrl = `https://wa.me/${normalized}?text=${message}`;
-        
+
         if (!openPopup(whatsappUrl)) {
-          setError('Popup blocked by browser. Please allow popups for this site.');
+          setError(
+            'Popup blocked by browser. Please allow popups for this site.',
+          );
           return;
         }
         closeFeedbackView();
@@ -115,7 +124,12 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
         {error && (
           <div className="text-red-500 text-center p-2">
             {error}
-            <button onClick={() => setError(null)} className="text-sm underline ml-2">Dismiss</button>
+            <button
+              onClick={() => setError(null)}
+              className="text-sm underline ml-2"
+            >
+              Dismiss
+            </button>
           </div>
         )}
       </DialogContent>

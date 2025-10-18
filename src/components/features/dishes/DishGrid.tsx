@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
 import { Dish } from '@/lib/types';
 import { useFilterStore } from '@/store/use-filter.store';
 import { useUIStore } from '@/store/use-ui.store';
+import { useMemo } from 'react';
 import { DishCard } from './DishCard';
 
 interface DishGridProps {

@@ -1,11 +1,11 @@
 'use client';
 
-import { useMemo } from 'react';
-import { X } from 'lucide-react';
-import { useUiStore } from '@/store/use-ui.store';
+import { GlobalCart } from '@/components/shared/global-cart';
 import { Dish } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { GlobalCart } from '@/components/shared/global-cart';
+import { useUiStore } from '@/store/use-ui.store';
+import { X } from 'lucide-react';
+import { useMemo } from 'react';
 
 interface ReelViewProps {
   dishes: Dish[];
@@ -32,7 +32,10 @@ export function ReelView({ dishes }: ReelViewProps) {
   // TODO: Scroll to the initialDishId
 
   return (
-    <div data-testid="reel-view-container" className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm animate-in fade-in-0">
+    <div
+      data-testid="reel-view-container"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm animate-in fade-in-0"
+    >
       <GlobalCart />
       <button
         onClick={closeReelView}
@@ -49,7 +52,7 @@ export function ReelView({ dishes }: ReelViewProps) {
             key={dish.id}
             className={cn(
               'h-full w-full flex flex-col items-center justify-center snap-start text-white',
-              { 'opacity-50': dish.instock === 'no' }
+              { 'opacity-50': dish.instock === 'no' },
             )}
           >
             <h1 className="text-4xl font-bold">{dish.name}</h1>
