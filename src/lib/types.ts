@@ -1,12 +1,3 @@
-export type InStockStatus = 'yes' | 'no' | 'hide';
-export type DietaryInfo = 'veg' | 'non-veg';
-export type DishTag =
-  | 'bestseller'
-  | "chef's special"
-  | 'new'
-  | 'limited edition'
-  | 'normal';
-
 export interface Brand {
   name: string;
   logo_url: string;
@@ -24,8 +15,12 @@ export interface Brand {
   full_menu_pic?: string;
 }
 
+export type InStockStatus = 'yes' | 'no' | 'hide';
+export type DietaryInfo = 'veg' | 'non-veg';
+export type DishTag = 'bestseller' | "chef's special" | 'new' | 'limited edition' | 'normal';
+
 export interface Dish {
-  id: string; // System-Generated from name, not a sheet column
+  id: string;
   category: string;
   name: string;
   image: string;
@@ -40,7 +35,7 @@ export interface Dish {
 export interface StatusItem {
   type: 'image' | 'video' | 'text';
   content: string;
-  duration: number;
+  duration?: number;
 }
 
 export type Status = StatusItem[];
