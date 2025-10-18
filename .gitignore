@@ -1,0 +1,34 @@
+# custom
+.bmad-core
+.gemini
+journal
+
+# dependencies
+node_modules
+.pnpm
+
+# build output
+dist
+out
+*/.next
+
+# misc
+.DS_Store
+*.pem
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files
+.env
+.env.*
+
+# test & docs
+coverage
+docs-build
+
+# vercel
+.vercel
+

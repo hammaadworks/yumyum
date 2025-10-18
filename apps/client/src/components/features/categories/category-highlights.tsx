@@ -2,15 +2,15 @@ import * as React from "react";
 import { Dish } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+import { useUiStore } from '@/store/use-ui.store';
+
 export interface CategoryHighlightsProps {
   dishes: Dish[];
-  onCategorySelect: (category: string) => void;
 }
 
-const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({
-  dishes,
-  onCategorySelect,
-}) => {
+const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes }) => {
+  const openReelView = useUiStore((state) => state.openReelView);
+
   const categories = React.useMemo(() => {
     const hasSpecial = dishes.some(
       (dish) => dish.tag && dish.tag !== "normal"
@@ -23,6 +23,20 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({
       ? ["Specials", ...regularCategories]
       : regularCategories;
   }, [dishes]);
+
+  const handleCategoryClick = (category: string) => {
+    let firstDishInCategory: Dish | undefined;
+
+    if (category === 'Specials') {
+      firstDishInCategory = dishes.find((d) => d.tag && d.tag !== 'normal');
+    } else {
+      firstDishInCategory = dishes.find((d) => d.category === category);
+    }
+
+    if (firstDishInCategory) {
+      openReelView({ initialDishId: firstDishInCategory.id });
+    }
+  };
 
   const getGradient = (category: string) => {
     const gradients = [
@@ -44,7 +58,7 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({
         {categories.map((category) => (
           <button
             key={category}
-            onClick={() => onCategorySelect(category)}
+            onClick={() => handleCategoryClick(category)}
             className="flex-shrink-0"
             aria-label={`Filter by ${category} category`}
             type="button"
