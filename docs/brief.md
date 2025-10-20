@@ -1,143 +1,92 @@
-# Project Brief: YumYum
+# Project Brief: Premium Tier MVP
 
-### Executive Summary
-YumYum is a mobile-first digital menu platform designed to be the "Instagram for hyperlocal street food menu." It provides vendors with a beautiful, custom-branded, and blazing-fast digital storefront, managed easily through a Google Sheets backend. The project solves the key problems of static printed menus, missed upselling opportunities, and a lack of customer data by offering a dynamic menu, integrated customer feedback channels, and basic analytics. The primary value proposition is to provide a complete, valuable, and monetizable product that boosts a vendor's digital presence and increases their sales.
+### Section 1 of 10: Executive Summary
+This project introduces a premium subscription tier to the YumYum platform by integrating Supabase for robust database and authentication services. This new tier will operate alongside the existing Google Sheets-based free tier, targeting ambitious vendors who require greater scalability, enhanced security, and personalized support. The core value proposition is to offer a seamless upgrade path to a more powerful backend, enabling advanced features and a superior user experience, thereby creating a new, recurring revenue stream for YumYum.
 
----
+### Section 2 of 10: Problem Statement
+The current architecture, while simple, lacks two fundamental components required for a premium service: a robust database and a secure authentication system. The reliance on a public Google Sheet prevents us from offering secure, vendor-specific data management. More importantly, the absence of a dedicated authentication service like Supabase Auth means we cannot provide features like secure vendor logins, personalized customer accounts via Google OAuth, or any functionality that depends on knowing *who* the user is. This technical ceiling is the primary blocker to developing a feature-rich, scalable, and defensible premium product.
 
-### Problem Statement (Revised)
-*   **Core Issue:** Hyperlocal food vendors are trapped by costly, inflexible analog menus.
-*   **Key Pains:**
-    *   **Financial Drain:** Recurring printing costs erode profits.
-    *   **Lost Revenue:** No automated upselling or promotional capabilities.
-    *   **Zero Customer Data:** Inability to capture contacts for marketing and loyalty.
-    *   **Missed Social Proof:** Verbal praise isn't converted into valuable online reviews.
-*   **Market Gap:** Current digital solutions are misaligned—too complex, expensive, or feature-heavy for this user segment.
+### Section 3 of 10: Proposed Solution
+We will introduce a "Premium Tier" by integrating Supabase as a parallel backend. The upgrade process will be a high-touch, "white-glove" service: upon receiving a webhook for a migration request, the YumYum team will personally contact the vendor to manage the data transfer and provide dedicated training.
 
----
+Architecturally, this solution will leverage **two separate Supabase accounts** to optimize resource allocation and manage costs. A primary database will be dedicated to core user authentication (Supabase Auth) and customer data. The heavier, vendor-specific tables (like `brand` and `dishes`) will be strategically distributed across the two Supabase projects. This multi-account approach, similar to the existing Cloudinary setup, ensures scalability while maintaining cost efficiency.
 
-### Proposed Solution (Revised for Vendor-Centric Value)
-*   **For the Vendor (Your Digital Growth Engine):**
-    *   **Gain a 24/7 Digital Salesman:** The system automatically suggests add-ons, combos, and best-sellers to every customer, working to increase your average order value at all times.
-    *   **Eliminate Printing Costs & Waste:** Instantly update your menu, prices, and item availability from a simple spreadsheet. Stop wasting money on paper reprints and never disappoint a customer with an out-of-stock item again.
-    *   **Build a Direct Marketing Channel:** Capture customer WhatsApp numbers during the order process. This creates a powerful, free channel to announce offers, share updates, and bring customers back.
-    *   **Automate Your 5-Star Reviews:** The smart feedback system encourages happy customers to post reviews directly on your Google Business Profile, boosting your online reputation and attracting new customers organically.
-    *   **Radical Simplicity:** The entire system is managed from a Google Sheet. There is no complex software to learn. If you can edit a spreadsheet, you can run your digital business.
-*   **For the Customer (The End User):**
-    *   **Modern Experience:** A fast, visually engaging, "Instagram-style" vertical menu.
-    *   **Guaranteed Accuracy:** View the most current menu, prices, and daily specials.
-    *   **Frictionless Ordering:** Scan a QR code and place an order through the familiar WhatsApp interface.
+### Section 4 of 10: Target Users
+The primary target for the Premium Tier is the **"Efficiency-Focused Vendor."**
+*   **Profile:** A business owner who values their time and prefers integrated, all-in-one solutions. They are comfortable using apps to manage their business and see operational friction as a direct cost.
+*   **Behaviors:** They find the current workflow of switching between the YumYum app and Google Sheets to be inefficient and a barrier to making frequent updates. The hassle of opening a spreadsheet means their digital menu might not always be perfectly up-to-date.
+*   **Needs:** They need a single, secure, in-app dashboard to manage their entire digital storefront. Their primary requirement is the ability to instantly update menu items, prices, and availability via a simple CRUD interface, without ever leaving the application. A secure login is essential to protect their business data.
 
----
+### Section 5 of 10: Goals & Success Metrics
+#### Business Objectives
+*   Successfully launch a new recurring revenue stream by converting existing vendors to a paid premium tier.
+    *   **Metric:** Onboard at least 5 paying vendors to the Premium Tier within the first two months post-launch.
+*   Validate that the in-app dashboard is a high-value feature that improves vendor workflow.
+    *   **Metric:** Achieve a vendor satisfaction score of >8/10 specifically for the new management dashboard.
+#### User Success Metrics (For the Vendor)
+*   **Increased Menu Dynamism:** Vendors can manage their menu more actively.
+    *   **Metric:** We will measure an increase in the frequency of menu updates (e.g., price changes, `instock` status updates) per vendor after migrating by analyzing backend data.
+*   **High Adoption & Stickiness:** The dashboard becomes an integral part of the vendor's daily operations.
+    *   **Metric:** High engagement rates (Daily/Weekly Active Users) with the vendor management dashboard, tracked in Google Analytics.
+#### Key Performance Indicators (KPIs)
+*   **Business KPIs:** `Premium MRR`, `Premium Churn Rate`.
+*   **Google Analytics Tracking Plan:**
+    *   **Premium Conversion Funnel:**
+        *   `event: premium_upsell_viewed`: Fired when the "Upgrade to Premium" drawer is opened.
+        *   `event: premium_upgrade_initiated`: Fired when the user clicks the final "Upgrade" button, triggering the webhook.
+    *   **Vendor Dashboard Engagement:**
+        *   `event: dashboard_viewed`: Fired when the vendor loads their management dashboard.
+        *   `event: dashboard_item_created`: Fired each time a vendor creates a new dish.
+        *   `event: dashboard_item_updated`: Fired each time a vendor saves changes to a dish or their brand profile.
+        *   `event: dashboard_item_deleted`: Fired each time a vendor deletes a dish.
 
-### Target Users
-#### Primary User Segment: The Ambitious Street Food Vendor
-*   **Profile:** Owner-operators of food stalls, mobile food trucks, and small takeaway establishments.
-*   **Technical Proficiency:** Comfortable with daily-use apps like WhatsApp and Instagram, but not technically sophisticated.
-*   **Core Goals:**
-    *   Increase daily revenue and profit.
-    *   Build a strong, recognizable local brand.
-    *   Grow their business beyond its current state.
-*   **Pains & Motivations:**
-    *   They are frustrated by the direct cost and inflexibility of printed menus.
-    *   They intuitively know they could be making more money but lack the tools.
-    *   They desire a simple, low-effort way to establish a professional digital presence.
+### Section 6 of 10: MVP Scope
+#### Core Features (Must Have)
+*   **Landing Page Update:** A new section will be added to the main landing page (`/`) to advertise the Premium Tier.
+*   **Supabase Backend & Auth:** Setup of two Supabase projects and implementation of Supabase Auth for secure vendor login.
+*   **Comprehensive In-App Vendor Dashboard (CRUD):** A protected page for vendors to perform CRUD operations on all their data (`brand`, `dishes`, `status`).
+*   **Premium Upgrade Workflow:** A UI element and drawer that triggers a Lark webhook for upgrade requests.
+*   **Manual Migration Process:** A well-defined internal process for the team to manually migrate vendor data.
+#### Out of Scope for MVP
+*   **End-Customer Accounts:** Auth is for **vendors only** in the MVP.
+*   **Automated Migration:** Migration is a manual, internal process.
+*   **Advanced Dashboard Features:** The dashboard is for CRUD only, no analytics.
 
-#### Secondary User Segment: The Savvy Cloud Kitchen
-*   **Profile:** Delivery-only kitchens that rely heavily on high-commission food aggregator apps.
-*   **Technical Proficiency:** More tech-savvy than the primary segment; comfortable managing online platform listings.
-*   **Core Goal:** Increase profit margins by establishing a direct-to-customer sales channel.
-*   **Pains & Motivations:**
-    *   **High Commissions:** Losing 25-40% of every order's revenue to aggregator platforms.
-    *   **No Customer Ownership:** Inability to access customer data for direct marketing or building loyalty.
-    *   **Brand Dilution:** Desire to build a brand identity and customer relationship independent of third-party aggregators.
+### Section 7 of 10: Post-MVP Vision
+#### Phase 2 Features (Next Priorities)
+*   **End-Customer Accounts:** Introduce customer logins using Supabase Auth.
+*   **Vendor Analytics Dashboard:** Provide vendors with simple, actionable insights.
+*   **Self-Serve Migration Tool:** Develop an automated tool for data migration.
+#### Long-term Vision (1-2 Years)
+*   **Lightweight POS System:** Evolve the platform to include more Point-of-Sale functionalities.
+*   **Marketing & Loyalty Suite:** Build tools for promotions and loyalty programs.
+*   **Third-Party Integrations:** Explore integrations with delivery services and accounting software.
 
----
+### Section 8 of 10: Technical Considerations
+#### Core Architectural Principle: Free Tier Maximization
+*   The entire system **must** be engineered to operate within the free tiers of all underlying platforms. Profitability will be generated by charging for software features and services, not by passing on infrastructure costs.
+#### Architecture Considerations
+*   **Multi-Account Architecture:** The system will distribute vendors across multiple Supabase and Cloudinary accounts to stay under free tier usage limits.
+*   **Vendor Allocation Strategy:** For the MVP, new premium vendors will be allocated to a Supabase account **manually** by the team.
+*   **Data Isolation:** Row Level Security (RLS) must be strictly enforced within Supabase.
+*   **Jamstack Adherence:** The new vendor dashboard will be built as a client-side rendered (CSR) application.
 
-### 📈 Value Creation & Growth Metrics Framework (Final)
-*This framework details the core metrics that drive vendor value, create wealth, and signal a strong investment opportunity. It connects our strategic objectives to the vendor's success and our internal performance indicators, illustrating a clear and compelling growth story.*
+### Section 9 of 10: Constraints & Assumptions
+#### Constraints
+*   **Payment Processing:** For the MVP, all subscription payments will be collected **manually**. No in-app payment integration is required.
+*   **Budget / Infrastructure Cost:** Strictly zero. The solution must operate within free usage tiers.
+*   **Technical Architecture:** The application must remain a static Jamstack project.
+*   **Team Resources:** Manual processes (migration, payment) will be performed by the core team.
+#### Key Assumptions
+*   **Value Proposition:** We assume the in-app dashboard is valuable enough to justify a subscription fee.
+*   **Free Tier Viability:** We assume the multi-account strategy is a sustainable way to scale while avoiding costs.
+*   **Migration Process:** We assume vendors will be receptive to a manual migration process.
 
-#### **1. Phased Business Objectives: A Strategy for De-Risked Growth**
-*   **Phase 1: Market Entry & Validation (Launch → 1 Month)**
-    *   **Objective:** Prove tangible product-market fit by acquiring a core, paying user base.
-    *   **Metric:** Onboard **5+ paying vendors** at an average of **₹1k+ MRR**.
-    *   **Investor Value:** This immediately demonstrates that the problem is significant and that our target market is willing to pay for the solution.
-*   **Phase 2: Niche Finalization & Optimization (Month 2)**
-    *   **Objective:** Identify and lock in the most profitable, scalable customer segment.
-    *   **Metric:** A **data-driven definition of the Ideal Customer Profile (ICP)**.
-    *   **Investor Value:** This focuses all subsequent efforts to lower Customer Acquisition Cost (CAC) and increase Lifetime Value (LTV).
-*   **Phase 3: Niche Domination & Expansion (Months 3-6)**
-    *   **Objective:** Establish YumYum as the indispensable solution within our target niche.
-    *   **Metric:** Achieve **>50% market share** in the defined niche.
-    *   **Investor Value:** Creates a strong competitive moat and positions YumYum for strategic partnerships or acquisition.
-
-#### **2. User Success Metrics: The Engine of Value & Retention**
-*   **Metric: Increased Average Order Value (AOV)**
-    *   **Why It Matters:** This is the most direct measure of ROI for the vendor and the cornerstone of our retention strategy.
-*   **Metric: Customer Database Growth**
-    *   **Why It Matters:** Embeds our platform into the vendor's workflow, creating high switching costs and stickiness.
-*   **Metric: Enhanced Online Reputation**
-    *   **Why It Matters:** Creates a self-reinforcing growth loop and demonstrates an organic, low-cost customer acquisition channel.
-
-#### **3. Key Performance Indicators (KPIs): Tracking the Health of the Flywheel**
-*   **Business Health & Financial KPIs**
-    *   **`Monthly Recurring Revenue (MRR)`**: The primary measure of predictable revenue.
-    *   **`Vendor Churn Rate`**: The critical indicator of long-term product satisfaction.
-    *   **`Customer Lifetime Value (LTV)`**: Predicts the total revenue expected from a single vendor.
-*   **Core Funnel & Conversion KPIs**
-    *   **`Menu Conversion Rate`**: `(Orders / Views) * 100%`. The ultimate measure of platform efficiency.
-    *   **`menu_views`**, **`add_to_cart_clicks`**, **`order_placed_clicks`**: Granular metrics to track the user journey and identify friction points.
-*   **Product Engagement KPIs**
-    *   **`Top Performing Items`**: Provides actionable intelligence to the vendor and informs our product roadmap.
-    *   **`Feedback Engagement Rate`**: Measures the effectiveness of our review-generation feature, a core value proposition.
-
----
-
-### 📋 MVP Scope
-*This section defines the precise boundaries of the Minimum Viable Product. It clarifies what is essential for the initial launch to deliver value and test our core hypotheses.*
-
-#### Core Features (Must-Haves for Launch)
-*   **Vendor Brand Page:** A beautiful, mobile-first, and custom-branded digital storefront.
-*   **Dynamic Menu:** An "Instagram-style" vertical scrolling menu that is visually engaging and easy to navigate.
-*   **Google Sheets Backend:** The core differentiator, providing radical simplicity for menu and content management.
-*   **QR Code Generator:** The primary entry point for customers to access the digital menu.
-*   **Cart & WhatsApp Ordering:** A simple, low-friction workflow that allows customers to build an order and send it directly to the vendor's existing WhatsApp.
-*   **Vendor Value Analytics:** A simple, clear report (initially manual) that proves the value YumYum is delivering to the vendor (e.g., orders placed, top items).
-
-#### MVP Success Criteria
-*   **Commercial Validation:**
-    *   **Primary Metric:** Achieve **≥ ₹5,000 MRR** (e.g., 5+ vendors at ~₹1k each) by the end of the first month.
-    *   **Why It Matters:** This is the ultimate proof that the problem is real and our solution has tangible market value.
-*   **Value & Retention Validation:**
-    *   **Primary Metric:** Achieve a **Vendor Churn Rate of 0%** within the first month.
-    *   **Secondary Metric:** Receive unsolicited positive feedback from at least 2 vendors specifically mentioning either cost savings or increased sales.
-    *   **Why It Matters:** This demonstrates that the product is delivering on its core promise and that early adopters are finding it indispensable.
-*   **Product & Funnel Validation:**
-    *   **Primary Metric:** The core conversion funnel (`menu_views` → `order_placed_clicks`) is operating without critical bugs.
-    *   **Secondary Metric:** All onboarded vendors have successfully populated their menu with at least 10 items, including images.
-    *   **Why It Matters:** This confirms the technical stability of the platform and the usability of the Google Sheets backend.
-
----
-
-### 🛠️ Technical Considerations (Revised)
-*Initial thoughts on the technical stack and architecture. These are preferences and subject to change upon architectural review.*
-
-#### **Platform & Performance Requirements**
-*   **Target Platforms:** Mobile-first web application.
-*   **Accessibility:** Must be accessible via a QR code scan on all modern mobile browsers. An offline fallback is desired, pending feasibility analysis.
-*   **Performance:** A "blazing-fast," app-like user experience is a core product requirement.
-
-#### **Technology Preferences (v3 - Final)**
-*   **Frontend:** Next.js, React.
-*   **UI Libraries:** Shadcn UI, Aceternity UI, Magic UI.
-*   **Backend (Data Source):** A **public** Google Sheet. Data will be fetched as CSV via the `gviz/tq?tqx=out:csv` URL endpoint.
-*   **Hosting:** Vercel.
-*   **Media Hosting:** Cloudinary.
-
-#### **Initial Architecture & Data Model**
-*   **Analytics:** Google Analytics 4 (GA4).
-*   **Data Access Method:** The chosen `gviz` endpoint simplifies development by **avoiding the need for the Google Sheets API and OAuth**. The key trade-off is that the vendor's sheet must be publicly accessible ("Anyone with the link can view").
-*   **Multi-tenancy:** A `vendor_id` will be used as a GA4 Custom Dimension for per-vendor reporting.
-*   **Data Model (Google Sheets):** The definitive data model is defined in the PRD. The structure consists of an `Admin_Config` sheet for mapping vendors and individual vendor sheets containing `brand` and `dishes` tabs. This structure is the single source of truth for development.
-
----
+### Section 10 of 10: Risks & Open Questions
+#### Key Risks
+*   **Free Tier Scalability Risk:** A few successful vendors could exceed free tier limits, breaking the business model.
+*   **Manual Process Bottleneck:** Manual migration and payment could become unmanageable if the tier grows quickly.
+*   **Value Proposition Risk:** Vendors may not perceive enough value in the dashboard to pay a recurring fee.
+#### Open Questions
+*   What is the specific monthly price for the Premium Tier?
+*   What is the detailed process for the manual migration and payment collection?

@@ -1,205 +1,254 @@
-# YumYum UI/UX Specification
+# YumYum Premium Tier UI/UX Specification
 
-## Introduction
+### 1. Introduction
 
-This document defines the user experience goals, information architecture, user flows, and visual design specifications for YumYum's user interface. It serves as the foundation for visual design and frontend development, ensuring a cohesive and user-centered experience.
+This document defines the user experience goals, information architecture, user flows, and visual design specifications for the new Premium Tier features. It serves as the foundation for visual design and frontend development, ensuring a cohesive and user-centered experience.
 
-### Overall UX Goals & Principles
+#### **Overall UX Goals & Principles**
 
 *   **Target User Personas:**
-    *   **The Ambitious Street Food Vendor:** Owner-operators focused on growth, comfortable with daily apps but not tech-savvy. They need simplicity and clear ROI.
-    *   **The Savvy Cloud Kitchen:** Tech-savvier operators aiming to increase profit margins by moving away from high-commission aggregators.
+    *   **The Efficiency-Focused Vendor:** The primary user of the new dashboard. They are a business owner who values time and wants to manage their digital storefront with minimal friction.
+    *   **The Prospective Vendor:** The primary user of the redesigned landing page. They are evaluating YumYum and need to clearly understand the value of both the free and premium offerings.
+
 *   **Usability Goals:**
-    *   **Radical Simplicity:** A vendor can set up and manage their entire digital presence from a tool they already know (Google Sheets).
-    *   **Blazing-Fast Experience:** The customer-facing menu should feel as fast and fluid as a native application.
-    *   **Frictionless Ordering:** The path from viewing a dish to placing an order via WhatsApp should be intuitive and require minimal steps.
+    *   **Efficiency:** A vendor must be able to update a dish's price or availability via the dashboard faster than they could by opening and editing a Google Sheet.
+    *   **Clarity:** The landing page must make the benefits and features of each tier so clear that a prospective vendor can confidently choose the right path for their business.
+    *   **Ease of Use:** A non-technical vendor should be able to log in and successfully manage their dishes, brand, and status without needing a tutorial.
+
 *   **Design Principles:**
-    1.  **Vendor-First Value:** Every design choice must directly contribute to the vendor's success (increasing sales, saving time, or building their brand).
-    2.  **Instagram-Inspired UX:** Leverage the familiar, visually-driven patterns of Instagram (reels, stories, profiles) to create an intuitive and modern customer experience.
-    3.  **Delight in the Details:** Use thoughtful micro-interactions and polished animations to make the experience feel premium and engaging.
-    4.  **Mobile-First, Always:** The experience must be flawless on a mobile device, for both the vendor and the customer.
+    1.  **Efficiency First:** Every click and interaction in the dashboard must be optimized to save the vendor time.
+    2.  **Clarity in Choice:** The landing page must guide users to a decision, not confuse them with options.
+    3.  **Consistency is Key:** The new dashboard and landing page sections must feel like a natural, integrated part of the existing application.
 
-## Information Architecture (IA)
-
-The information architecture for YumYum is designed to be flat and intuitive, centered around two primary user experiences: the vendor's profile (the "shopfront") and the full-screen reel view (the "menu").
-
-### Site Map / Screen Inventory
-
-```mermaid
-graph TD
-    subgraph "Main Application"
-        A[Profile Page] --> B{Reel View};
-        A(Profile Page) -- QR Code --> A;
-        B -- Add to Cart --> C;
-        A --> C{Cart Summary};
-        C --> D[WhatsApp Order];
-        C --> E[UPI Pay];
-        C --> F{Feedback Funnel};
-        F -- High Rating --> G[Google Review];
-        F -- Low Rating --> H[Private WhatsApp Feedback];
-    end
-
-    subgraph "Utility Pages"
-        U[/vendor/upload]
-    end
-```
-
-### Navigation Structure
-
-*   **Primary Navigation:** The core navigation is managed through persistent UI elements rather than a traditional menu.
-    *   The **Global Cart Button** is always accessible from the top-left of the screen.
-    *   The **Vendor Profile Page** (Dish Grid) acts as the main "home" screen.
-    *   The **Reel View** is a modal experience that takes over the full screen, acting as the primary browsing interface.
-*   **Secondary Navigation:**
-    *   On the Profile Page, the **Category Highlights Bar** allows users to jump directly into the Reel View filtered by a specific category.
-    *   The **Controls Bar** (Veg Only, Sort, Search) provides filtering for the main dish grid.
-    *   Within the Reel View, the **Right-Side Action Bar** provides access to description, filtering, and sharing functionality.
-
-## User Flows
-
-### Core Ordering Flow
-
-*   **User Goal:** To browse the menu, select items, and place an order with the vendor.
-*   **Entry Points:** Scanning the vendor's QR code; clicking a direct link to the vendor's page.
-*   **Success Criteria:** The user successfully opens WhatsApp with a pre-formatted message containing their complete order, ready to send to the vendor.
-
-#### Flow Diagram
-```mermaid
-graph TD
-    A[User Scans QR / Opens Link] --> B[Profile Page Loads];
-    B --> C{Browse Menu};
-    C -- Clicks Dish --> D[Reel View Opens];
-    C -- Clicks Category --> D;
-    D -- Double Taps Media --> E{Item Added to Cart};
-    D -- Taps 'Add to Cart' Button --> E;
-    E --> F[Global Cart Badge Updates];
-    F --> G{Clicks Global Cart Button};
-    G --> H[Cart Summary Opens];
-    H --> I{Adjusts Quantity};
-    I --> H;
-    H --> J[Clicks 'Place Order on WhatsApp'];
-    J --> K[WhatsApp Opens with Pre-formatted Order];
-```
-
-#### Edge Cases & Error Handling:
-*   An item is marked as `instock: 'no'`: It will be displayed as visually greyed out and disabled, preventing it from being added to the cart.
-*   The user's cart is empty: The "Place Order on WhatsApp" button in the Cart Summary will be disabled.
-*   Initial data fetch fails: A user-friendly error message is displayed, and a critical alert is sent to the Lark webhook.
-
-### Key Screen Layouts
-
-#### Main Profile & Menu Screen
-*   **Purpose:** To serve as the vendor's primary digital storefront. It establishes the brand's identity, provides top-level menu navigation, and allows users to browse all available dishes at a glance.
-*   **Key Elements:**
-    1.  **Brand Header:** (Top of the screen) Contains the vendor's logo, name, cuisine type, bio, and a row of icon-based links (e.g., WhatsApp, payment, location).
-    2.  **Category Highlights:** (Below the header) A horizontally-scrolling list of circular category buttons, each with a colored gradient ring, similar to Instagram Stories.
-    3.  **Controls Bar:** (Below categories) A simple bar containing the "Veg Only" toggle, a "Sort by Price" control, and a Search input field.
-    4.  **Dish Grid:** (Main content area) A responsive 3-column grid of square dish images that fills the rest of the screen.
-*   **Interaction Notes:** Tapping a category button or a dish card smoothly transitions the user into the full-screen "Reel View". The controls in the `ControlsBar` filter the `DishGrid` instantly on the client-side.
-
-## Component Library / Design System
-
-*   **Design System Approach:** We will adopt a lean design system approach, leveraging **Shadcn UI** as the base library for its accessibility and composability. Project-specific components will be built by combining these primitives.
-*   **Core Components:**
-    *   `BrandHeader`: Composite component for the vendor's "bio".
-    *   `CategoryHighlight`: The circular, Instagram-style category button.
-    *   `ControlsBar`: The container for the Veg-toggle, Sort, and Search controls.
-    *   `DishCard`: The square image card for the main grid, with a pulsing dot for tagged items.
-    *   `ReelView`: The full-screen, glassmorphic container for the vertical menu browsing experience.
-    *   `CartSummary`: The adaptive bottom-sheet drawer for checkout.
-
-## Branding & Style Guide
-
-### Visual Identity
-*   **Brand Guidelines:** The overall aesthetic is clean, modern, and "food-centric," inspired by the visual language of apps like Instagram.
-
-### Color Palette - Color Usage Guide
-
-| **Color Type**                      | **Hex Code**               | **Usage**                                                                          |
-| ----------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------- |
-| **Background / App Canvas**         | `#FEF3E2`                  | Warm cream background for pages and app base. Sets the inviting, food-friendly tone.         |
-| **Surface / Card**                  | `#FFFFFF`                  | Clean white for cards, sheets, and containers — improves content contrast.                   |
-| **Primary**                         | `#FAB12F`                  | Main brand orange — used for CTAs (e.g. “Order Now”), highlights, icons, active states.      |
-| **Primary Strong (Hover / Active)** | `#FA812F`                  | Slightly deeper orange for hover or pressed states of primary buttons.                       |
-| **Primary Foreground**              | `#0B0B0B`                  | Text/icon color on primary backgrounds (ensures strong readability).                         |
-| **Secondary**                       | `#0B0B0B`                  | Headlines, secondary buttons, key typography — high-contrast dark text.                      |
-| **Secondary Foreground**            | `#FEF3E2`                  | Used on dark secondary backgrounds (inverse contrast).                                       |
-| **Accent**                          | `#FFC857`                  | Highlight tags like “Bestseller”, small badges, or promo chips — complements primary orange. |
-| **Success**                         | `#16A34A`                  | Positive confirmations (e.g. “Order placed!”), success toasts.                               |
-| **Warning**                         | `#F59E0B`                  | Non-critical alerts (e.g. “Low stock”).                                                      |
-| **Error / Destructive**             | `#DD0303`                  | Error messages, delete actions, destructive confirmation buttons.                            |
-| **Text Primary**                    | `#111827`                  | Default readable text color for body content.                                                |
-| **Text Secondary**                  | `#6B7280`                  | Secondary labels, helper text, timestamps, muted info.                                       |
-| **Muted / Disabled**                | `#9CA3AF`                  | Disabled buttons, placeholders, less prominent UI text.                                      |
-| **Border / Divider**                | `#E6E6E6`                  | Dividers, card outlines, and input borders for subtle separation.                            |
-| **Focus Ring**                      | `rgba(255, 200, 87, 0.25)` | Soft gold focus ring for accessible focus indication.                                        |
-
----
-
-### 💡 Quick Design Tips
-
-* **Buttons:** Use `#FAB12F` background with `#0B0B0B` text → hover `#FA812F`.
-* **Cards:** Use `#FFFFFF` surface on `#FEF3E2` page background for depth.
-* **Headlines:** Use `#0B0B0B` for strong contrast.
-* **Error states:** Use `#DD0303` only for destructive or true errors.
-* **Highlight tags:** Use `#FFC857` to stand out from primary actions without competing.
-
----
-
-### Typography
-*   **Font Families:**
-    *   **Primary:** `Inter` (or a similar sans-serif system font) for all UI text for its clean readability.
-*   **Type Scale:**
-| Element | Size | Weight | Line Height |
+#### **Change Log**
+| Date | Version | Description | Author |
 | :--- | :--- | :--- | :--- |
-| H1 | 32px | 700 | 1.2 |
-| H2 | 24px | 700 | 1.3 |
-| H3 | 20px | 600 | 1.4 |
-| Body | 16px | 400 | 1.5 |
-| Small | 14px | 400 | 1.5 |
+| 2025-10-20 | 1.0 | Initial draft created from PRD v1.0. | Sally (UX) |
 
-### Iconography
-*   **Icon Library:** **Lucide Icons** will be used for its clean, modern style and seamless integration with Shadcn UI.
+---
+### 2. Information Architecture (IA)
 
-## Accessibility Requirements
+#### **Site Map / Screen Inventory**
+```mermaid
+graph TD
+    subgraph Public Site
+        A[/ Landing Page] --> B["'Interested?' Drawer"];
+        A --> C[/login - Magic Link Page];
+    end
 
-*   **Compliance Target:** The application **must** meet **WCAG 2.1 Level AA** standards.
+    subgraph Authenticated App
+        C -- Successful Login --> D[/vendor/dashboard];
+        D --> E[Dishes Management];
+        D --> F[Brand Profile Management];
+        D --> G[Status Management];
+    end
+
+    subgraph External
+        B -- WhatsApp Click --> H[WhatsApp];
+        B -- Form Submit --> I[Lark Webhook];
+    end
+```
+
+#### **Navigation Structure**
+*   **Primary Navigation (Vendor Dashboard):** Once a vendor is logged in, the primary navigation within the `/vendor/dashboard` will consist of a simple, clear mechanism (e.g., a sidebar or top tabs) to switch between the three main management areas: "Dishes," "Brand Profile," and "Status."
+*   **Secondary Navigation:** This will consist of controls within a specific management area, such as "Add New Dish" or "Search Dishes" within the Dishes view.
+*   **Breadcrumb Strategy:** A breadcrumb trail (e.g., `Dashboard > Dishes > Edit 'Spicy Pizza'`) should be used within the dashboard to ensure the vendor always knows where they are, especially on mobile devices.
+
+---
+### 3. User Flows
+
+#### **Flow 1: Premium Lead Generation**
+*   **User Goal:** To express interest in the premium plan and contact the YumYum team.
+*   **Entry Points:** Clicking the "Interested?" CTA on the landing page.
+*   **Success Criteria:** The user successfully sends their contact info via the form or opens a pre-filled WhatsApp chat.
+
+##### Flow Diagram
+```mermaid
+graph TD
+    A[User Clicks "Interested?"] --> B{Open 'Interested?' Drawer};
+    B --> C[User sees two options];
+    C --> D["Chat on WhatsApp"];
+    C --> E["Request a Call Back"];
+    D --> F[Opens new tab to WhatsApp];
+    E --> G[User fills out form];
+    G --> H{Submits Form};
+    H -- Success --> I[Webhook sent to Lark];
+    I --> J[User sees 'Thank You' message];
+    H -- Failure --> K[User sees 'Error, please try again' message];
+```
+
+##### Edge Cases & Error Handling:
+*   If the Lark webhook fails to send, the form should display an inline error message asking the user to try again or use the WhatsApp option.
+
+---
+#### **Flow 2: Vendor Login via Magic Link**
+*   **User Goal:** To securely access the vendor dashboard.
+*   **Entry Points:** Visiting `/vendor/dashboard` directly when not logged in; clicking a "Login" button.
+*   **Success Criteria:** The user is successfully authenticated and redirected to their dashboard.
+
+##### Flow Diagram
+```mermaid
+graph TD
+    A[User navigates to /login] --> B[Enters email];
+    B --> C[Clicks "Send Magic Link"];
+    C --> D{System calls Supabase Auth};
+    D --> E[User sees "Check your email" message];
+    subgraph User's Email Client
+        F[User opens email] --> G[Clicks unique login link];
+    end
+    G --> H{User is redirected to the app};
+    H --> I[App verifies token];
+    I --> J[/vendor/dashboard is displayed];
+```
+
+##### Edge Cases & Error Handling:
+*   If the user enters an email not associated with a premium account, the system should still send a link, but the page they land on will inform them they do not have access and will guide them to the "Interested?" flow.
+*   If the magic link has expired, the user will be shown a message and prompted to request a new one.
+
+---
+#### **Flow 3: Update a Dish Price**
+*   **User Goal:** To quickly change the price of a menu item.
+*   **Entry Points:** The "Dishes" management view within the vendor dashboard.
+*   **Success Criteria:** The new price is saved to the database and the UI updates to reflect the change.
+
+##### Flow Diagram
+```mermaid
+graph TD
+    A[User navigates to 'Dishes' view] --> B[Finds dish in list];
+    B --> C[Clicks "Edit"];
+    C --> D[Dish form opens];
+    D --> E[User changes price field];
+    E --> F[Clicks "Save"];
+    F --> G{UI shows loading state};
+    G --> H{App sends UPDATE to Supabase};
+    H -- Success --> I[UI shows 'Saved!' toast];
+    I --> J[Dish list updates with new price];
+    H -- Failure --> K[UI shows 'Error saving' toast];
+```
+
+##### Edge Cases & Error Handling:
+*   If the save operation fails due to a network error, the form should remain open with the user's changes intact, and an error message should be displayed.
+*   Input validation should prevent a user from saving a non-numeric or negative price.
+
+---
+### 4. Wireframes & Mockups
+
+**Primary Design Files:**
+*   High-fidelity mockups and prototypes will be created and maintained in **Figma**. A link will be added here once the file is created.
+
+---
+#### **Key Screen Layout: Vendor Dashboard**
+
+*   **Purpose:**
+    To provide a central, simple, and efficient hub for vendors to manage all aspects of their digital storefront without leaving the application.
+
+*   **Key Elements:**
+    1.  **Main Navigation:** A simple and clear tab-based navigation bar at the top of the screen with three items: "Dishes," "Brand Profile," and "Status."
+    2.  **Content Area:** The main body of the page, which will render the appropriate management interface based on the selected tab.
+    3.  **Primary Action Button:** A floating action button (e.g., a "+" icon) at the bottom right of the screen, which will serve as the "Add New Dish" or "Add New Status" button.
+    4.  **User/Logout Control:** A user profile icon in the top-right header that opens a small dropdown with a "Logout" option.
+
+*   **Interaction Notes:**
+    Tapping a tab instantly switches the view in the Content Area. The interface will use client-side routing, making the transition feel fast and app-like.
+
+---
+### 5. Component Library / Design System
+
+*   **Design System Approach:**
+    We will continue to use the project's established component strategy: using **Shadcn UI** for base components, styling with **Tailwind CSS**, and composing new, project-specific components.
+
+---
+#### **Core Components (New for Dashboard)**
+
+*   **`DashboardNav`**
+    *   **Purpose:** To provide the primary tab-based navigation within the vendor dashboard.
+
+*   **`DataTable`**
+    *   **Purpose:** A reusable table component to display lists of data like dishes, including action buttons for "Edit" and "Delete."
+
+*   **`EntityForm`**
+    *   **Purpose:** A generic form component for creating/editing dishes, brand info, and statuses, including the Cloudinary image uploader.
+
+---
+### 6. Branding & Style Guide
+
+*   **Visual Identity:**
+    *   We will continue to follow the established brand guidelines. The aesthetic is clean, modern, and "food-centric."
+
+*   **Color Palette:**
+    *   The existing project color palette will be used for all new components.
+
+| Color Type | Hex Code | Usage |
+| :--- | :--- | :--- |
+| Background | `#FEF3E2` | App base, page backgrounds |
+| Primary | `#FAB12F` | Main CTAs, active states |
+| Text Primary | `#111827` | Default body content |
+
+*   **Typography:**
+    *   **Font Families:** We will continue to use **Inter**.
+
+*   **Iconography:**
+    *   **Icon Library:** We will continue to use **Lucide Icons** exclusively.
+
+---
+### 7. Accessibility Requirements
+
+*   **Compliance Target:**
+    *   **Standard:** WCAG 2.1 Level AA. This is a non-negotiable requirement.
+
 *   **Key Requirements:**
-    *   **Visual:** All text must meet a minimum contrast ratio of 4.5:1. All interactive elements must have clear focus indicators.
-    *   **Interaction:** The entire user flow must be navigable using only a keyboard. All components must be screen-reader friendly with appropriate ARIA labels. Touch targets must be at least 44x44px.
-    *   **Content:** All images must have descriptive `alt` text. A logical heading structure must be used.
+    *   All functionality must be keyboard navigable.
+    *   All controls must have appropriate ARIA labels.
+    *   All images must have descriptive `alt` text.
 
-## Responsiveness Strategy
+*   **Testing Strategy:**
+    *   A combination of automated checks (`axe-core`) and manual keyboard/screen reader testing.
+
+---
+### 8. Responsiveness Strategy
 
 *   **Breakpoints:**
-| Breakpoint | Min Width | Target Devices |
-| :--- | :--- | :--- |
-| Mobile | < 768px | Most smartphones |
-| Tablet | 768px | iPads, tablets |
-| Desktop | > 1024px | Laptops, desktops |
-*   **Adaptation Patterns:**
-    *   **Layout Changes:** The `DishGrid` will change from a 2-column layout on mobile to a 3-column layout on tablet and desktop.
-    *   **Navigation Changes:** The `BrandHeader`'s icon links may wrap to a second line on smaller mobile screens.
+    *   We will continue to use the project's standard breakpoints (Mobile < 768px, Tablet >= 768px, Desktop > 1024px).
 
-## Animation & Micro-interactions
+*   **Adaptation Patterns for the Vendor Dashboard:**
+    *   The dashboard will use a collapsible sidebar or top tab bar for navigation on mobile.
+    *   Data tables will reflow into a card-based list view on mobile screens to avoid horizontal scrolling.
 
-*   **Motion Principles:** Motion should be purposeful, fluid, and fast, enhancing the user's sense of control and providing clear feedback. We will follow Material Design's principles for motion.
-*   **Key Animations:**
-    *   **Add to Cart:** A subtle "cooking-pot" icon animation appears over the dish when added via double-tap.
-    *   **Page/View Transitions:** Smooth, fading transitions between the Profile page and the Reel View.
-    *   **Drawer Animation:** The Cart Summary and other bottom sheets will slide in and out smoothly.
-    *   **Button Feedback:** All buttons will have a subtle press/tap animation.
+---
+### 9. Animation & Micro-interactions
 
-## Next Steps
+*   **Motion Principles:**
+    *   Animations must prioritize clarity and speed over elaborate effects.
+
+*   **Key Animations for New Features:**
+    *   **Form Feedback:** Buttons will have loading/success/error states.
+    *   **List Item Deletion:** Items will fade out smoothly on deletion.
+    *   **Drawer Transitions:** The "Interested?" drawer will slide in smoothly.
+
+---
+### 10. Performance Considerations
+
+*   **Performance Goals:**
+    *   The public landing page must maintain an LCP of under 2.5 seconds.
+    *   Dashboard interactions must feel instant (<100ms response).
+
+*   **Design Strategies for Performance:**
+    *   Leverage Next.js code splitting for the authenticated dashboard routes.
+    *   Continue to use Cloudinary for all image optimization.
+    *   Implement a client-side caching strategy for dashboard data to ensure fast subsequent loads.
+
+---
+### 11. Next Steps
 
 *   **Immediate Actions:**
-    1.  Final stakeholder review of this specification.
-    2.  Handoff to the development team to begin implementing Epic 1.
-    3.  Begin creating high-fidelity mockups and prototypes in Figma based on this spec.
+    1.  **Stakeholder Review:** This UI/UX Specification document should be shared for final approval.
+    2.  **High-Fidelity Design:** Begin creating detailed mockups and interactive prototypes in Figma.
+    3.  **Developer Handoff:** This document and the Figma designs will be handed off to the Architect and Development team to begin implementation.
+
 *   **Design Handoff Checklist:**
-    - [x] All user flows documented
-    - [x] Component inventory complete
-    - [x] Accessibility requirements defined
-    - [x] Responsive strategy clear
-    - [x] Brand guidelines incorporated
-    - [x] Performance goals established
+    *   [x] All user flows documented
+    *   [x] Component inventory complete
+    *   [x] Accessibility requirements defined
+    *   [x] Responsive strategy clear
+    *   [x] Brand guidelines incorporated
+    *   [x] Performance goals established
