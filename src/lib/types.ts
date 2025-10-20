@@ -35,7 +35,7 @@ export interface Dish {
 export interface StatusItem {
   type: 'image' | 'video' | 'text';
   content: string;
-  duration: number;
+  duration?: number;
 }
 
 export type Status = StatusItem[];
