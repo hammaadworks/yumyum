@@ -26,19 +26,19 @@ const testimonials = [
 
 export const VendorStoriesSection = () => {
   return (
-    <section className="py-20">
+    <section className="py-20 bg-[#FEF3E2]">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold">From Vendors Like You</h2>
+        <h2 className="text-3xl font-bold text-[#0B0B0B]">From Vendors Like You</h2>
         <p className="text-muted-foreground mt-2">100+ local stalls are growing with Yumyum.</p>
         <div className="grid md:grid-cols-3 gap-8 mt-12">
           {testimonials.map((testimonial, index) => (
-            <Card key={index}>
+            <Card key={index} className="bg-white">
               <CardContent className="pt-6">
-                <p className="italic">"{testimonial.quote}"</p>
+                <p className="italic text-[#0B0B0B]">"{testimonial.quote}"</p>
                 <div className="flex items-center gap-4 mt-4">
                   <Image src={testimonial.image} alt={testimonial.name} width={48} height={48} className="rounded-full" />
                   <div>
-                    <p className="font-semibold">{testimonial.name}</p>
+                    <p className="font-semibold text-[#0B0B0B]">{testimonial.name}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.stall}</p>
                   </div>
                 </div>
