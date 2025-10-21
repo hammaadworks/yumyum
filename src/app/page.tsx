@@ -19,6 +19,9 @@ import { FaqSection } from '@/components/features/landing/faq-section';
 import { AboutSection } from '@/components/features/landing/about-section';
 import { ConversionSection } from '@/components/features/landing/conversion-section';
 import { FooterSection } from '@/components/features/landing/footer-section';
+import { PremiumMarketingSection } from '@/components/features/landing/PremiumMarketingSection';
+import { TierComparison } from '@/components/features/landing/TierComparison';
+import { InterestCTA } from '@/components/features/landing/InterestCTA';
 
 export default function LandingPage() {
   return (
@@ -28,11 +31,14 @@ export default function LandingPage() {
       <WhyYumyumSection />
       <VisualDemoSection />
       <VendorStoriesSection />
+      <PremiumMarketingSection />
+      <TierComparison />
       <HowToJoinSection />
       <FaqSection />
       <AboutSection />
       <ConversionSection />
       <FooterSection />
+      <InterestCTA />
     </div>
   );
 }
