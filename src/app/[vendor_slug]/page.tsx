@@ -107,7 +107,9 @@ export default function VendorPage({
   }
 
   return (
-    <main className="container mx-auto p-4">
+    <>
+      <GlobalCart />
+      <main className="container mx-auto p-4">
       <BrandHeader brand={brand} hasStatus={!!status && status.length > 0} />
       <div className="my-8">
         <CategoryHighlights
