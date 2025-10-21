@@ -1,28 +1,25 @@
 'use client';
 
+import React from 'react';
 import { Dish } from '@/lib/types';
 import { useFilterStore } from '@/store/use-filter.store';
-import { useUIStore } from '@/store/use-ui.store';
-import { useMemo } from 'react';
 import { DishCard } from './DishCard';
 
 interface DishGridProps {
   dishes: Dish[];
+  onDishSelect: (dish: Dish) => void;
 }
 
-export function DishGrid({ dishes }: DishGridProps) {
+export function DishGrid({ dishes, onDishSelect }: DishGridProps) {
   const { vegOnly, sortBy, searchQuery } = useFilterStore();
-  const openReelView = useUIStore((state) => state.openReelView);
 
-  const filteredAndSortedDishes = useMemo(() => {
+  const filteredAndSortedDishes = React.useMemo(() => {
     let filtered = [...dishes];
 
-    // Filter by veg/non-veg
     if (vegOnly) {
-      filtered = filtered.filter((dish) => dish.veg === 'veg');
+      filtered = filtered.filter(dish => dish.veg === 'veg');
     }
 
-    // Filter by search query
     if (searchQuery) {
       const lowercasedQuery = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -32,7 +29,6 @@ export function DishGrid({ dishes }: DishGridProps) {
       );
     }
 
-    // Sort by price
     filtered.sort((a, b) => {
       if (sortBy === 'asc') {
         return a.price - b.price;
@@ -42,10 +38,6 @@ export function DishGrid({ dishes }: DishGridProps) {
 
     return filtered;
   }, [dishes, vegOnly, sortBy, searchQuery]);
-
-  const handleCardClick = (dishId: string) => {
-    openReelView(dishId);
-  };
 
   if (filteredAndSortedDishes.length === 0) {
     return (
@@ -61,7 +53,7 @@ export function DishGrid({ dishes }: DishGridProps) {
         <DishCard
           key={dish.id}
           dish={dish}
-          onClick={() => handleCardClick(dish.id)}
+          onSelect={onDishSelect}
         />
       ))}
     </div>

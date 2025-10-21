@@ -32,21 +32,19 @@ The primary target for the Premium Tier is the **"Efficiency-Focused Vendor."**
 *   **Business KPIs:** `Premium MRR`, `Premium Churn Rate`.
 *   **Google Analytics Tracking Plan:**
     *   **Premium Conversion Funnel:**
-        *   `event: premium_upsell_viewed`: Fired when the "Upgrade to Premium" drawer is opened.
-        *   `event: premium_upgrade_initiated`: Fired when the user clicks the final "Upgrade" button, triggering the webhook.
-    *   **Vendor Dashboard Engagement:**
-        *   `event: dashboard_viewed`: Fired when the vendor loads their management dashboard.
-        *   `event: dashboard_item_created`: Fired each time a vendor creates a new dish.
-        *   `event: dashboard_item_updated`: Fired each time a vendor saves changes to a dish or their brand profile.
-        *   `event: dashboard_item_deleted`: Fired each time a vendor deletes a dish.
-
-### Section 6 of 10: MVP Scope
-#### Core Features (Must Have)
-*   **Landing Page Update:** A new section will be added to the main landing page (`/`) to advertise the Premium Tier.
-*   **Supabase Backend & Auth:** Setup of two Supabase projects and implementation of Supabase Auth for secure vendor login.
-*   **Comprehensive In-App Vendor Dashboard (CRUD):** A protected page for vendors to perform CRUD operations on all their data (`brand`, `dishes`, `status`).
-*   **Premium Upgrade Workflow:** A UI element and drawer that triggers a Lark webhook for upgrade requests.
-*   **Manual Migration Process:** A well-defined internal process for the team to manually migrate vendor data.
+            *   `event: premium_upgrade_initiated`: Fired when the user clicks the "Interested?" FAB.
+            *   **Vendor Dashboard Engagement:**
+                *   `event: dashboard_viewed`: Fired when the vendor loads their management dashboard.
+                *   `event: dashboard_item_created`: Fired each time a vendor creates a new dish.
+                *   `event: dashboard_item_updated`: Fired each time a vendor saves changes to a dish or their brand profile.
+                *   `event: dashboard_item_deleted`: Fired each time a vendor deletes a dish.
+        
+        ### Section 6 of 10: MVP Scope
+        #### Core Features (Must Have)
+        *   **Landing Page Update:** A new section will be added to the main landing page (`/`) to advertise the Premium Tier.
+        *   **Supabase Backend & Auth:** Setup of two Supabase projects and implementation of Supabase Auth for secure vendor login.
+        *   **Comprehensive In-App Vendor Dashboard (CRUD):** A protected page for vendors to perform CRUD operations on all their data (`brand`, `dishes`, `status`).
+        *   **Premium Interest Workflow:** A UI element (FAB) that provides a direct contact method via WhatsApp for users interested in upgrading.*   **Manual Migration Process:** A well-defined internal process for the team to manually migrate vendor data.
 #### Out of Scope for MVP
 *   **End-Customer Accounts:** Auth is for **vendors only** in the MVP.
 *   **Automated Migration:** Migration is a manual, internal process.

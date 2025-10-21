@@ -4,9 +4,9 @@
 *   **Story 1.1: Overhaul Landing Page as a Sales Funnel**
     *   *As a potential vendor, I want to see a compelling landing page that clearly explains the benefits of the entire platform, so that I am convinced to sign up or learn more.*
     *   **Acceptance Criteria:** 1. The landing page (`/`) is redesigned to function as a persuasive sales page. 2. It clearly articulates the value proposition for both free and premium tiers. 3. The page includes clear CTAs for both tiers, including an "Interested?" button. 4. The design is modern, professional, and aligns with the brand.
-*   **Story 1.2: Implement 'Interested?' Drawer with Dual Contact Options**
-    *   *As a vendor interested in the premium plan, I want multiple, easy ways to contact the team, so that I can choose the most convenient method.*
-    *   **Acceptance Criteria:** 1. The "Interested?" CTA opens a drawer. 2. The drawer presents "Chat on WhatsApp" and "Request a Call Back" options. 3. The WhatsApp button opens a `wa.me` link. 4. The call back option is a form that collects contact info. 5. Submitting the form sends the data to a Lark webhook and shows a success message.
+*   **Story 1.2: Implement 'Chat on WhatsApp' FAB**
+    *   *As a vendor interested in the premium plan, I want to instantly start a WhatsApp chat with a pre-filled message, so that I can quickly inquire about the service.*
+    *   **Acceptance Criteria:** 1. The "Interested?" FAB (Floating Action Button) is present on the landing page. 2. Clicking the FAB opens a WhatsApp chat (`wa.me` link). 3. The WhatsApp chat is pre-populated with a standard message. 4. The target phone number and the pre-populated message are defined in a constants file.
 
 #### **Epic 2: Backend Foundation & Vendor Authentication**
 *   **Story 2.1: Provision and Configure Supabase Projects**

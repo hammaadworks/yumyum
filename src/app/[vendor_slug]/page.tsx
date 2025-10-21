@@ -1,13 +1,13 @@
 'use client';
 
-import { CartSummary } from '@/components/features/cart/cart-summary';
-import { CategoryHighlights } from '@/components/features/categories/category-highlights';
-import { DishGrid } from '@/components/features/dishes/dish-grid';
-import { ReelView } from '@/components/features/reel/reel-view';
-import { StatusViewer } from '@/components/features/status/status-viewer';
-import { BrandHeader } from '@/components/shared/brand-header';
-import { ControlsBar } from '@/components/shared/controls-bar';
-import { GlobalCart } from '@/components/shared/global-cart';
+import { CartSummary } from '@/components/features/cart/CartSummary';
+import { CategoryHighlights } from '@/components/features/categories/CategoryHighlights';
+import { DishGrid } from '@/components/features/dishes/DishGrid';
+import { ReelView } from '@/components/features/reel/ReelView';
+import { StatusViewer } from '@/components/features/status/StatusViewer';
+import { BrandHeader } from '@/components/shared/BrandHeader';
+import { ControlsBar } from '@/components/shared/ControlsBar';
+import { GlobalCart } from '@/components/shared/GlobalCart';
 import { QRCodeModal } from '@/components/shared/QRCodeModal';
 import { Brand, Dish, Status } from '@/lib/types';
 import {

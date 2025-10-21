@@ -32,8 +32,7 @@ This document defines the user experience goals, information architecture, user 
 ```mermaid
 graph TD
     subgraph Public Site
-        A[/ Landing Page] --> B["'Interested?' Drawer"];
-        A --> C[/login - Magic Link Page];
+        A[/ Landing Page] --> C[/login - Magic Link Page];
     end
 
     subgraph Authenticated App
@@ -44,8 +43,7 @@ graph TD
     end
 
     subgraph External
-        B -- WhatsApp Click --> H[WhatsApp];
-        B -- Form Submit --> I[Lark Webhook];
+        A -- "Interested?" FAB --> H[WhatsApp];
     end
 ```
 
@@ -59,26 +57,17 @@ graph TD
 
 #### **Flow 1: Premium Lead Generation**
 *   **User Goal:** To express interest in the premium plan and contact the YumYum team.
-*   **Entry Points:** Clicking the "Interested?" CTA on the landing page.
-*   **Success Criteria:** The user successfully sends their contact info via the form or opens a pre-filled WhatsApp chat.
+*   **Entry Points:** Clicking the "Interested?" FAB on the landing page.
+*   **Success Criteria:** The user successfully opens a pre-filled WhatsApp chat.
 
 ##### Flow Diagram
 ```mermaid
 graph TD
-    A[User Clicks "Interested?"] --> B{Open 'Interested?' Drawer};
-    B --> C[User sees two options];
-    C --> D["Chat on WhatsApp"];
-    C --> E["Request a Call Back"];
-    D --> F[Opens new tab to WhatsApp];
-    E --> G[User fills out form];
-    G --> H{Submits Form};
-    H -- Success --> I[Webhook sent to Lark];
-    I --> J[User sees 'Thank You' message];
-    H -- Failure --> K[User sees 'Error, please try again' message];
+    A[User Clicks "Interested?" FAB] --> B[Opens new tab to WhatsApp with pre-filled message];
 ```
 
 ##### Edge Cases & Error Handling:
-*   If the Lark webhook fails to send, the form should display an inline error message asking the user to try again or use the WhatsApp option.
+*   N/A for this simplified flow.
 
 ---
 #### **Flow 2: Vendor Login via Magic Link**

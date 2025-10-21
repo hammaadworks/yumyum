@@ -6,7 +6,7 @@
     1.  Login Page (for Magic Link)
     2.  Vendor Dashboard (`/vendor/dashboard`)
     3.  Landing Page (Updated Premium Section & "Request an Invite" Section)
-    4.  "Interested?" Drawer (with WhatsApp and Form options)
+    4.  "Interested?" FAB (Floating Action Button)
 *   **Accessibility:** WCAG 2.1 Level AA
 *   **Branding:** Adhere to existing brand guidelines.
 *   **Target Device and Platforms:** Web Responsive (Mobile & Desktop).

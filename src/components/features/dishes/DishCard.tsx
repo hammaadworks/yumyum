@@ -1,44 +1,38 @@
+import React from 'react';
 import Image from 'next/image';
 import { Dish } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 interface DishCardProps {
   dish: Dish;
-  onClick: () => void;
+  onSelect: (dish: Dish) => void;
 }
 
-/**
- * Render a square, clickable dish card that shows the dish image, an optional tag indicator, and the dish name.
- *
- * If `dish.tag` exists and is not `"normal"`, a pulsing tag indicator appears in the top-right corner.
- *
- * @param dish - The dish to display (image, name, and optional tag).
- * @param onClick - Callback invoked when the card is clicked.
- * @returns The JSX element for the dish card.
- */
-export function DishCard({ dish, onClick }: DishCardProps) {
-  const hasTag = dish.tag && dish.tag !== 'normal';
+export function DishCard({ dish, onSelect }: DishCardProps) {
+  const hasSpecialTag = dish.tag && dish.tag !== 'normal';
 
   return (
-    <div
-      className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
-      onClick={onClick}
+    <button
+      className="relative aspect-square w-full rounded-lg overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      onClick={() => onSelect(dish)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick();
+          onSelect(dish);
         }
       }}
-      role="button"
-      tabIndex={0}
       aria-label={`View details for ${dish.name}`}
+      data-testid="dish-card"
+      data-dish-name={dish.name}
     >
       <Image
         src={dish.image}
         alt={dish.name}
         fill
+        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
       />
-      {hasTag && (
+      {hasSpecialTag && (
         <div className="absolute top-2 right-2">
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -50,6 +44,6 @@ export function DishCard({ dish, onClick }: DishCardProps) {
       <div className="absolute bottom-0 left-0 p-3">
         <h3 className="text-white font-semibold text-sm">{dish.name}</h3>
       </div>
-    </div>
+    </button>
   );
 }
