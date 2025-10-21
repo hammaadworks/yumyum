@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GlobalCart } from './global-cart';
+import { GlobalCart } from './GlobalCart';
 import { useCartItemCount } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
+import { UIState } from '@/store/use-ui.store';
 
 // Define mock type for the Zustand store
 type MockUIStore = typeof useUIStore;
@@ -17,7 +18,7 @@ jest.mock('@/store/use-ui.store', () => ({
 }));
 
 describe('GlobalCart', () => {
-  let mockUIStoreState: any;
+  let mockUIStoreState: UIState;
   const mockOpenCartSummary = jest.fn();
 
   beforeEach(() => {

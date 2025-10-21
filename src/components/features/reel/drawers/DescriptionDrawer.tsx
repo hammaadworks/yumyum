@@ -5,10 +5,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-} from '@/components/ui/drawer';
+} from '@/components/ui/Drawer';
 import { Dish } from '@/lib/types';
 
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge';
 
 interface DescriptionDrawerProps {
   dish: Dish;

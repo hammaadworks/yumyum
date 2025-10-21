@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ReelView } from '@/components/features/reel/reel-view';
+import { ReelView } from '@/components/features/reel/ReelView';
 import { useUIStore } from '@/store/use-ui.store';
 import { Dish } from '@/lib/types';
 
@@ -13,7 +13,6 @@ const MOCK_DISHES: Dish[] = [
 
 const mockCategories = ['A', 'B', 'C'];
 const mockActiveIndex = 0;
-const mockIsReelViewOpen = true;
 const mockCloseReelView = jest.fn();
 const mockSetActiveIndex = jest.fn();
 

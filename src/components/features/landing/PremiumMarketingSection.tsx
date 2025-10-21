@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { MagicCard } from '@/components/ui/magic-card';
-import { ShineBorder } from '@/components/ui/shine-border';
-import { Button } from '@/components/ui/button';
+import { MagicCard } from '@/components/ui/MagicCard';
+import { ShineBorder } from '@/components/ui/ShineBorder';
+import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
 
 export const PremiumMarketingSection = () => {

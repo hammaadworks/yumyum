@@ -5,6 +5,8 @@ import { DishGrid } from '../DishGrid';
 import { useFilterStore } from '@/store/use-filter.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { Dish } from '@/lib/types';
+import { FilterState } from '@/store/use-filter.store';
+import { UIState } from '@/store/use-ui.store';
 
 // Define mock types for the Zustand stores
 type MockFilterStore = typeof useFilterStore;
@@ -25,8 +27,8 @@ const mockDishes: Dish[] = [
 ];
 
 describe('DishGrid', () => {
-  let mockFilterStoreState: any;
-  let mockUIStoreState: any;
+  let mockFilterStoreState: FilterState;
+  let mockUIStoreState: UIState;
 
   beforeEach(() => {
     mockFilterStoreState = {

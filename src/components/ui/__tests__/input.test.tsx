@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Input } from '../input';
+import { Input } from '../Input';
 
 describe('Input Component', () => {
   describe('Rendering', () => {

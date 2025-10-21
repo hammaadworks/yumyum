@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ChevronRight } from 'lucide-react';
 
 export const HeroSection = () => {

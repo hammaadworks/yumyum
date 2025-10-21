@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { Brand } from '@/lib/types';
 import { useUIStore } from '@/store/use-ui.store';
 

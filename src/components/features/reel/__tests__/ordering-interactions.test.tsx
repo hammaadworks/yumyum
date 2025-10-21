@@ -1,5 +1,5 @@
-import { MediaDisplay } from '@/components/features/reel/media-display';
-import { ReelActionBar } from '@/components/features/reel/reel-action-bar';
+import { MediaDisplay } from '@/components/features/reel/MediaDisplay';
+import { ReelActionBar } from '@/components/features/reel/ReelActionBar';
 import { Dish } from '@/lib/types';
 import { useCartStore } from '@/store/use-cart.store';
 import '@testing-library/jest-dom';

@@ -7,8 +7,8 @@ import {
   DrawerDescription,
   DrawerFooter,
   DrawerClose
-} from '@/components/ui/drawer';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/Drawer';
+import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { Brand } from '@/lib/types';

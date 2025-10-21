@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Funnel, Info, Share2, Plus, Check } from 'lucide-react';
 import { Dish } from '@/lib/types';
 import { useCartStore } from '@/store/use-cart.store';

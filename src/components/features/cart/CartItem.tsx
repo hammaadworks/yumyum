@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Dish } from '@/lib/types';
 import { useCartStore } from '@/store/use-cart.store';
 import { Trash2, Eye, Plus, Minus } from 'lucide-react';
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/Dialog";
 import Image from 'next/image';
 
 interface CartItemProps {

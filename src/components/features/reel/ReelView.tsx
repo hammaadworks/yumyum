@@ -2,15 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Dish } from '@/lib/types';
-import { GlobalCart } from '@/components/shared/global-cart';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { MediaDisplay } from './media-display';
-import { ReelCategoryNavigator } from './reel-category-navigator';
-import { ReelActionBar } from './reel-action-bar';
+import { GlobalCart } from '@/components/shared/GlobalCart';
+import { Button } from '@/components/ui/Button';
+import { MediaDisplay } from './MediaDisplay';
+import { ReelCategoryNavigator } from './ReelCategoryNavigator';
+import { ReelActionBar } from './ReelActionBar';
 
-import { FilterDrawer } from './drawers/filter-drawer';
-import { DescriptionDrawer } from './drawers/description-drawer';
+import { FilterDrawer } from './drawers/FilterDrawer';
+import { DescriptionDrawer } from './drawers/DescriptionDrawer';
 
 interface ReelViewProps {
   dishes: Dish[];

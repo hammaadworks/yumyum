@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Label } from '../label';
+import { Label } from '../Label';
 
 describe('Label Component', () => {
   describe('Rendering', () => {

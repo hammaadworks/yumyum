@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Sheet } from 'lucide-react';
 
 export const ConversionSection = () => {

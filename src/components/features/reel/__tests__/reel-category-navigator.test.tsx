@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ReelCategoryNavigator } from '@/components/features/reel/reel-category-navigator';
+import { ReelCategoryNavigator } from '@/components/features/reel/ReelCategoryNavigator';
 
 const MOCK_CATEGORIES = ['Appetizers', 'Main Course', 'Desserts', 'Drinks'];
 

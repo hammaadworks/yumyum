@@ -3,9 +3,9 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer';
+} from '@/components/ui/Drawer';
 
-import { ControlsBar } from '@/components/shared/controls-bar';
+import { ControlsBar } from '@/components/shared/ControlsBar';
 
 interface FilterDrawerProps {
   open?: boolean;

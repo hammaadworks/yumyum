@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ControlsBar } from '../controls-bar';
+import { ControlsBar } from '../ControlsBar';
 import { useFilterStore } from '@/store/use-filter.store';
+import { FilterState } from '@/store/use-filter.store';
 
 // Define mock type for the Zustand store
 type MockFilterStore = typeof useFilterStore;
@@ -13,7 +14,7 @@ jest.mock('@/store/use-filter.store', () => ({
 }));
 
 describe('ControlsBar', () => {
-  let mockFilterStoreState: any;
+  let mockFilterStoreState: FilterState;
   const mockToggleVegOnly = jest.fn();
   const mockToggleSortBy = jest.fn();
   const mockSetSearchQuery = jest.fn();

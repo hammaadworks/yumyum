@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrandHeader } from '@/components/shared/brand-header';
+import { BrandHeader } from '@/components/shared/BrandHeader';
 import { Brand } from '@/lib/types';
 
 

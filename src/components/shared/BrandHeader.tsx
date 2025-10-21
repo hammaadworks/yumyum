@@ -14,6 +14,7 @@ import {
   QrCode,
 } from 'lucide-react';
 import { useUIStore } from '@/store/use-ui.store';
+import { GlobalCart } from '@/components/shared/GlobalCart';
 
 interface BrandHeaderProps {
   brand: Brand;

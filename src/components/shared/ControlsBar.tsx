@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Switch } from '@/components/ui/Switch';
+import { Label } from '@/components/ui/Label';
 import { Search, ArrowUpDown, X } from 'lucide-react';
 import { useFilterStore } from '@/store/use-filter.store';
 import { useDebounce } from '@/hooks/use-debounce';

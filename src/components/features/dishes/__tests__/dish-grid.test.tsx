@@ -1,5 +1,5 @@
-import { DishCard } from '@/components/features/dishes/dish-card';
-import { DishGrid } from '@/components/features/dishes/dish-grid';
+import { DishCard } from '@/components/features/dishes/DishCard';
+import { DishGrid } from '@/components/features/dishes/DishGrid';
 import { Dish } from '@/lib/types';
 import { useFilterStore } from '@/store/use-filter.store';
 import '@testing-library/jest-dom';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ReelActionBar } from '@/components/features/reel/reel-action-bar';
+import { ReelActionBar } from '@/components/features/reel/ReelActionBar';
 import { Dish } from '@/lib/types';
 
 const MOCK_DISH: Dish = {

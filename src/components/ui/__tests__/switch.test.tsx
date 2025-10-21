@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Switch } from '../switch';
+import { Switch } from '../Switch';
 
 describe('Switch Component', () => {
   describe('Rendering', () => {

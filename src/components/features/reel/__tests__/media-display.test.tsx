@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MediaDisplay } from '@/components/features/reel/media-display';
+import { MediaDisplay } from '@/components/features/reel/MediaDisplay';
 import { Dish } from '@/lib/types';
 
 const MOCK_DISH_IMAGE_ONLY: Dish = {
