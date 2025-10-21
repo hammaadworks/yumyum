@@ -7,6 +7,7 @@ import { ReelView } from '@/components/features/reel/reel-view';
 import { StatusViewer } from '@/components/features/status/status-viewer';
 import { BrandHeader } from '@/components/shared/brand-header';
 import { ControlsBar } from '@/components/shared/controls-bar';
+import { GlobalCart } from '@/components/shared/global-cart';
 import { QRCodeModal } from '@/components/shared/QRCodeModal';
 import { Brand, Dish, Status } from '@/lib/types';
 import {
@@ -110,34 +111,35 @@ export default function VendorPage({
     <>
       <GlobalCart />
       <main className="container mx-auto p-4">
-      <BrandHeader brand={brand} hasStatus={!!status && status.length > 0} />
-      <div className="my-8">
-        <CategoryHighlights
+        <BrandHeader brand={brand} hasStatus={!!status && status.length > 0} />
+        <div className="my-8">
+          <CategoryHighlights
+            dishes={dishes}
+            onCategorySelect={handleSelectCategory}
+          />
+        </div>
+        <ControlsBar />
+        <DishGrid dishes={dishes} onDishSelect={handleSelectDish} />
+
+        <ReelView
           dishes={dishes}
-          onCategorySelect={handleSelectCategory}
+          categories={categories}
+          activeIndex={activeIndex}
+          isReelViewOpen={isReelViewOpen}
+          closeReelView={closeReelView}
+          setActiveIndex={setActiveIndex}
         />
-      </div>
-      <ControlsBar />
-      <DishGrid dishes={dishes} onDishSelect={handleSelectDish} />
 
-      <ReelView
-        dishes={dishes}
-        categories={categories}
-        activeIndex={activeIndex}
-        isReelViewOpen={isReelViewOpen}
-        closeReelView={closeReelView}
-        setActiveIndex={setActiveIndex}
-      />
-
-      {brand && (
-        <CartSummary
-          open={isCartSummaryOpen}
-          onOpenChange={closeCartSummary}
-          brand={brand}
-        />
-      )}
-      {status && <StatusViewer status={status} />}
-      <QRCodeModal />
-    </main>
+        {brand && (
+          <CartSummary
+            open={isCartSummaryOpen}
+            onOpenChange={closeCartSummary}
+            brand={brand}
+          />
+        )}
+        {status && <StatusViewer status={status} />}
+        <QRCodeModal />
+      </main>
+    </>
   );
 }
