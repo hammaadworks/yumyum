@@ -82,7 +82,7 @@ dependencies:
 Whenever referencing or reasoning about a library, framework, or SDK:
 
 1. **Locate the Documentation**  
-   - Check `./docs/library_docs_map.md` for the library key.  
+   - Check `./docs/library_docs_help.md` for the library key.  
    - Use the URL exactly if provided (e.g., `https://context7.com/vercel/next.js/llms.txt`).  
    - The URL is treated as authoritative and up-to-date.
 
@@ -98,7 +98,7 @@ Whenever referencing or reasoning about a library, framework, or SDK:
    - Do not retain large chunks across turns; keep only short, essential context snippets.
 
 4. **Missing Documentation Link**  
-   - If the library appears in code but is missing in `./docs/library_docs_map.md`, add it with an empty value:
+   - If the library appears in code but is missing in `./docs/library_docs_help.md`, add it with an empty value:
      ```json
      { "new_library_name": "" }
      ```

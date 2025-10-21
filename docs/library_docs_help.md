@@ -1,4 +1,4 @@
-# 📚 Library Documentation Map
+# 📚 Library Docs Help
 
 > This file is the single source of truth for documentation references.  
 > AI agents **must always reference this file** before using or explaining any library.  

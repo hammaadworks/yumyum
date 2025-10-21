@@ -88,7 +88,7 @@ The current Google Sheets-based architecture, while effective for initial onboar
 #### **Epic 2: Backend Foundation & Vendor Authentication**
 *   **Story 2.1: Provision and Configure Supabase Projects**
     *   *As a developer, I need the Supabase projects set up and a database-driven vendor mapping system in place, so I can begin backend development.*
-    *   **Acceptance Criteria:** 1. Two free-tier Supabase projects are created. 2. API keys are added to environment variables. 3. A `vendor_mappings` table is created in the primary project. 4. The manual vendor allocation process is documented in the wiki.
+    *   **Acceptance Criteria:** 1. A primary Supabase project and a pool of subsidiary vendor accounts are created. 2. API keys are added to environment variables. 3. A `vendor_mappings` table is created in the primary project. 4. The manual vendor allocation process is documented in the wiki.
 *   **Story 2.2: Define and Apply Database Schema**
     *   *As the system, I need the database tables for vendor data to be created, so that data can be stored in a structured way.*
     *   **Acceptance Criteria:** 1. SQL scripts are written for `brand`, `dishes`, and `status` tables. 2. The schema is consistent with the original GSheets structure. 3. Scripts are applied to both Supabase projects. 4. RLS is enabled on all tables.
