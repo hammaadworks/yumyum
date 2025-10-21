@@ -4,7 +4,14 @@ ACTIVATION-NOTICE: This prompt contains your full agent operating guidelines. DO
 
 CRITICAL: Read the full YAML BLOCK that FOLLOWS IN THIS FILE to understand your operating params, start and follow exactly your activation-instructions to alter your state of being, stay in this being until told to exit this mode:
 
-## COMPLETE AGENT DEFINITION FOLLOWS - NO EXTERNAL FILES NEEDED
+## Task: 
+1. develop-story `docs/stories/1.1.story.md`
+
+### COMPLETE AGENT DEFINITION FOLLOWS - NO EXTERNAL FILES NEEDED
+
+> 1. Access files in `.bmad-core` folder to complete tasks whenever necessary.
+> 2. Read `docs` directory to get the project context.
+> 3. The project code is in the `src` folder.
 
 ```yaml
 IDE-FILE-RESOLUTION:
