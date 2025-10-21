@@ -11,6 +11,12 @@ const MOCK_DISHES: Dish[] = [
   { id: '3', name: 'Another In Stock', category: 'C', price: 15, veg: 'veg', image: 'c.png', description: '', instock: 'yes' },
 ];
 
+const mockCategories = ['A', 'B', 'C'];
+const mockActiveIndex = 0;
+const mockIsReelViewOpen = true;
+const mockCloseReelView = jest.fn();
+const mockSetActiveIndex = jest.fn();
+
 // Mock child components
 jest.mock('@/components/shared/global-cart', () => ({
   GlobalCart: () => <div data-testid="global-cart" />,
@@ -31,23 +37,19 @@ describe('ReelView Component', () => {
 
   // Test Case: 2.1-R-01 (combined with 2.1-R-02)
   it('should not be visible by default and appear when store state is updated', () => {
-    const { rerender } = render(<ReelView dishes={MOCK_DISHES} />);
+    const { rerender } = render(<ReelView dishes={MOCK_DISHES} categories={mockCategories} activeIndex={mockActiveIndex} isReelViewOpen={false} closeReelView={mockCloseReelView} setActiveIndex={mockSetActiveIndex} />);
     expect(screen.queryByTestId('reel-view-container')).not.toBeInTheDocument();
 
     act(() => {
       useUIStore.getState().openReelView();
     });
 
-    rerender(<ReelView dishes={MOCK_DISHES} />);
+    rerender(<ReelView dishes={MOCK_DISHES} categories={mockCategories} activeIndex={mockActiveIndex} isReelViewOpen={true} closeReelView={mockCloseReelView} setActiveIndex={mockSetActiveIndex} />);
     expect(screen.getByTestId('reel-view-container')).toBeInTheDocument();
   });
 
   // Test Case: 2.1-L-01
-  it('should render out-of-stock dishes last', () => {
-    act(() => {
-      useUIStore.getState().openReelView();
-    });
-    render(<ReelView dishes={MOCK_DISHES} />);
+    render(<ReelView dishes={MOCK_DISHES} categories={mockCategories} activeIndex={mockActiveIndex} isReelViewOpen={true} closeReelView={mockCloseReelView} setActiveIndex={mockSetActiveIndex} />);
 
     const dishItems = screen.getAllByTestId('dish-item');
     const lastDish = dishItems[dishItems.length - 1];
@@ -58,11 +60,9 @@ describe('ReelView Component', () => {
 
   // Test Case: 2.1-C-01
   it('should close when the close button is clicked', async () => {
-    act(() => {
+    await act(async () => {
       useUIStore.getState().openReelView();
-    });
-
-    render(<ReelView dishes={MOCK_DISHES} />);
+    render(<ReelView dishes={MOCK_DISHES} categories={mockCategories} activeIndex={mockActiveIndex} isReelViewOpen={true} closeReelView={mockCloseReelView} setActiveIndex={mockSetActiveIndex} />);
     expect(screen.getByTestId('reel-view-container')).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText(/close/i));
@@ -78,7 +78,7 @@ describe('ReelView Component', () => {
     act(() => {
       useUIStore.getState().openReelView();
     });
-    render(<ReelView dishes={MOCK_DISHES} />);
+    render(<ReelView dishes={MOCK_DISHES} categories={mockCategories} activeIndex={mockActiveIndex} isReelViewOpen={true} closeReelView={mockCloseReelView} setActiveIndex={mockSetActiveIndex} />);
     expect(screen.getByTestId('global-cart')).toBeInTheDocument();
   });
 });

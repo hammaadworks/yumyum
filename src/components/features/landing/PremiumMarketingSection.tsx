@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { MagicCard, MagicContainer } from '@/components/ui/magic-card';
+import { MagicCard } from '@/components/ui/magic-card';
 import { ShineBorder } from '@/components/ui/shine-border';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -14,7 +14,7 @@ export const PremiumMarketingSection = () => {
         <p className="text-xl text-muted-foreground mt-2 mb-12">
           Step up from Google Sheets to a powerful, in-app dashboard. Manage everything in one place.
         </p>
-        <MagicContainer>
+
           <MagicCard
             className="w-full max-w-4xl mx-auto p-8"
             gradientColor="#000000"
@@ -41,7 +41,7 @@ export const PremiumMarketingSection = () => {
               </ul>
               <ShineBorder
                 className="w-fit"
-                color={["#FAB12F", "#FFC857"]}
+                shineColor={["#FAB12F", "#FFC857"]}
               >
                 <Button className="bg-transparent">
                   Explore Premium Features
@@ -49,7 +49,7 @@ export const PremiumMarketingSection = () => {
               </ShineBorder>
             </div>
           </MagicCard>
-        </MagicContainer>
+
       </div>
     </section>
   );

@@ -4,23 +4,31 @@ import '@testing-library/jest-dom';
 import { ControlsBar } from '../controls-bar';
 import { useFilterStore } from '@/store/use-filter.store';
 
-// Mock the useFilterStore
-jest.mock('@/store/use-filter.store');
+// Define mock type for the Zustand store
+type MockFilterStore = typeof useFilterStore;
+
+// Mock the entire module for Zustand store
+jest.mock('@/store/use-filter.store', () => ({
+  useFilterStore: jest.fn(),
+}));
 
 describe('ControlsBar', () => {
+  let mockFilterStoreState: any;
   const mockToggleVegOnly = jest.fn();
   const mockToggleSortBy = jest.fn();
   const mockSetSearchQuery = jest.fn();
 
   beforeEach(() => {
-    (useFilterStore as jest.Mock).mockReturnValue({
+    mockFilterStoreState = {
       vegOnly: false,
       sortBy: 'asc',
       searchQuery: '',
       toggleVegOnly: mockToggleVegOnly,
       toggleSortBy: mockToggleSortBy,
       setSearchQuery: mockSetSearchQuery,
-    });
+    };
+    // Set the mock implementation for the hook
+    (useFilterStore as unknown as jest.MockedFunction<MockFilterStore>).mockImplementation(() => mockFilterStoreState);
   });
 
   it('should render all controls', () => {

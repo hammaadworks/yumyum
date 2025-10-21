@@ -16,6 +16,9 @@ export function StatusViewer({ status }: StatusViewerProps) {
   React.useEffect(() => {
     if (!isStatusViewerOpen) return;
 
+    const currentDuration = status[currentIndex]?.duration;
+    const delay = (currentDuration !== undefined ? currentDuration : 5) * 1000;
+
     const timer = setTimeout(
       () => {
         if (currentIndex < status.length - 1) {
@@ -25,7 +28,7 @@ export function StatusViewer({ status }: StatusViewerProps) {
           setCurrentIndex(0);
         }
       },
-      status[currentIndex]?.duration * 1000 || 5000,
+      delay,
     );
 
     return () => clearTimeout(timer);

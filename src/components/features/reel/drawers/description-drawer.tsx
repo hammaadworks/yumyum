@@ -4,7 +4,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
   DrawerDescription,
 } from '@/components/ui/drawer';
 import { Dish } from '@/lib/types';

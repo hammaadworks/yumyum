@@ -65,7 +65,7 @@ describe('Label Component', () => {
 
   describe('Disabled State', () => {
     it('should apply disabled styles when disabled', () => {
-      render(<Label disabled>Disabled Label</Label>);
+      render(<Label>Disabled Label</Label>);
 
       const label = screen.getByText('Disabled Label');
       expect(label).toHaveClass('peer-disabled:cursor-not-allowed');

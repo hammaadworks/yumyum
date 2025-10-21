@@ -6,7 +6,7 @@
 interface LarkResponse {
   code: number;
   msg: string;
-  data?: any;
+  data?: unknown;
 }
 
 /**

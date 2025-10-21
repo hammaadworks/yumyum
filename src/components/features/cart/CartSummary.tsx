@@ -4,7 +4,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
   DrawerDescription,
   DrawerFooter,
   DrawerClose
@@ -12,8 +11,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
-import { Brand, Dish } from '@/lib/types';
-import { Plus, Minus, X } from 'lucide-react';
+import { Brand } from '@/lib/types';
+import { X } from 'lucide-react';
 import { CartItem } from './CartItem';
 import { FeedbackView } from '../feedback/FeedbackView';
 
@@ -24,7 +23,7 @@ interface CartSummaryProps {
 }
 
 export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
-  const { items, clearCart } = useCartStore();
+  const { items } = useCartStore();
   const { openFeedbackView } = useUIStore();
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 

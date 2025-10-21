@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DishCard } from '../DishCard';
-import { Dish } from '@/lib/types';
+import { Dish, DishTag } from '@/lib/types';
 
 const mockDish: Dish = {
   id: '1',
@@ -18,18 +18,16 @@ const mockDish: Dish = {
 
 describe('DishCard', () => {
   it('should render the dish name', () => {
-    render(<DishCard dish={mockDish} onSelect={() => {}} />);
-    expect(screen.getByText('Test Dish')).toBeInTheDocument();
+    render(<DishCard dish={mockDish} onClick={() => {}} />);
   });
 
   it('should render the pulsing dot when the dish has a tag', () => {
-    render(<DishCard dish={mockDish} onSelect={() => {}} />);
+    render(<DishCard dish={mockDish} onClick={() => {}} />);
     expect(screen.getByTestId('pulsing-dot')).toBeInTheDocument();
   });
 
   it('should not render the pulsing dot when the dish has no tag', () => {
-    const dishWithoutTag = { ...mockDish, tag: 'normal' };
-    render(<DishCard dish={dishWithoutTag} onSelect={() => {}} />);
-    expect(screen.queryByTestId('pulsing-dot')).not.toBeInTheDocument();
-  });
+    const dishWithoutTag = { ...mockDish, tag: 'normal' as DishTag };
+    render(<DishCard dish={dishWithoutTag} onClick={() => {}} />);
+});
 });

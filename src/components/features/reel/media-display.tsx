@@ -12,7 +12,7 @@ interface MediaDisplayProps {
 export function MediaDisplay({ dish }: MediaDisplayProps) {
   const [showPlus, setShowPlus] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleDoubleClick = () => {
     addItem(dish);

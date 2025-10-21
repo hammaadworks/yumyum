@@ -25,6 +25,7 @@ export default function VendorPage({
 }: {
   params: { vendor_slug: string };
 }) {
+  const { vendor_slug } = params;
   const [brand, setBrand] = useState<Brand | null>(null);
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [status, setStatus] = useState<Status | null>(null);
@@ -42,7 +43,7 @@ export default function VendorPage({
   useEffect(() => {
     async function fetchData() {
       try {
-        const sheetId = await getSheetIdForSlug(params.vendor_slug);
+        const sheetId = await getSheetIdForSlug(vendor_slug);
         if (!sheetId) {
           setError('Vendor not found');
           setLoading(false);
@@ -73,7 +74,7 @@ export default function VendorPage({
     }
 
     fetchData();
-  }, [params.vendor_slug]);
+  }, [vendor_slug]);
 
   const handleSelectCategory = (category: string) => {
     const dishIndex = dishes.findIndex((d) => d.category === category);

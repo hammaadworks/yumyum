@@ -34,7 +34,7 @@ export const VendorStoriesSection = () => {
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="bg-white">
               <CardContent className="pt-6">
-                <p className="italic text-[#0B0B0B]">"{testimonial.quote}"</p>
+                <p className="italic text-[#0B0B0B]">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="flex items-center gap-4 mt-4">
                   <Image src={testimonial.image} alt={testimonial.name} width={48} height={48} className="rounded-full" />
                   <div>

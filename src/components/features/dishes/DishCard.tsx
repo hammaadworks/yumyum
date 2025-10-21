@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 import { Dish } from '@/lib/types';
 
 interface DishCardProps {

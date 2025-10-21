@@ -3,7 +3,7 @@
 import { GlobalCart } from '@/components/shared/global-cart';
 import { Dish } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { useUiStore } from '@/store/use-ui.store';
+import { useUIStore } from '@/store/use-ui.store';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -21,7 +21,7 @@ interface ReelViewProps {
  * @returns The React element for the full-screen reel overlay containing snap-scrolling dish pages.
  */
 export function ReelView({ dishes }: ReelViewProps) {
-  const { closeReelView } = useUiStore();
+  const { closeReelView } = useUIStore();
 
   const sortedDishes = useMemo(() => {
     const inStock = dishes.filter((d) => d.instock === 'yes');
@@ -46,7 +46,7 @@ export function ReelView({ dishes }: ReelViewProps) {
       </button>
 
       <div className="h-full w-full overflow-y-auto snap-y snap-mandatory">
-        {sortedDishes.map((dish, index) => (
+        {sortedDishes.map((dish) => (
           <div
             data-testid="dish-item"
             key={dish.id}

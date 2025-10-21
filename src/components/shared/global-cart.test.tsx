@@ -5,17 +5,42 @@ import { GlobalCart } from './global-cart';
 import { useCartItemCount } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 
-// Mock the stores
-jest.mock('@/store/use-cart.store');
-jest.mock('@/store/use-ui.store');
+// Define mock type for the Zustand store
+type MockUIStore = typeof useUIStore;
+
+// Mock the entire modules for Zustand stores
+jest.mock('@/store/use-cart.store', () => ({
+  useCartItemCount: jest.fn(),
+}));
+jest.mock('@/store/use-ui.store', () => ({
+  useUIStore: jest.fn(),
+}));
 
 describe('GlobalCart', () => {
+  let mockUIStoreState: any;
   const mockOpenCartSummary = jest.fn();
 
   beforeEach(() => {
-    (useUIStore as jest.Mock).mockReturnValue({
+    mockUIStoreState = {
+      isReelViewOpen: false,
+      openReelView: jest.fn(),
+      closeReelView: jest.fn(),
+      activeDishId: null,
+      setActiveDishId: jest.fn(),
+      isCartSummaryOpen: false,
       openCartSummary: mockOpenCartSummary,
-    });
+      closeCartSummary: jest.fn(),
+      isFeedbackViewOpen: false,
+      openFeedbackView: jest.fn(),
+      closeFeedbackView: jest.fn(),
+      isStatusViewerOpen: false,
+      openStatusViewer: jest.fn(),
+      closeStatusViewer: jest.fn(),
+      isQRCodeModalOpen: false,
+      openQRCodeModal: jest.fn(),
+      closeQRCodeModal: jest.fn(),
+    };
+    (useUIStore as unknown as jest.MockedFunction<MockUIStore>).mockImplementation(() => mockUIStoreState);
   });
 
   it('should render the cart icon', () => {

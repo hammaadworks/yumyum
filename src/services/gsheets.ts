@@ -1,5 +1,5 @@
 import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
-import { Brand, Dish, Status, StatusItem } from '@/lib/types';
+import { Brand, Dish, Status, StatusItem, DishTag } from '@/lib/types'; // Corrected import
 import Papa from 'papaparse';
 import { sendLarkMessage } from './lark';
 
@@ -75,7 +75,7 @@ interface CacheEntry<T> {
   data: T;
 }
 
-const inflightRequests = new Map<string, Promise<any>>();
+const inflightRequests = new Map<string, Promise<unknown>>();
 
 async function swrFetch<T>(
   sheetName: string,
@@ -87,7 +87,7 @@ async function swrFetch<T>(
 
   if (typeof window !== 'undefined') {
     if (inflightRequests.has(cacheKey)) {
-      return inflightRequests.get(cacheKey);
+      return inflightRequests.get(cacheKey) as Promise<T | null>; // Corrected type assertion
     }
 
     const cachedItem = localStorage.getItem(cacheKey);
@@ -223,7 +223,7 @@ function parseDishesData(data: string[][]): Dish[] {
         price: parseFloat(dishObject.price),
         instock: dishObject.instock as 'yes' | 'no' | 'hide',
         veg: dishObject.veg as 'veg' | 'non-veg',
-        tag: dishObject.tag as any,
+        tag: dishObject.tag as DishTag,
       };
     })
     .filter((dish) => dish.name && dish.name.trim() !== '');
@@ -231,7 +231,7 @@ function parseDishesData(data: string[][]): Dish[] {
   return dishes;
 }
 
-const parseStatusData = (data: any[][]): Status => {
+const parseStatusData = (data: string[][]): Status => {
   // Validate input data structure
   if (!Array.isArray(data)) {
     console.error('parseStatusData: Invalid input - not an array', data);
@@ -298,7 +298,7 @@ const parseStatusData = (data: any[][]): Status => {
           return null;
         }
       })
-      .filter((item): item is StatusItem => item !== null);
+      .filter((item): item is StatusItem => item !== null) as Status; // Cast to Status
   } catch (err) {
     console.error('parseStatusData: Failed to parse status data:', err, {
       data,

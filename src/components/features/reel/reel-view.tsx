@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Dish } from '@/lib/types';
-import { useUIStore } from '@/store/use-ui.store';
 import { GlobalCart } from '@/components/shared/global-cart';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -97,7 +96,7 @@ export function ReelView({
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
         >
-          <GlobalCart onOpenCart={() => { /* Placeholder */ }} />
+          <GlobalCart />
           <ReelCategoryNavigator
             categories={categories}
             activeIndex={activeIndex}
@@ -117,7 +116,7 @@ export function ReelView({
             {sortedDishes.map((dish, index) => (
               <div
                 key={dish.id}
-                ref={(el) => (dishRefs.current[index] = el)}
+                ref={(el) => { dishRefs.current[index] = el; }}
                 data-index={index}
                 data-testid="dish-item"
                 className={cn(
@@ -134,16 +133,12 @@ export function ReelView({
               </div>
             ))}
           </div>
-          <FilterDrawer open={isFilterDrawerOpen} onOpenChange={setFilterDrawerOpen}>
-            <div />
-          </FilterDrawer>
+          <FilterDrawer open={isFilterDrawerOpen} onOpenChange={setFilterDrawerOpen} />
           <DescriptionDrawer
             dish={sortedDishes[activeIndex]}
             open={isDescriptionDrawerOpen}
             onOpenChange={setDescriptionDrawerOpen}
-          >
-            <div />
-          </DescriptionDrawer>
+          />
         </motion.div>
       )}
     </AnimatePresence>

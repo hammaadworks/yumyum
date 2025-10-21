@@ -1,0 +1,76 @@
+schema: 1
+story: '1.1'
+story_title: Overhaul Landing Page as a Sales Funnel
+gate: CONCERNS
+status_reason: 'The story has one high-risk item related to the subjectivity of the business goal, and the critical performance NFR for a landing page lacks specific targets.'
+reviewer: Quinn (Test Architect)
+updated: '2025-10-21T00:00:00Z'
+top_issues:
+  - id: BUS-001
+    severity: high
+    description: 'The primary goal of making the page "persuasive" is subjective and hard to measure, posing a risk to business outcomes.'
+    recommendation: 'Mitigate with UAT and A/B testing.'
+  - id: NFR-PERF-001
+    severity: medium
+    description: 'The story lacks specific performance targets (e.g., Core Web Vitals) for a critical, user-facing landing page.'
+    recommendation: 'Define and measure performance targets (e.g., LCP < 2.5s).'
+waiver: { active: false }
+quality_score: 80
+expires: '2025-11-04T00:00:00Z'
+
+risk_summary:
+  totals:
+    critical: 0
+    high: 1
+    medium: 3
+    low: 3
+  highest:
+    id: BUS-001
+    score: 6
+    title: 'Persuasive goal is subjective and hard to measure'
+  recommendations:
+    must_fix: []
+    monitor:
+      - 'Confirm premium_cta_clicked event fires correctly in GA'
+      - 'Track conversion metrics for sign-up flows'
+
+test_design:
+  scenarios_total: 8
+  by_level:
+    unit: 5
+    integration: 1
+    e2e: 2
+  by_priority:
+    p0: 1
+    p1: 7
+    p2: 0
+  coverage_gaps: []
+
+nfr_validation:
+  _assessed: [security, performance, reliability, maintainability]
+  security:
+    status: PASS
+    notes: 'Minimal attack surface for a public landing page.'
+  performance:
+    status: CONCERNS
+    notes: 'No specific performance targets (e.g., Core Web Vitals) were defined for this critical landing page.'
+  reliability:
+    status: PASS
+    notes: 'Presentational page with unit tests for component rendering.'
+  maintainability:
+    status: PASS
+    notes: 'Story has a strong focus on coding standards, refactoring, and testing.'
+
+trace:
+  totals:
+    requirements: 4
+    full: 2
+    partial: 2
+    none: 0
+  planning_ref: 'docs/qa/assessments/1.1-test-design-20251021.md'
+  uncovered:
+    - ac: 'AC1'
+      reason: 'Subjective quality ("persuasive") requires manual validation.'
+    - ac: 'AC4'
+      reason: 'Subjective quality ("professional") requires manual validation.'
+  notes: 'See docs/qa/assessments/1.1-trace-20251021.md'

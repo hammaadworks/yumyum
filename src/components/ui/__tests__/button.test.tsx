@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Button } from '../button';
+import Link from 'next/link';
 
 describe('Button Component', () => {
   describe('Rendering', () => {
@@ -187,7 +188,7 @@ describe('Button Component', () => {
     it('should render as child when asChild is true', () => {
       render(
         <Button asChild>
-          <a href="/test">Link Button</a>
+          <Link href="/test">Link Button</Link>
         </Button>
       );
 

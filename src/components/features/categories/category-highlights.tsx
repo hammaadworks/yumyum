@@ -3,9 +3,10 @@ import { Dish } from '@/lib/types';
 
 interface CategoryHighlightsProps {
   dishes: Dish[];
+  onCategorySelect: (category: string) => void;
 }
 
-const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes }) => {
+export const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes, onCategorySelect }) => {
   const specialCategory = {
     name: 'Specials',
     gradient: 'from-yellow-400 via-red-500 to-pink-500',
@@ -28,7 +29,7 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes }) => {
   return (
     <div className="flex space-x-4 overflow-x-auto p-4 scrollbar-hide">
       {hasSpecials && (
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0" onClick={() => onCategorySelect('Specials')}>
           <div className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${specialCategory.gradient}`}>
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
               <span className="text-xs font-bold">{specialCategory.name}</span>
@@ -37,7 +38,7 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes }) => {
         </div>
       )}
       {categories.map((category, index) => (
-        <div key={category} className="flex-shrink-0">
+        <div key={category} className="flex-shrink-0" onClick={() => onCategorySelect(category)}>
           <div className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${getGradient(index)}`}>
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
               <span className="text-xs font-bold">{category}</span>
@@ -48,5 +49,3 @@ const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes }) => {
     </div>
   );
 };
-
-export default CategoryHighlights;

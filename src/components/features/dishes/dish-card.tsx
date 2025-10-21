@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { Dish } from '@/lib/types';
-import { cn } from '@/lib/utils';
 
 interface DishCardProps {
   dish: Dish;

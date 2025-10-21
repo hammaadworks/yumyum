@@ -3,17 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrandHeader } from '@/components/shared/brand-header';
 import { Brand } from '@/lib/types';
-import {
-  Wallet,
-  MessageSquare,
-  Phone,
-  MapPin,
-  Instagram,
-  Facebook,
-  Youtube,
-  Link,
-  QrCode,
-} from 'lucide-react';
+
 
 // Mock Lucide icons
 jest.mock('lucide-react', () => ({
