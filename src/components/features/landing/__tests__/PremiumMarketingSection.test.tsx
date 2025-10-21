@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PremiumMarketingSection } from '../PremiumMarketingSection';
 
 jest.mock('motion/react', () => ({
@@ -11,7 +11,9 @@ jest.mock('motion/react', () => ({
 }));
 
 describe('PremiumMarketingSection', () => {
-  it('renders without crashing', () => {
+  it('renders its marketing content', () => {
     render(<PremiumMarketingSection />);
+    const heading = screen.getByRole('heading', { name: /Go Premium, Unlock Growth/i });
+    expect(heading).toBeInTheDocument();
   });
 });
