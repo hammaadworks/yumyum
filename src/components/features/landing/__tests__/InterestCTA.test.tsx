@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { InterestCTA } from '../InterestCTA';
 import * as gtag from '@/lib/gtag';
 import {
@@ -13,16 +13,34 @@ jest.mock('@/lib/gtag', () => ({
 }));
 
 describe('InterestCTA', () => {
-  // Mock window.open
   const mockWindowOpen = jest.fn();
+  let locationSpy: jest.SpyInstance;
+
   beforeAll(() => {
+    // Mock window.open for the fallback
     global.open = mockWindowOpen;
+    // Retain the original window.location object but allow spying on its properties
+    const originalLocation = window.location;
+    locationSpy = jest.spyOn(window, 'location', 'get');
+    // @ts-ignore
+    delete window.location;
+    window.location = { ...originalLocation, href: '' };
   });
 
   beforeEach(() => {
     // Clear mock history before each test
     (gtag.event as jest.Mock).mockClear();
     mockWindowOpen.mockClear();
+    window.location.href = ''; // Reset href before each test
+    jest.useFakeTimers(); // Use fake timers for setTimeout
+  });
+
+  afterEach(() => {
+    jest.useRealTimers(); // Restore real timers
+  });
+
+  afterAll(() => {
+    locationSpy.mockRestore(); // Clean up spy
   });
 
   it('renders a button with the correct aria-label', () => {
@@ -31,20 +49,30 @@ describe('InterestCTA', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('fires the premium_cta_clicked GA event and opens the correct WhatsApp URL on click', () => {
+  it('attempts deep link, fires GA event, and sets up fallback to wa.me URL on click', () => {
     render(<InterestCTA />);
     const button = screen.getByRole('button', { name: /Chat on WhatsApp/i });
     fireEvent.click(button);
 
-    // Check if GA event was called
+    // 1. Check if GA event was called immediately
     expect(gtag.event).toHaveBeenCalledWith('premium_cta_clicked', {
       event_category: 'engagement',
       event_label: 'Premium CTA Clicked',
     });
 
-    // Check if window.open was called with the correct URL
+    // 2. Check if the deep link was attempted immediately
     const encodedMessage = encodeURIComponent(WHATSAPP_INTEREST_MESSAGE);
-    const expectedUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-    expect(mockWindowOpen).toHaveBeenCalledWith(expectedUrl, '_blank');
+    const deepLinkUrl = `whatsapp://send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
+    expect(window.location.href).toBe(deepLinkUrl);
+
+    // 3. Fast-forward timers to trigger the fallback
+    act(() => {
+      jest.advanceTimersByTime(800);
+    });
+
+    // 4. Check if the fallback to window.open was called
+    const fallbackUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+    expect(mockWindowOpen).toHaveBeenCalledWith(fallbackUrl, '_blank');
+    expect(mockWindowOpen).toHaveBeenCalledTimes(1);
   });
 });
