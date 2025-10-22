@@ -31,7 +31,20 @@
     export interface Brand {
       id: number;
       vendor_id: string; // Foreign Key to auth.users.id
-      // ... all other brand fields
+      name: string;
+      logo_url: string;
+      cuisine: string;
+      description: string;
+      payment_link: string;
+      whatsapp: string;
+      contact: string;
+      location_link?: string;
+      review_link?: string;
+      instagram?: string;
+      facebook?: string;
+      youtube?: string;
+      custom?: string;
+      full_menu_pic?: string;
     }
     ```
 

@@ -36,7 +36,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **FR10:** The system shall provide a `/vendor/upload` page allowing vendors to upload images/videos to ImageKit and receive a URL.
 *   **FR11:** A "Veg Only" toggle in the UI shall filter the `Dishes` list on the client-side.
 *   **FR12:** The UI shall provide a mechanism to sort the menu by price (low-to-high / high-to-low).
-*   **FR13:** A daily scheduled job shall run to find and delete any media in ImageKit that is no longer referenced in any vendor's Google Sheet.
+*   **FR13:** A biweekly scheduled job shall run to find and delete any media in ImageKit that is no longer referenced in any vendor's Google Sheet.
 *   **FR14:** The system shall filter items based on the `instock` field. Items marked `hide` will not be fetched. Items marked `no` will be displayed last in any list and visually greyed out.
 
 #### Non-Functional Requirements
@@ -48,7 +48,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **NFR5:** All vendor media (images, videos) must be hosted on ImageKit.
 *   **NFR6:** The system must use Google Analytics 4 for event tracking, configured with a `vendor_id` custom dimension.
 *   **NFR7:** The system must attempt to detect network status and provide an offline fallback experience (feasibility to be determined by an architectural spike).
-*   **NFR8:** The architecture must include a serverless cron job capability (e.g., GitHub Action, Vercel Cron) to execute the daily maintenance script.
+*   **NFR8:** The architecture must include a serverless cron job capability (e.g., GitHub Action, Vercel Cron) to execute the biweekly maintenance script.
 *   **NFR9:** The application must meet the **WCAG 2.1 Level AA** accessibility standard.
 *   **NFR10:** The system must send critical event alerts to a configurable Lark webhook URL.
 
@@ -121,7 +121,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **Framework:** Latest **stable** version of Next.js and React.
 *   **Repository Structure:** Monorepo (managed with pnpm).
 *   **Service Architecture:** Primarily client-side rendering. Data fetching occurs once on page load and is held in an in-memory state. No server-side computation for user-facing views.
-*   **Backend Processes:** A single serverless cron job (e.g., GitHub Action) is permitted for the daily ImageKit pruning script.
+*   **Backend Processes:** A single serverless cron job (e.g., GitHub Action) is permitted for the biweekly ImageKit pruning script.
 *   **Testing:** Strategy will focus on Unit and Integration tests for the MVP.
 
 ---
@@ -348,11 +348,11 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
         5.  The public URL is then displayed on-screen with a "Copy URL" button.
 
 *   **Story 4.2: ImageKit Pruning Cron Job (Multi-Account)**
-    *   **Description:** Implements a daily automated script to delete any media from our ImageKit accounts that is no longer referenced in any vendor's Google Sheet. The script will run across all configured ImageKit accounts.
+    *   **Description:** Implements a biweekly automated script to delete any media from our ImageKit accounts that is no longer referenced in any vendor\'s Google Sheet. The script will run across all configured ImageKit accounts.
     *   **Acceptance Criteria:**
         1.  The script loads credentials for all configured ImageKit accounts from environment variables.
         2.  The script iterates through each ImageKit account, performing the pruning logic only for the vendors assigned to that account.
-        3.  The script is configured to run at **3 AM nightly**.
+        3.  The script is configured to run at **3 AM every other Saturday**.
         4.  The script produces **traceable logs** for each run.
         5.  Upon completion or failure, the script sends a status alert (including number of files deleted) via the Lark webhook.
 
