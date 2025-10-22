@@ -496,13 +496,13 @@ Variables are managed in `.env.local`. Public variables are prefixed with `NEXT_
 # --- Google Sheets ---
 NEXT_PUBLIC_ADMIN_SHEET_ID="your_admin_sheet_id_here"
 
-# --- Cloudinary (Multi-Account Setup) ---
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your_cloud_name"
+# --- ImageKit (Multi-Account Setup) ---
+NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT="your_url_endpoint"
 
 # API credentials for the backend.
-# Example for account 'cld_acc_1':
-CLOUDINARY_CLD_ACC_1_API_KEY="key_for_account_1"
-CLOUDINARY_CLD_ACC_1_API_SECRET="secret_for_account_1"
+# Example for account 'ik_acc_1':
+IMAGEKIT_IK_ACC_1_PRIVATE_KEY="key_for_account_1"
+IMAGEKIT_IK_ACC_1_PUBLIC_KEY="secret_for_account_1"
 
 # --- Alerting ---
 LARK_WEBHOOK_URL="your_lark_webhook_url_here"

@@ -39,7 +39,7 @@ The YumYum platform is designed as a serverless, mobile-first web application fo
 *   **Key Services:**
     *   **Google Sheets:** As the primary data source.
     *   **GitHub Actions:** As for crons.
-    *   **Cloudinary:** For media hosting and optimization.
+    *   **ImageKit:** For media hosting and optimization.
 *   **Deployment Host and Regions:** Vercel (Global Edge Network)
 
 #### Repository Structure
@@ -64,12 +64,12 @@ graph TD
 
     subgraph "Vercel Platform"
         B[Next.js Frontend App]
-        C[Cloudinary CDN]
+        C[ImageKit CDN]
     end
 
     subgraph "External Services"
         D[Google Sheet (as Database)]
-        E[Cloudinary (Media Hosting)]
+        E[ImageKit (Media Hosting)]
         F[WhatsApp API]
         G[Google Analytics 4]
     end
@@ -111,7 +111,7 @@ graph TD
 | API Style | REST-like (CSV endpoint) | N/A | Data fetching from Google Sheets | The `gviz/tq` endpoint provides a simple, REST-like way to get data without APIs. |
 | Database | Google Sheets | N/A | Primary data store for vendors | Radically simple for the target user (vendors) to manage their menu. |
 | Cache | Local Storage (SWR) | N/A | Caching application data client-side | Implements a 'Stale-While-Revalidate' strategy for an offline-capable, app-like experience. |
-| File Storage | Cloudinary | N/A | Media hosting and optimization | A powerful solution for managing and serving images efficiently. |
+| File Storage | ImageKit | N/A | Media hosting and optimization | A powerful solution for managing and serving images efficiently. |
 | Authentication | N/A | N/A | All pages are public | The MVP focuses on a public-facing menu, no user authentication is required. |
 | Frontend Testing | Jest & React Testing Library | latest | Unit and integration testing | Industry-standard tools for testing React applications. |
 | E2E Testing | Playwright | latest | End-to-end user flow testing | A modern and reliable choice for ensuring critical user journeys work as expected. |
@@ -227,9 +227,9 @@ The UI is composed of a set of modular components, organized by feature and reus
 *   **Documentation:** N/A (uses the `gviz` CSV export URL, not the formal API).
 *   **Authentication:** None (requires public sheet access).
 
-#### Cloudinary API
+#### ImageKit API
 *   **Purpose:** Hosts, optimizes, and serves all media assets (vendor logos, dish images).
-*   **Documentation:** [https://cloudinary.com/documentation](https://cloudinary.com/documentation)
+*   **Documentation:** [https://docs.imagekit.io/](https://docs.imagekit.io/)
 *   **Authentication:** API Key and Secret for upload operations (server-side). Public URLs for consumption.
 
 #### WhatsApp Click to Chat API
@@ -338,7 +338,7 @@ The frontend architecture is detailed extensively in the `docs/ui-architecture.m
 There is no traditional backend application server or custom API. The "backend" consists of two main components:
 
 1.  **Data Layer:** A public Google Sheet, which acts as a simple, vendor-managed database.
-2.  **Media Layer:** Cloudinary, which handles all image storage, optimization, and delivery.
+2.  **Media Layer:** ImageKit, which handles all image storage, optimization, and delivery.
 
 This serverless, backend-less approach is a deliberate choice for the MVP to maximize simplicity and minimize operational overhead. Any future server-side logic (e.g., processing webhooks) will be implemented using Vercel Functions.
 
@@ -417,7 +417,7 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 
 #### Performance Optimization
 *   **Loading Strategy:** Next.js provides automatic code splitting, static site generation (SSG), and server-side rendering (SSR) to ensure fast initial page loads.
-*   **Media Optimization:** All images are served via Cloudinary for automatic optimization and format selection.
+*   **Media Optimization:** All images are served via ImageKit for automatic optimization and format selection.
 *   **Caching:** Data fetched from Google Sheets is cached on the client-side using a Local Storage-based "Stale-While-Revalidate" (SWR) strategy. Static assets are cached at browser.
 
 ---

@@ -10,6 +10,7 @@ out
 # misc
 .DS_Store
 *.pem
+.idea
 
 # debug logs
 npm-debug.log*

@@ -10,7 +10,7 @@ This section describes our approach to handling errors and monitoring the applic
     *   **Error Boundaries:** React Error Boundaries will be used to catch rendering errors in component sub-trees, preventing a full application crash and displaying a fallback UI.
 
 *   **Service & API Layer:**
-    *   Service functions in `/src/services` are responsible for catching errors from external APIs (e.g., Supabase, Cloudinary).
+    *   Service functions in `/src/services` are responsible for catching errors from external APIs (e.g., Supabase, ImageKit).
     *   Caught errors will be re-thrown as standardized application errors, which the UI layer can then interpret to display the appropriate user message.
 
 ## Monitoring

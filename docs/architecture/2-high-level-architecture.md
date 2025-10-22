@@ -10,7 +10,7 @@ The YumYum Premium Tier architecture is a modern, serverless, fullstack solution
 *   **Key Services:**
     *   **Vercel:** Hosting, CI/CD (Free Tier), SEO.
     *   **Supabase:** PostgreSQL Database, Authentication (Magic Link), Storage, Auto-generated APIs.
-    *   **Cloudinary:** Multi-account media hosting and optimization.
+    *   **ImageKit:** Multi-account media hosting and optimization.
     *   **Lark:** Webhook for critical alerts.
 *   **Deployment Host and Regions:** Vercel (Global Edge Network), Supabase (`ap-south-1` Mumbai).
 
@@ -45,7 +45,7 @@ graph TD
     end
 
     subgraph "External Services"
-        G[Cloudinary (Media)]
+        G[ImageKit (Media)]
         H[Lark (Alerts)]
         GS[Google Sheets]
     end

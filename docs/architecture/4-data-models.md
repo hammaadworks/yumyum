@@ -18,8 +18,8 @@
       // Google Sheets-specific fields
       gsheet_id?: string;
 
-      // Cloudinary account is common to both
-      cloudinary_account_id: string; // Which of the 4 Cloudinary accounts
+      // ImageKit account is common to both
+      imagekit_account_id: string; // Which of the 4 ImageKit accounts
     }
     ```
 

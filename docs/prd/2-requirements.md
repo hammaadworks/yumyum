@@ -11,7 +11,7 @@
 
 #### **Non-Functional Requirements**
 1.  **NFR1:** The entire system architecture must operate within the free tiers of all underlying platforms.
-2.  **NFR2:** The backend architecture must support a multi-account strategy for Supabase and Cloudinary.
+2.  **NFR2:** The backend architecture must support a multi-account strategy for Supabase and ImageKit.
 3.  **NFR3:** For the MVP, vendor allocation to a Supabase account shall be a manual process.
 4.  **NFR4:** The Supabase backend must enforce Row Level Security (RLS).
 5.  **NFR5:** The vendor management dashboard shall be a Client-Side Rendered (CSR) application.

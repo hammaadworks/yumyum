@@ -33,10 +33,10 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **FR7:** The system shall provide a downloadable QR code that links directly to the vendor's brand page.
 *   **FR8:** The system shall include a feedback mechanism allowing users to provide a star rating (1-5).
 *   **FR9:** If the feedback rating is high (≥ 4 stars), the system shall prompt the user to leave a review on the vendor's specified social media page.
-*   **FR10:** The system shall provide a `/vendor/upload` page allowing vendors to upload images/videos to Cloudinary and receive a URL.
+*   **FR10:** The system shall provide a `/vendor/upload` page allowing vendors to upload images/videos to ImageKit and receive a URL.
 *   **FR11:** A "Veg Only" toggle in the UI shall filter the `Dishes` list on the client-side.
 *   **FR12:** The UI shall provide a mechanism to sort the menu by price (low-to-high / high-to-low).
-*   **FR13:** A daily scheduled job shall run to find and delete any media in Cloudinary that is no longer referenced in any vendor's Google Sheet.
+*   **FR13:** A daily scheduled job shall run to find and delete any media in ImageKit that is no longer referenced in any vendor's Google Sheet.
 *   **FR14:** The system shall filter items based on the `instock` field. Items marked `hide` will not be fetched. Items marked `no` will be displayed last in any list and visually greyed out.
 
 #### Non-Functional Requirements
@@ -45,7 +45,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **NFR2:** The application must provide a "blazing-fast," app-like user experience with minimal load times.
 *   **NFR3:** The UI must have a premium, polished aesthetic, leveraging the specified UI libraries.
 *   **NFR4:** The backend data source must be a public Google Sheet, accessed via the `gviz/tq?tqx=out:csv` URL endpoint.
-*   **NFR5:** All vendor media (images, videos) must be hosted on Cloudinary.
+*   **NFR5:** All vendor media (images, videos) must be hosted on ImageKit.
 *   **NFR6:** The system must use Google Analytics 4 for event tracking, configured with a `vendor_id` custom dimension.
 *   **NFR7:** The system must attempt to detect network status and provide an offline fallback experience (feasibility to be determined by an architectural spike).
 *   **NFR8:** The architecture must include a serverless cron job capability (e.g., GitHub Action, Vercel Cron) to execute the daily maintenance script.
@@ -94,9 +94,9 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
         | :--- | :--- |
         | `slug` | The vendor slug used in the URL. |
         | `sheet_id` | The ID of the vendor's individual Google Sheet. |
-        | `cloudinary_account_id` | The ID that maps to a specific Cloudinary account (e.g., `cld_acc_1`). |
+        | `imagekit_account_id` | The ID that maps to a specific ImageKit account (e.g., `ik_acc_1`). |
 
-*   **Technical Note on Secrets:** All sensitive credentials, including Cloudinary API keys and secrets for the multiple accounts, will be stored securely as environment variables (`.env` file) and mapped using the `cloudinary_account_id`.
+*   **Technical Note on Secrets:** All sensitive credentials, including ImageKit API keys and secrets for the multiple accounts, will be stored securely as environment variables (`.env` file) and mapped using the `imagekit_account_id`.
 
 *   **Other Tabs:** `Status` as previously defined.
 
@@ -121,7 +121,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 *   **Framework:** Latest **stable** version of Next.js and React.
 *   **Repository Structure:** Monorepo (managed with pnpm).
 *   **Service Architecture:** Primarily client-side rendering. Data fetching occurs once on page load and is held in an in-memory state. No server-side computation for user-facing views.
-*   **Backend Processes:** A single serverless cron job (e.g., GitHub Action) is permitted for the daily Cloudinary pruning script.
+*   **Backend Processes:** A single serverless cron job (e.g., GitHub Action) is permitted for the daily ImageKit pruning script.
 *   **Testing:** Strategy will focus on Unit and Integration tests for the MVP.
 
 ---
@@ -320,7 +320,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
         2.  If the `status` tab has content, the vendor logo displays the gradient ring.
         3.  Clicking the logo opens a full-screen story viewer.
         4.  The viewer logic must validate each status item. Empty or whitespace-only entries are **ignored**.
-        5.  An item is identified as **Media** if it's a valid URL pointing to a cloudinary media file.
+        5.  An item is identified as **Media** if it's a valid URL pointing to a imagekit media file.
         6.  Any item not identified as Media is treated as **Text**.
         7.  **Edge Case (Broken Media):** If a media URL fails to load, the story viewer must gracefully skip to the next item after a 2-second timeout, not show a broken icon.
         8.  **Edge Case (Long Text):** Text content should automatically scale down to fit the screen. Excessively long text is truncated with an ellipsis (...).
@@ -339,19 +339,19 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 ### Epic 4: Vendor Media Uploader
 
 *   **Story 4.1: Public Media Uploader (Multi-Account)**
-    *   **Description:** Creates a simple, public `/vendor/upload` page. The uploader will check the `Admin_Config` sheet to determine which of the configured Cloudinary accounts to use for that specific vendor.
+    *   **Description:** Creates a simple, public `/vendor/upload` page. The uploader will check the `Admin_Config` sheet to determine which of the configured ImageKit accounts to use for that specific vendor.
     *   **Acceptance Criteria:**
         1.  A page exists at `/vendor/upload` that is publicly accessible.
-        2.  Before uploading, the system reads the `Admin_Config` to find the vendor's assigned `cloudinary_account_id`.
-        3.  The system uses the corresponding environment variables (e.g., `CLOUDINARY_[ID]_KEY`) to authenticate with the correct Cloudinary account.
-        4.  On upload, the file is sent to the assigned Cloudinary account. If the upload fails, an alert is sent via the Lark webhook.
+        2.  Before uploading, the system reads the `Admin_Config` to find the vendor's assigned `imagekit_account_id`.
+        3.  The system uses the corresponding environment variables (e.g., `IMAGEKIT_[ID]_KEY`) to authenticate with the correct ImageKit account.
+        4.  On upload, the file is sent to the assigned ImageKit account. If the upload fails, an alert is sent via the Lark webhook.
         5.  The public URL is then displayed on-screen with a "Copy URL" button.
 
-*   **Story 4.2: Cloudinary Pruning Cron Job (Multi-Account)**
-    *   **Description:** Implements a daily automated script to delete any media from our Cloudinary accounts that is no longer referenced in any vendor's Google Sheet. The script will run across all configured Cloudinary accounts.
+*   **Story 4.2: ImageKit Pruning Cron Job (Multi-Account)**
+    *   **Description:** Implements a daily automated script to delete any media from our ImageKit accounts that is no longer referenced in any vendor's Google Sheet. The script will run across all configured ImageKit accounts.
     *   **Acceptance Criteria:**
-        1.  The script loads credentials for all configured Cloudinary accounts from environment variables.
-        2.  The script iterates through each Cloudinary account, performing the pruning logic only for the vendors assigned to that account.
+        1.  The script loads credentials for all configured ImageKit accounts from environment variables.
+        2.  The script iterates through each ImageKit account, performing the pruning logic only for the vendors assigned to that account.
         3.  The script is configured to run at **3 AM nightly**.
         4.  The script produces **traceable logs** for each run.
         5.  Upon completion or failure, the script sends a status alert (including number of files deleted) via the Lark webhook.

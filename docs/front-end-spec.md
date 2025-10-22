@@ -156,7 +156,7 @@ graph TD
     *   **Purpose:** A reusable table component to display lists of data like dishes, including action buttons for "Edit" and "Delete."
 
 *   **`EntityForm`**
-    *   **Purpose:** A generic form component for creating/editing dishes, brand info, and statuses, including the Cloudinary image uploader.
+    *   **Purpose:** A generic form component for creating/editing dishes, brand info, and statuses, including the ImageKit image uploader.
 
 ---
 ### 6. Branding & Style Guide
@@ -223,7 +223,7 @@ graph TD
 
 *   **Design Strategies for Performance:**
     *   Leverage Next.js code splitting for the authenticated dashboard routes.
-    *   Continue to use Cloudinary for all image optimization.
+    *   Continue to use ImageKit for all image optimization.
     *   Implement a client-side caching strategy for dashboard data to ensure fast subsequent loads.
 
 ---

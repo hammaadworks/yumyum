@@ -32,9 +32,9 @@
 *   **Story 3.2: Implement "Dishes" CRUD Interface**
     *   *As a vendor, I want to add, view, update, and delete my menu dishes from within the app, so that I can manage my menu efficiently.*
     *   **Acceptance Criteria:** 1. The "Dishes" section displays a list of dishes. 2. An "Add New Dish" button opens a creation form. 3. Each dish has "Edit" and "Delete" controls. 4. The forms correctly perform `INSERT`, `UPDATE`, and `DELETE` operations.
-*   **Story 3.3: Integrate Cloudinary Uploader into Dishes Form**
+*   **Story 3.3: Integrate ImageKit Uploader into Dishes Form**
     *   *As a vendor adding a dish, I want to upload an image directly from the form, so that I don't have to manually manage URLs.*
-    *   **Acceptance Criteria:** 1. The "Add/Edit Dish" form includes an image upload component. 2. The uploader uses the vendor's mapped Cloudinary account. 3. On success, the Cloudinary URL is populated into the form's `image` field.
+    *   **Acceptance Criteria:** 1. The "Add/Edit Dish" form includes an image upload component. 2. The uploader uses the vendor's mapped ImageKit account. 3. On success, the ImageKit URL is populated into the form's `image` field.
 *   **Story 3.4: Implement "Brand Profile" and "Status" Management**
     *   *As a vendor, I want to update my brand information and daily status from within the app, so that all my business data is managed in one place.*
     *   **Acceptance Criteria:** 1. The "Brand Profile" section provides a form to edit the `brand` table. 2. The "Status" section provides an interface to perform CRUD operations on the `status` table.

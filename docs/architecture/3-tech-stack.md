@@ -11,7 +11,7 @@
 | API Style | REST | via PostgREST | Auto-generated APIs for database interaction | Supabase provides a powerful and secure RESTful API layer automatically. |
 | Database | Supabase (Postgres) | latest | Primary data store for premium vendors | A robust, open-source relational database with excellent performance. |
 | Cache | N/A | N/A | Client-side caching will be used | Caching will be handled at the client level to improve perceived performance. |
-| File Storage | Cloudinary | N/A | Multi-account media hosting and optimization | A powerful solution for managing and serving images efficiently. |
+| File Storage | ImageKit | N/A | Multi-account media hosting and optimization | A powerful solution for managing and serving images efficiently. |
 | Authentication | Supabase Auth | latest | Secure user authentication | Provides Magic Link (passwordless) login out-of-the-box. |
 | Frontend Testing | Jest & React Testing Library | latest | Unit and integration testing | Industry-standard tools for testing React applications. |
 | Backend Testing | Jest | latest | Testing for Supabase Edge Functions | To ensure any custom server-side logic is reliable. |

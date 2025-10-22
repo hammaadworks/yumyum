@@ -132,7 +132,7 @@ YumYum is a mobile-first digital menu platform designed to be the "Instagram for
 *   **UI Libraries:** Shadcn UI, Aceternity UI, Magic UI.
 *   **Backend (Data Source):** A **public** Google Sheet. Data will be fetched as CSV via the `gviz/tq?tqx=out:csv` URL endpoint.
 *   **Hosting:** Vercel.
-*   **Media Hosting:** Cloudinary.
+*   **Media Hosting:** ImageKit.
 
 #### **Initial Architecture & Data Model**
 *   **Analytics:** Google Analytics 4 (GA4).

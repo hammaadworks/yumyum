@@ -7,9 +7,9 @@ This section details the external services the YumYum Premium Tier will integrat
 *   **Documentation:** [https://supabase.com/docs](https://supabase.com/docs)
 *   **Authentication:** API Key and JWT for client-side access.
 
-## Cloudinary API
+## ImageKit API
 *   **Purpose:** Hosts, optimizes, and serves all media assets (vendor logos, dish images).
-*   **Documentation:** [https://cloudinary.com/documentation](https://cloudinary.com/documentation)
+*   **Documentation:** [https://docs.imagekit.io/](https://docs.imagekit.io/)
 *   **Authentication:** API Key and Secret for upload operations.
 
 ## Lark Webhook API

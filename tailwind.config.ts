@@ -1,10 +1,12 @@
-import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
+
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    './src/app/**/*.{ts,tsx,js,jsx,mdx}',
-    './src/components/**/*.{ts,tsx,js,jsx,mdx}'
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     container: {
@@ -34,8 +36,12 @@ const config: Config = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        success: { DEFAULT: 'hsl(var(--success))' },
-        warning: { DEFAULT: 'hsl(var(--warning))' },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+        },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
@@ -76,5 +82,4 @@ const config: Config = {
   },
   plugins: [tailwindcssAnimate],
 };
-
 export default config;

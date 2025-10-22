@@ -27,8 +27,8 @@ This section outlines the high-level frontend components required for the Premiu
 *   **Dependencies:** Shadcn UI Table component.
 
 ## `EntityForm`
-*   **Responsibility:** A generic, reusable form component for creating and editing entities (Dishes, Brand Profile, Status). It will include input fields, validation, and the Cloudinary image uploader.
-*   **Dependencies:** React Hook Form, Shadcn UI Form components, Cloudinary uploader.
+*   **Responsibility:** A generic, reusable form component for creating and editing entities (Dishes, Brand Profile, Status). It will include input fields, validation, and the ImageKit image uploader.
+*   **Dependencies:** React Hook Form, Shadcn UI Form components, ImageKit uploader.
 
 ## `PublicVendorPage`
 *   **Responsibility:** Renders the entire public-facing vendor page. This is a Server Component that fetches its own data for ISR.
