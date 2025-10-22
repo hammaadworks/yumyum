@@ -11,4 +11,4 @@ export const DISHES_TTL = 5 * 60 * 1000;
 export const STATUS_TTL = 2 * 60 * 1000;
 
 export const WHATSAPP_NUMBER = "918310428923"; // Replace with the actual number
-export const WHATSAPP_INTEREST_MESSAGE = "Hello, I'm interested in the premium plan.";
+export const WHATSAPP_INTEREST_MESSAGE = "I'm interested in *YumYum* menu for my food business, let's connect!\n\n_https://yumyum.zupfam.com_";

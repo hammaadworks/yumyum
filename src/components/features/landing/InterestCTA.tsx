@@ -20,8 +20,8 @@ export const InterestCTA = () => {
 
     // Fallback for desktop/browsers that block the deep link
     setTimeout(() => {
-      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
-    }, 800); // 800ms delay to allow the deep link to attempt opening
+      window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
+    }, 2000); // 2s delay to allow the deep link to attempt opening
   };
 
   return (

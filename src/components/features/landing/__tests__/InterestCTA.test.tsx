@@ -9,12 +9,7 @@ jest.mock('@/lib/gtag', () => ({
 }));
 
 describe('InterestCTA', () => {
-  const mockWindowOpen = jest.fn();
-
   beforeAll(() => {
-    // Mock window.open
-    (globalThis as any).open = mockWindowOpen;
-
     // Mock window.location.href
     Object.defineProperty(window, 'location', {
       writable: true,
@@ -59,12 +54,11 @@ describe('InterestCTA', () => {
 
     // Fallback after timeout
     act(() => {
-      jest.advanceTimersByTime(800);
+      jest.advanceTimersByTime(2000);
     });
 
-    expect(mockWindowOpen).toHaveBeenCalledWith(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`,
-      '_blank'
+    expect(window.location.href).toBe(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`
     );
   });
 });
