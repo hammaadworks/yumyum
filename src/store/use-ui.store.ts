@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface UIState {
+export interface UIState {
   isReelViewOpen: boolean;
   // optional id of the dish to open inside the reel view
   currentReelDishId?: string | null;

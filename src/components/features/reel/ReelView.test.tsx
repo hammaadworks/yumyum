@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ReelView } from './reel-view';
+import { ReelView } from './ReelView';
 import { Dish } from '@/lib/types';
 
 const mockDishes: Dish[] = [

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 type SortBy = 'asc' | 'desc';
 
-interface FilterState {
+export interface FilterState {
   vegOnly: boolean;
   sortBy: SortBy;
   searchQuery: string;

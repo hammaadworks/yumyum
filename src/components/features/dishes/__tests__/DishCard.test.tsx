@@ -18,16 +18,16 @@ const mockDish: Dish = {
 
 describe('DishCard', () => {
   it('should render the dish name', () => {
-    render(<DishCard dish={mockDish} onClick={() => {}} />);
+    render(<DishCard dish={mockDish} onSelect={() => {}} />);
   });
 
   it('should render the pulsing dot when the dish has a tag', () => {
-    render(<DishCard dish={mockDish} onClick={() => {}} />);
+    render(<DishCard dish={mockDish} onSelect={() => {}} />);
     expect(screen.getByTestId('pulsing-dot')).toBeInTheDocument();
   });
 
   it('should not render the pulsing dot when the dish has no tag', () => {
     const dishWithoutTag = { ...mockDish, tag: 'normal' as DishTag };
-    render(<DishCard dish={dishWithoutTag} onClick={() => {}} />);
+    render(<DishCard dish={dishWithoutTag} onSelect={() => {}} />);
 });
 });

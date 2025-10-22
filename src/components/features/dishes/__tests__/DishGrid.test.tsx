@@ -43,8 +43,9 @@ describe('DishGrid', () => {
       isReelViewOpen: false,
       openReelView: jest.fn(),
       closeReelView: jest.fn(),
-      activeDishId: null,
-      setActiveDishId: jest.fn(),
+      currentReelDishId: null,
+      activeIndex: 0,
+      setActiveIndex: jest.fn(),
       isCartSummaryOpen: false,
       openCartSummary: jest.fn(),
       closeCartSummary: jest.fn(),
@@ -65,7 +66,7 @@ describe('DishGrid', () => {
   });
 
   it('should render all dishes by default', () => {
-    render(<DishGrid dishes={mockDishes} />);
+    render(<DishGrid dishes={mockDishes} onDishSelect={() => {}} />);
     expect(screen.getByText('Veg Dish')).toBeInTheDocument();
     expect(screen.getByText('Non-Veg Dish')).toBeInTheDocument();
     expect(screen.getByText('Another Veg Dish')).toBeInTheDocument();
@@ -73,7 +74,7 @@ describe('DishGrid', () => {
 
   it('should filter for veg dishes only', () => {
     mockFilterStoreState.vegOnly = true; // Directly modify the mock state
-    render(<DishGrid dishes={mockDishes} />);
+    render(<DishGrid dishes={mockDishes} onDishSelect={() => {}} />);
     expect(screen.getByText('Veg Dish')).toBeInTheDocument();
     expect(screen.queryByText('Non-Veg Dish')).not.toBeInTheDocument();
     expect(screen.getByText('Another Veg Dish')).toBeInTheDocument();
@@ -81,21 +82,21 @@ describe('DishGrid', () => {
 
   it('should sort dishes by price ascending', () => {
     mockFilterStoreState.sortBy = 'asc'; // Directly modify the mock state
-    const { getAllByRole } = render(<DishGrid dishes={mockDishes} />);
+    const { getAllByRole } = render(<DishGrid dishes={mockDishes} onDishSelect={() => {}} />);
     const dishNames = getAllByRole('heading').map(h => h.textContent);
     expect(dishNames).toEqual(['Another Veg Dish', 'Veg Dish', 'Non-Veg Dish']);
   });
 
   it('should sort dishes by price descending', () => {
     mockFilterStoreState.sortBy = 'desc'; // Directly modify the mock state
-    const { getAllByRole } = render(<DishGrid dishes={mockDishes} />);
+    const { getAllByRole } = render(<DishGrid dishes={mockDishes} onDishSelect={() => {}} />);
     const dishNames = getAllByRole('heading').map(h => h.textContent);
     expect(dishNames).toEqual(['Non-Veg Dish', 'Veg Dish', 'Another Veg Dish']);
   });
 
   it('should filter by search query', () => {
     mockFilterStoreState.searchQuery = 'non-veg'; // Directly modify the mock state
-    render(<DishGrid dishes={mockDishes} />);
+    render(<DishGrid dishes={mockDishes} onDishSelect={() => {}} />);
     expect(screen.queryByText('Veg Dish')).not.toBeInTheDocument();
     expect(screen.getByText('Non-Veg Dish')).toBeInTheDocument();
     expect(screen.queryByText('Another Veg Dish')).not.toBeInTheDocument();

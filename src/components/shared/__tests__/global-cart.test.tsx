@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GlobalCart } from './GlobalCart';
+import { GlobalCart } from '../GlobalCart';
 import { useCartItemCount } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { UIState } from '@/store/use-ui.store';
@@ -26,8 +26,9 @@ describe('GlobalCart', () => {
       isReelViewOpen: false,
       openReelView: jest.fn(),
       closeReelView: jest.fn(),
-      activeDishId: null,
-      setActiveDishId: jest.fn(),
+      currentReelDishId: null,
+      setActiveIndex: jest.fn(),
+      activeIndex: 0,
       isCartSummaryOpen: false,
       openCartSummary: mockOpenCartSummary,
       closeCartSummary: jest.fn(),

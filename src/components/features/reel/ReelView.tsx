@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Dish } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { useUIStore } from '@/store/use-ui.store';
 import { GlobalCart } from '@/components/shared/GlobalCart';
 import { Button } from '@/components/ui/Button';
 import { MediaDisplay } from './MediaDisplay';

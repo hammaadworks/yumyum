@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { CategoryHighlights } from './category-highlights';
+import { CategoryHighlights } from './CategoryHighlights';
 import { Dish, DishTag } from '@/lib/types';
 
 const mockDishes: Dish[] = [
