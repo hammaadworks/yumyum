@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/Dialog';
+} from '@/components/ui/dialog';
 import { useUIStore } from '@/store/use-ui.store';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRef } from 'react';

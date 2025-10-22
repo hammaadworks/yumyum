@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GlobalCart } from '../GlobalCart';
+import { GlobalCart } from '@/components/shared/GlobalCart';
 import { useCartItemCount } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { UIState } from '@/store/use-ui.store';

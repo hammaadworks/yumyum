@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Switch } from '../Switch';
+import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
+import { Switch } from '@/components/ui/switch';
 
 describe('Switch Component', () => {
   describe('Rendering', () => {
@@ -37,13 +37,19 @@ describe('Switch Component', () => {
     it('should render unchecked by default', () => {
       render(<Switch />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'false');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
     });
 
     it('should render checked when checked prop is true', () => {
       render(<Switch checked />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
     });
 
     it('should toggle checked state on click', () => {
@@ -58,18 +64,29 @@ describe('Switch Component', () => {
 
     it('should handle controlled component', () => {
       const handleChange = jest.fn();
-      const { rerender } = render(<Switch checked={false} onCheckedChange={handleChange} />);
+      const { rerender } = render(
+        <Switch checked={false} onCheckedChange={handleChange} />,
+      );
 
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'false');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
 
       rerender(<Switch checked={true} onCheckedChange={handleChange} />);
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
     });
 
     it('should handle uncontrolled component with defaultChecked', () => {
       render(<Switch defaultChecked />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
     });
   });
 
@@ -194,7 +211,10 @@ describe('Switch Component', () => {
     it('should have aria-checked attribute', () => {
       render(<Switch checked />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
     });
 
     it('should work with labels', () => {
@@ -202,7 +222,7 @@ describe('Switch Component', () => {
         <>
           <label htmlFor="terms-switch">Accept Terms</label>
           <Switch id="terms-switch" />
-        </>
+        </>,
       );
 
       const switchElement = screen.getByRole('switch');
@@ -220,7 +240,7 @@ describe('Switch Component', () => {
         <>
           <span id="switch-label">Enable notifications</span>
           <Switch aria-labelledby="switch-label" />
-        </>
+        </>,
       );
 
       const switchElement = screen.getByRole('switch');
@@ -252,7 +272,10 @@ describe('Switch Component', () => {
     it('should handle name attribute', () => {
       render(<Switch name="feature-toggle" />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute('name', 'feature-toggle');
+      expect(screen.getByRole('switch')).toHaveAttribute(
+        'name',
+        'feature-toggle',
+      );
     });
 
     it('should merge custom className with default classes', () => {

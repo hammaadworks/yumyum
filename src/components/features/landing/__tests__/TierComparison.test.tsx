@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
-import { TierComparison } from '../TierComparison';
+import { TierComparison } from '@/components/features/landing/TierComparison';
 
 describe('TierComparison', () => {
   it('renders correct content for the free tier', () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { useCartItemCount } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { ShoppingCart } from 'lucide-react';

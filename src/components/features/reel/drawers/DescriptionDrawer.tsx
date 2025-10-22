@@ -1,14 +1,13 @@
-import React from 'react';
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-  DrawerDescription,
-} from '@/components/ui/Drawer';
+} from '@/components/ui/drawer';
 import { Dish } from '@/lib/types';
 
-import { Badge } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/badge';
 
 interface DescriptionDrawerProps {
   dish: Dish;
@@ -16,7 +15,11 @@ interface DescriptionDrawerProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function DescriptionDrawer({ dish, open, onOpenChange }: DescriptionDrawerProps) {
+export function DescriptionDrawer({
+  dish,
+  open,
+  onOpenChange,
+}: DescriptionDrawerProps) {
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="bg-background/80 backdrop-blur-sm">

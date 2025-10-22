@@ -1,17 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { GlobalCart } from '@/components/shared/GlobalCart';
+import { Button } from '@/components/ui/button';
 import { Dish } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { useUIStore } from '@/store/use-ui.store';
-import { GlobalCart } from '@/components/shared/GlobalCart';
-import { Button } from '@/components/ui/Button';
+import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
 import { MediaDisplay } from './MediaDisplay';
-import { ReelCategoryNavigator } from './ReelCategoryNavigator';
 import { ReelActionBar } from './ReelActionBar';
+import { ReelCategoryNavigator } from './ReelCategoryNavigator';
 
-import { FilterDrawer } from './drawers/FilterDrawer';
 import { DescriptionDrawer } from './drawers/DescriptionDrawer';
+import { FilterDrawer } from './drawers/FilterDrawer';
 
 interface ReelViewProps {
   dishes: Dish[];
@@ -31,13 +30,14 @@ export function ReelView({
   setActiveIndex,
 }: ReelViewProps) {
   const sortedDishes = React.useMemo(() => {
-    const inStock = dishes.filter(d => d.instock === 'yes');
-    const outOfStock = dishes.filter(d => d.instock === 'no');
+    const inStock = dishes.filter((d) => d.instock === 'yes');
+    const outOfStock = dishes.filter((d) => d.instock === 'no');
     return [...inStock, ...outOfStock];
   }, [dishes]);
 
   const [isFilterDrawerOpen, setFilterDrawerOpen] = React.useState(false);
-  const [isDescriptionDrawerOpen, setDescriptionDrawerOpen] = React.useState(false);
+  const [isDescriptionDrawerOpen, setDescriptionDrawerOpen] =
+    React.useState(false);
 
   const dishRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -45,7 +45,7 @@ export function ReelView({
     if (isReelViewOpen && dishRefs.current[activeIndex]) {
       dishRefs.current[activeIndex]?.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
     }
   }, [isReelViewOpen, activeIndex]);
@@ -55,12 +55,15 @@ export function ReelView({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0', 10);
+            const index = parseInt(
+              entry.target.getAttribute('data-index') || '0',
+              10,
+            );
             setActiveIndex(index);
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     const currentRefs = dishRefs.current;
@@ -83,7 +86,7 @@ export function ReelView({
     setActiveIndex(index);
     dishRefs.current[index]?.scrollIntoView({
       behavior: 'smooth',
-      block: 'start'
+      block: 'start',
     });
   };
 
@@ -117,12 +120,14 @@ export function ReelView({
             {sortedDishes.map((dish, index) => (
               <div
                 key={dish.id}
-                ref={(el) => { dishRefs.current[index] = el; }}
+                ref={(el) => {
+                  dishRefs.current[index] = el;
+                }}
                 data-index={index}
                 data-testid="dish-item"
                 className={cn(
-                  "h-full w-full flex items-center justify-center snap-start relative",
-                  dish.instock === 'no' && 'opacity-50'
+                  'h-full w-full flex items-center justify-center snap-start relative',
+                  dish.instock === 'no' && 'opacity-50',
                 )}
               >
                 <MediaDisplay dish={dish} />
@@ -134,7 +139,10 @@ export function ReelView({
               </div>
             ))}
           </div>
-          <FilterDrawer open={isFilterDrawerOpen} onOpenChange={setFilterDrawerOpen} />
+          <FilterDrawer
+            open={isFilterDrawerOpen}
+            onOpenChange={setFilterDrawerOpen}
+          />
           <DescriptionDrawer
             dish={sortedDishes[activeIndex]}
             open={isDescriptionDrawerOpen}

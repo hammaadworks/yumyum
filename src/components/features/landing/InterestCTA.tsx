@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import React from 'react';
-import { Button } from '@/components/ui/Button';
-import { event } from '@/lib/gtag';
+import { Button } from '@/components/ui/button';
 import { WHATSAPP_INTEREST_MESSAGE, WHATSAPP_NUMBER } from '@/lib/constants';
+import { event } from '@/lib/gtag';
 import { MessageCircle } from 'lucide-react';
 
 export const InterestCTA = () => {

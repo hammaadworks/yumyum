@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DishCard } from '../DishCard';
+import { DishCard } from '@/components/features/dishes/DishCard';
 import { Dish, DishTag } from '@/lib/types';
 
 const mockDish: Dish = {

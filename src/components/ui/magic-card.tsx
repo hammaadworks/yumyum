@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useEffect } from "react"
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
+import { motion, useMotionTemplate, useMotionValue } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -80,8 +80,8 @@ export function MagicCard({
         style={{
           background: useMotionTemplate`
           radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-          ${gradientFrom},
-          ${gradientTo},
+          ${gradientFrom}, 
+          ${gradientTo}, 
           var(--border) 100%
           )
           `,

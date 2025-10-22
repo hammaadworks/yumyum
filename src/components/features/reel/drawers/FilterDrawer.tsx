@@ -3,7 +3,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/Drawer';
+} from '@/components/ui/drawer';
 
 import { ControlsBar } from '@/components/shared/ControlsBar';
 

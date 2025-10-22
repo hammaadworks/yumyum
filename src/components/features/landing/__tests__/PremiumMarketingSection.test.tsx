@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { PremiumMarketingSection } from '../PremiumMarketingSection';
+import { PremiumMarketingSection } from '@/components/features/landing/PremiumMarketingSection';
 
 jest.mock('motion/react', () => ({
   ...jest.requireActual('motion/react'),

@@ -1,20 +1,19 @@
-import React from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-  DrawerClose
-} from '@/components/ui/Drawer';
-import { Button } from '@/components/ui/Button';
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
+import { Brand } from '@/lib/types';
 import { useCartStore } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
-import { Brand } from '@/lib/types';
 import { X } from 'lucide-react';
-import { CartItem } from './CartItem';
-import { FeedbackView } from '../feedback/FeedbackView';
+import { FeedbackView } from '@/components/features/feedback/FeedbackView';
+import { CartItem } from '@/components/features/cart/CartItem';
 
 interface CartSummaryProps {
   open: boolean;
@@ -25,11 +24,14 @@ interface CartSummaryProps {
 export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
   const { items } = useCartStore();
   const { openFeedbackView } = useUIStore();
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
 
   const formatWhatsAppMessage = () => {
     let message = `Order from ${brand.name}:\n\n`;
-    items.forEach(item => {
+    items.forEach((item) => {
       message += `${item.name} x ${item.quantity} - ₹${(item.price * item.quantity).toFixed(2)}\n`;
     });
     message += `\nTotal: ₹${total.toFixed(2)}`;
@@ -56,7 +58,11 @@ export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
           <DrawerHeader>
             <DrawerTitle>Your Order</DrawerTitle>
             <DrawerClose asChild>
-              <Button variant="ghost" size="icon" className="absolute top-4 right-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4"
+              >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </Button>
@@ -79,10 +85,25 @@ export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
                 <p className="text-lg font-semibold">Total</p>
                 <p className="text-lg font-semibold">₹{total.toFixed(2)}</p>
               </div>
-              <Button onClick={handleWhatsAppOrder}>Place Order on WhatsApp</Button>
+              <Button onClick={handleWhatsAppOrder}>
+                Place Order on WhatsApp
+              </Button>
               <div className="flex gap-2">
-                <Button variant="outline" className="w-full" onClick={handleUpiPay} disabled={!brand.payment_link}>UPI Pay</Button>
-                <Button variant="outline" className="w-full" onClick={openFeedbackView}>Leave a rating</Button>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleUpiPay}
+                  disabled={!brand.payment_link}
+                >
+                  UPI Pay
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={openFeedbackView}
+                >
+                  Leave a rating
+                </Button>
               </div>
             </DrawerFooter>
           )}

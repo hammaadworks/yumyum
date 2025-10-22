@@ -1,16 +1,15 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
-import { Dish } from '@/lib/types';
-import { useCartStore } from '@/store/use-cart.store';
-import { Trash2, Eye, Plus, Minus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/Dialog";
+} from '@/components/ui/dialog';
+import { Dish } from '@/lib/types';
+import { useCartStore } from '@/store/use-cart.store';
+import { motion } from 'framer-motion';
+import { Eye, Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 interface CartItemProps {
@@ -75,7 +74,12 @@ export function CartItem({ item }: CartItemProps) {
               <DialogTitle>{item.name}</DialogTitle>
             </DialogHeader>
             <div className="relative aspect-square w-full">
-              <Image src={item.image} alt={item.name} fill className="object-contain" />
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                className="object-contain"
+              />
             </div>
           </DialogContent>
         </Dialog>

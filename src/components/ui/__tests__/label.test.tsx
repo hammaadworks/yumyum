@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Label } from '../Label';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { Label } from '@/components/ui/label';
 
 describe('Label Component', () => {
   describe('Rendering', () => {
@@ -39,7 +39,7 @@ describe('Label Component', () => {
         <>
           <Label htmlFor="test-input">Test Label</Label>
           <input id="test-input" />
-        </>
+        </>,
       );
 
       const label = screen.getByText('Test Label');
@@ -51,7 +51,7 @@ describe('Label Component', () => {
         <>
           <Label htmlFor="email">Email</Label>
           <input id="email" type="email" />
-        </>
+        </>,
       );
 
       const label = screen.getByText('Email');
@@ -84,7 +84,7 @@ describe('Label Component', () => {
       render(
         <Label>
           <span>Required</span> *
-        </Label>
+        </Label>,
       );
 
       expect(screen.getByText('Required')).toBeInTheDocument();
@@ -92,13 +92,14 @@ describe('Label Component', () => {
     });
 
     it('should handle special characters', () => {
-      render(<Label>{"Label <>&\""}</Label>);
+      render(<Label>{'Label <>&"'}</Label>);
 
       expect(screen.getByText('Label <>&"')).toBeInTheDocument();
     });
 
     it('should handle long text', () => {
-      const longText = 'This is a very long label text that might wrap to multiple lines';
+      const longText =
+        'This is a very long label text that might wrap to multiple lines';
       render(<Label>{longText}</Label>);
 
       expect(screen.getByText(longText)).toBeInTheDocument();
@@ -124,7 +125,7 @@ describe('Label Component', () => {
       render(
         <Label>
           Email <span aria-label="required">*</span>
-        </Label>
+        </Label>,
       );
 
       expect(screen.getByLabelText('required')).toBeInTheDocument();
@@ -135,7 +136,7 @@ describe('Label Component', () => {
         <>
           <Label htmlFor="accessible-input">Accessible Input</Label>
           <input id="accessible-input" aria-labelledby="accessible-input" />
-        </>
+        </>,
       );
 
       const label = screen.getByText('Accessible Input');
@@ -163,7 +164,7 @@ describe('Label Component', () => {
       render(
         <Label>
           <strong>Bold</strong> <em>Italic</em>
-        </Label>
+        </Label>,
       );
 
       expect(screen.getByText('Bold')).toBeInTheDocument();

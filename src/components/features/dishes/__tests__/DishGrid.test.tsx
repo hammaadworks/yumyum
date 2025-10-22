@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DishGrid } from '../DishGrid';
+import { DishGrid } from '@/components/features/dishes/DishGrid';
 import { useFilterStore } from '@/store/use-filter.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { Dish } from '@/lib/types';

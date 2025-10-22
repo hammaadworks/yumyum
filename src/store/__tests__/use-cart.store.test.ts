@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useCartStore, useCartItemCount, useCartTotal } from '../use-cart.store';
+import { useCartStore, useCartItemCount, useCartTotal } from '@/store/use-cart.store';
 import { Dish } from '@/lib/types';
 
 const dishA: Dish = {

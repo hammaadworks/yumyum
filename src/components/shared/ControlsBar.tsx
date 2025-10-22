@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Switch } from '@/components/ui/Switch';
-import { Label } from '@/components/ui/Label';
-import { Search, ArrowUpDown, X } from 'lucide-react';
-import { useFilterStore } from '@/store/use-filter.store';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { useDebounce } from '@/hooks/use-debounce';
+import { useFilterStore } from '@/store/use-filter.store';
+import { ArrowUpDown, Search, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export function ControlsBar() {
-  const { vegOnly, sortBy, searchQuery, toggleVegOnly, toggleSortBy, setSearchQuery } = useFilterStore();
+  const {
+    vegOnly,
+    sortBy,
+    searchQuery,
+    toggleVegOnly,
+    toggleSortBy,
+    setSearchQuery,
+  } = useFilterStore();
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const debouncedSearch = useDebounce(localSearch, 300);
 
@@ -21,8 +28,13 @@ export function ControlsBar() {
   return (
     <div className="flex flex-wrap items-center gap-4 p-4 my-4 bg-card rounded-lg shadow-sm">
       <div className="relative flex-grow min-w-[200px]">
-        <Label htmlFor="search-menu" className="sr-only">Search menu</Label>
-        <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Label htmlFor="search-menu" className="sr-only">
+          Search menu
+        </Label>
+        <Search
+          aria-hidden="true"
+          className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+        />
         <Input
           id="search-menu"
           placeholder="Search dishes..."

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ControlsBar } from '../ControlsBar';
+import { ControlsBar } from '@/components/shared/ControlsBar';
 import { useFilterStore } from '@/store/use-filter.store';
 import { FilterState } from '@/store/use-filter.store';
 

@@ -1,15 +1,17 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Button } from '../Button';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Link from 'next/link';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 
 describe('Button Component', () => {
   describe('Rendering', () => {
     it('should render button with children', () => {
       render(<Button>Click me</Button>);
 
-      expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Click me' }),
+      ).toBeInTheDocument();
     });
 
     it('should render as a button element by default', () => {
@@ -125,7 +127,11 @@ describe('Button Component', () => {
 
     it('should not trigger click when disabled', () => {
       const handleClick = jest.fn();
-      render(<Button onClick={handleClick} disabled>Click me</Button>);
+      render(
+        <Button onClick={handleClick} disabled>
+          Click me
+        </Button>,
+      );
 
       fireEvent.click(screen.getByRole('button'));
 
@@ -173,13 +179,25 @@ describe('Button Component', () => {
     });
 
     it('should handle disabled with different variants', () => {
-      const { rerender } = render(<Button variant="default" disabled>Button</Button>);
+      const { rerender } = render(
+        <Button variant="default" disabled>
+          Button
+        </Button>,
+      );
       expect(screen.getByRole('button')).toBeDisabled();
 
-      rerender(<Button variant="outline" disabled>Button</Button>);
+      rerender(
+        <Button variant="outline" disabled>
+          Button
+        </Button>,
+      );
       expect(screen.getByRole('button')).toBeDisabled();
 
-      rerender(<Button variant="ghost" disabled>Button</Button>);
+      rerender(
+        <Button variant="ghost" disabled>
+          Button
+        </Button>,
+      );
       expect(screen.getByRole('button')).toBeDisabled();
     });
   });
@@ -189,7 +207,7 @@ describe('Button Component', () => {
       render(
         <Button asChild>
           <Link href="/test">Link Button</Link>
-        </Button>
+        </Button>,
       );
 
       const link = screen.getByRole('link');
@@ -209,7 +227,7 @@ describe('Button Component', () => {
       render(
         <Button aria-label="Custom label" aria-pressed="true">
           Button
-        </Button>
+        </Button>,
       );
 
       const button = screen.getByRole('button');
@@ -218,7 +236,11 @@ describe('Button Component', () => {
     });
 
     it('should accept data attributes', () => {
-      render(<Button data-testid="custom-button" data-value="test">Button</Button>);
+      render(
+        <Button data-testid="custom-button" data-value="test">
+          Button
+        </Button>,
+      );
 
       const button = screen.getByTestId('custom-button');
       expect(button).toHaveAttribute('data-value', 'test');
@@ -239,14 +261,15 @@ describe('Button Component', () => {
     });
 
     it('should handle long text content', () => {
-      const longText = 'This is a very long button text that should still render properly';
+      const longText =
+        'This is a very long button text that should still render properly';
       render(<Button>{longText}</Button>);
 
       expect(screen.getByText(longText)).toBeInTheDocument();
     });
 
     it('should handle special characters in content', () => {
-      render(<Button>{"Click <>&\" me"}</Button>);
+      render(<Button>{'Click <>&" me'}</Button>);
 
       expect(screen.getByText('Click <>&" me')).toBeInTheDocument();
     });
@@ -255,7 +278,7 @@ describe('Button Component', () => {
       render(
         <Button>
           <span>Icon</span> Text
-        </Button>
+        </Button>,
       );
 
       expect(screen.getByText('Icon')).toBeInTheDocument();
@@ -266,7 +289,7 @@ describe('Button Component', () => {
       render(
         <Button variant="outline" size="lg">
           Button
-        </Button>
+        </Button>,
       );
 
       const button = screen.getByRole('button');
@@ -278,7 +301,7 @@ describe('Button Component', () => {
       render(
         <Button variant="default" className="custom-class">
           Button
-        </Button>
+        </Button>,
       );
 
       const button = screen.getByRole('button');
@@ -316,7 +339,7 @@ describe('Button Component', () => {
         <Button>
           <span className="sr-only">Screen reader text</span>
           <span>Visible text</span>
-        </Button>
+        </Button>,
       );
 
       expect(screen.getByText('Screen reader text')).toBeInTheDocument();
