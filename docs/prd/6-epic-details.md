@@ -14,16 +14,19 @@
     *   **Acceptance Criteria:** 1. A primary Supabase project and a pool of subsidiary vendor accounts are created. 2. API keys are added to environment variables. 3. A `vendor_mappings` table is created in the primary project. 4. The manual vendor allocation process is documented in the wiki.
 *   **Story 2.2: Define and Apply Database Schema**
     *   *As the system, I need the database tables for vendor data to be created, so that data can be stored in a structured way.*
-    *   **Acceptance Criteria:** 1. SQL scripts are written for `brand`, `dishes`, and `status` tables. 2. The schema is consistent with the original GSheets structure. 3. Scripts are applied to both Supabase projects. 4. RLS is enabled on all tables.
+    *   **Acceptance Criteria:** 1. SQL scripts are written for `brand`, `dishes`, `status`, and updated for `vendor_mappings` to include `membership_fee`, `membership_validity`, and `is_member`. 2. The schema is consistent with the original GSheets structure. 3. Scripts are applied to both Supabase projects. 4. RLS is enabled on all tables, specifically including `vendor_mappings`.
 *   **Story 2.3: Implement Magic Link Authentication**
     *   *As a vendor, I want to securely log in using only my email, so that I don't have to remember a password.*
-    *   **Acceptance Criteria:** 1. A `/login` page is created. 2. Submitting an email triggers the Supabase magic link function. 3. The UI informs the user to check their email. 4. Clicking the link authenticates the user.
+    *   **Acceptance Criteria:** 1. A `/login` page is created. 2. Submitting an email first checks against the `vendor_mappings` table. 3. If the email is not found in `vendor_mappings`, an error message is displayed, and no magic link is sent. 4. If the email is found, it triggers the Supabase magic link function. 5. The UI informs the user to check their email. 6. Clicking the link authenticates the user and redirects them to `/{vendor-slug}/dashboard`.
 *   **Story 2.4: Create Protected Dashboard Route & Logout**
     *   *As a vendor, I want the management dashboard to be private, so that my business data is secure.*
     *   **Acceptance Criteria:** 1. A new route is created at `/vendor/dashboard`. 2. Unauthenticated users are redirected to `/login`. 3. A "Logout" button is available and functional.
 *   **Story 2.5: Create Project Wiki and Initial Documents**
     *   *As a new team member, I want a central place for documentation, so that I can get up to speed quickly.*
     *   **Acceptance Criteria:** 1. A `/wiki` directory is created at the project root. 2. An initial document explaining the multi-account architecture is created. 3. A second document detailing the manual vendor onboarding workflows is created.
+*   **Story 2.6: Develop Admin APIs for Membership Management**
+    *   *As an administrator, I want APIs to easily change a vendor's `is_member` status, so that I can manage their membership validity.*
+    *   **Acceptance Criteria:** 1. APIs are developed within the YumYum admin panel to update the `is_member` field in the `vendor_mappings` table. 2. The APIs ensure proper authentication and authorization for admin users. 3. The APIs can set `is_member` to `true` or `false` for a given vendor.
 
 #### **Epic 3: In-App Vendor Dashboard**
 *   **Story 3.1: Build Dashboard Layout and Data Connection**

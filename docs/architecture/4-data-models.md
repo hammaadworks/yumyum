@@ -20,6 +20,15 @@
 
       // ImageKit account is common to both
       imagekit_account_id: string; // Which of the 4 ImageKit accounts
+
+      // Membership and Payment Tracking
+      // Default values on creation:
+      // membership_fee: 0
+      // membership_validity: current date + 10 days
+      // is_member: true
+      membership_fee: number;
+      membership_validity: string; // ISO 8601 date string
+      is_member: boolean;
     }
     ```
 

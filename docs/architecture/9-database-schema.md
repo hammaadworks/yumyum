@@ -17,8 +17,14 @@ CREATE TABLE public.vendor_mappings (
   supabase_project_id text,
   gsheet_id text,
   imagekit_account_id text NOT NULL,
+  membership_fee real DEFAULT 0,
+  membership_validity date DEFAULT (now() + '10 days'::interval),
+  is_member boolean DEFAULT true,
   created_at timestamp with time zone NOT NULL DEFAULT now()
 );
+
+-- RLS (Row Level Security) needs to be created for this table. 
+-- Vendors should only be able to see their own mapping.
 
 -----------------------------------------------------------------
 

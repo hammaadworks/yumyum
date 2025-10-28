@@ -7,7 +7,8 @@ This section covers the key strategies for ensuring the application is secure an
 Our security model is based on a defense-in-depth approach, leveraging the capabilities of our chosen platforms.
 
 *   **Authentication:** All vendor authentication is handled by **Supabase Auth**, using passwordless Magic Links. This outsources the complexity of password management and reduces the risk of credential theft.
-*   **Authorization:** The cornerstone of our data security is **Postgres Row-Level Security (RLS)**. RLS policies, defined in Section 11, ensure that a vendor can *only* access and modify their own data. These policies are enforced at the database level, providing a robust barrier against unauthorized data access.
+*   **Authorization:** The cornerstone of our data security is **Postgres Row-Level Security (RLS)**. RLS policies, defined in Section 11, ensure that a vendor can *only* access and modify their own data. These policies are enforced at the database level, providing a robust barrier against unauthorized data access. Specifically, RLS policies must be implemented for the `public.vendor_mappings` table to restrict vendors to viewing and managing only their own mapping data.
+
 *   **API Security:** By using the official Supabase client library, we ensure that JWTs are managed securely and automatically. All API access is governed by the RLS policies.
 *   **Secret Management:** All sensitive information, such as API keys and database URLs, are stored as environment variables in Vercel and are not exposed to the client-side application.
 *   **Infrastructure Security:** We rely on Vercel and Supabase to manage infrastructure-level security, including DDoS protection, firewalling, and physical security.
