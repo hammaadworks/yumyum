@@ -1,9 +1,17 @@
 import { GET } from '@/app/auth/callback/route';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/utils/server';
 import { NextResponse } from 'next/server';
 
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(() => ({
+    get: jest.fn(),
+    set: jest.fn(),
+    delete: jest.fn(),
+  })),
+}));
+
 // Mock the Supabase client and NextResponse
-jest.mock('@/lib/supabase/server', () => ({
+jest.mock('@/lib/supabase/utils/server', () => ({
   createClient: jest.fn(),
 }));
 jest.mock('next/server', () => ({

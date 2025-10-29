@@ -15,6 +15,21 @@ export interface Brand {
   full_menu_pic?: string;
 }
 
+export type BackendType = 'supabase' | 'gsheets';
+
+export interface VendorMapping {
+  id: number;
+  vendor_slug: string; // e.g., 'the-burger-den'
+  backend_type: BackendType; // 'supabase' or 'gsheets'
+  supabase_project_id?: string; // Which of the 4 Supabase projects
+  gsheet_id?: string;
+  imagekit_account_id: string; // Which of the 4 ImageKit accounts
+  membership_fee: number;
+  membership_validity: string; // ISO 8601 date string
+  is_member: boolean;
+  user_id?: string; // UUID from auth.users
+}
+
 export type InStockStatus = 'yes' | 'no' | 'hide';
 export type DietaryInfo = 'veg' | 'non-veg';
 export type DishTag = 'bestseller' | "chef's special" | 'new' | 'limited edition' | 'normal';

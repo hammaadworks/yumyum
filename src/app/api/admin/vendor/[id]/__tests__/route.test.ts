@@ -1,8 +1,16 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/utils/server';
 import { NextResponse } from 'next/server';
 
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(() => ({
+    get: jest.fn(),
+    set: jest.fn(),
+    delete: jest.fn(),
+  })),
+}));
+
 // Mock the Supabase client and NextResponse
-jest.mock('@/lib/supabase/server', () => ({
+jest.mock('@/lib/supabase/utils/server', () => ({
   createClient: jest.fn(),
 }));
 jest.mock('next/server', () => ({
@@ -54,20 +62,17 @@ describe('Admin Vendor API - PATCH', () => {
     expect(response.options.status).toBe(401);
   });
 
-  // Placeholder for forbidden access (non-admin user)
-  test('should return 403 if user is forbidden (placeholder)', async () => {
+  test('should return 403 if user is forbidden', async () => {
     mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'user' } } } });
 
-    // In a real scenario, you'd mock a user with a non-admin role
     const request = new Request('http://localhost/api/admin/vendor/123', {
       method: 'PATCH',
       body: JSON.stringify({ is_member: true }),
     });
     const response = await PATCH(request, { params: { id: '123' } });
 
-    // Currently, it passes the authorization check, so it will proceed to update.
-    // This test is a placeholder to remind that a proper 403 check is needed.
-    expect(response.options.status).not.toBe(403);
+    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'Forbidden' }, { status: 403 });
+    expect(response.options.status).toBe(403);
   });
 
   test('should return 400 if is_member is not a boolean', async () => {
@@ -85,7 +90,7 @@ describe('Admin Vendor API - PATCH', () => {
 
   test('should return 404 if vendor not found', async () => {
     mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockSelect.mockResolvedValue({ data: [], error: null });
+    mockEq.mockResolvedValue({ data: [], error: null });
 
     const request = new Request('http://localhost/api/admin/vendor/123', {
       method: 'PATCH',
@@ -93,14 +98,15 @@ describe('Admin Vendor API - PATCH', () => {
     });
     const response = await PATCH(request, { params: { id: '123' } });
 
-    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'Vendor not found' }, { status: 404 });
-    expect(response.options.status).toBe(404);
+    expect(response.status).toBe(404);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ error: 'Vendor not found' });
   });
 
   test('should successfully update is_member status', async () => {
     const mockVendor = { id: '123', is_member: true, vendor_slug: 'test-vendor' };
     mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockSelect.mockResolvedValue({ data: [mockVendor], error: null });
+    mockEq.mockResolvedValue({ data: [mockVendor], error: null });
 
     const request = new Request('http://localhost/api/admin/vendor/123', {
       method: 'PATCH',
@@ -116,7 +122,7 @@ describe('Admin Vendor API - PATCH', () => {
 
   test('should return 500 if Supabase update fails', async () => {
     mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockSelect.mockResolvedValue({ data: null, error: { message: 'DB Error' } });
+    mockEq.mockResolvedValue({ data: null, error: { message: 'DB Error' } });
 
     const request = new Request('http://localhost/api/admin/vendor/123', {
       method: 'PATCH',

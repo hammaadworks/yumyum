@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useUIStore } from '@/store/use-ui.store';
 import Image from 'next/image';

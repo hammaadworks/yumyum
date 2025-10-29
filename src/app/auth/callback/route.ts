@@ -1,8 +1,10 @@
-import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/utils/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
-  const supabase = createClient(); // Moved here
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore); // Moved here
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
 

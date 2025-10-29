@@ -1,9 +1,9 @@
 import { updateVendorMembership } from '../admin';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/utils/client';
 import { ADMIN_ROLE } from '@/lib/constants';
 
 // Mock the Supabase client
-jest.mock('@/lib/supabase/client', () => ({
+jest.mock('@/lib/supabase/utils/client', () => ({
   createClient: jest.fn(),
 }));
 
@@ -15,8 +15,8 @@ describe('updateVendorMembership', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUpdate = jest.fn();
-    mockEq = jest.fn(() => ({ update: mockUpdate }));
+    mockUpdate = jest.fn().mockReturnThis();
+    mockEq = jest.fn().mockResolvedValue({ data: {}, error: null });
     mockFrom = jest.fn(() => ({ update: mockUpdate, eq: mockEq }));
 
     mockSupabase = {
@@ -34,15 +34,10 @@ describe('updateVendorMembership', () => {
       data: { user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } } },
       error: null,
     });
-    mockSupabase.from.mockReturnValue({
-      update: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: {}, error: null }),
-    } as any);
 
     const result = await updateVendorMembership('vendor-id-1', true);
     expect(result.success).toBe(true);
     expect(result.error).toBeNull();
-    expect(mockSupabase.from).toHaveBeenCalledWith('vendor_mappings');
     expect(mockFrom).toHaveBeenCalledWith('vendor_mappings');
     expect(mockUpdate).toHaveBeenCalledWith({ is_member: true });
     expect(mockEq).toHaveBeenCalledWith('user_id', 'vendor-id-1');
@@ -77,16 +72,11 @@ describe('updateVendorMembership', () => {
       data: { user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } } },
       error: null,
     });
-    mockSupabase.from.mockReturnValue({
-      update: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: null, error: { message: 'Database error' } }),
-    } as any);
+    mockEq.mockResolvedValue({ data: null, error: { message: 'Database error' } });
 
     const result = await updateVendorMembership('vendor-id-1', false);
     expect(result.success).toBe(false);
     expect(result.error).toBe('Database error');
-    expect(mockSupabase.from).toHaveBeenCalledWith('vendor_mappings');
-    expect(mockSupabase.from).toHaveBeenCalledWith('vendor_mappings');
     expect(mockFrom).toHaveBeenCalledWith('vendor_mappings');
     expect(mockUpdate).toHaveBeenCalledWith({ is_member: false });
     expect(mockEq).toHaveBeenCalledWith('user_id', 'vendor-id-1');

@@ -1,12 +1,12 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LoginPage from '@/app/page';
+import LoginPage from '../page';
 import { checkVendorEmailExists } from '@/services/vendor';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/utils/client';
 import { useRouter } from 'next/navigation';
 
 // Mock the necessary modules
 jest.mock('/Users/alhamdulillah/codespace/yumyum/src/services/vendor');
-jest.mock('@/lib/supabase/client');
+jest.mock('@/lib/supabase/utils/client');
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({
     push: jest.fn(),

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/utils/client';
 import { ADMIN_ROLE } from '@/lib/constants';
 
 export async function updateVendorMembership(vendorId: string, isMember: boolean): Promise<{ success: boolean; error: string | null }> {

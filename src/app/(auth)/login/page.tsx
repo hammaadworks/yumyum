@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/utils/client';
 import { checkVendorEmailExists } from '@/services/vendor'; // Import the new service
 import Link from 'next/link'; // Import Link for "Go Home" button
 
