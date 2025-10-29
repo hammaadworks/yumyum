@@ -9,7 +9,14 @@ export const pageview = (url: URL) => {
 };
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
-export const event = (action: string, { event_category, event_label, value }: { event_category?: string; event_label?: string; value?: number }) => {
+export const event = (
+  action: string,
+  {
+    event_category,
+    event_label,
+    value,
+  }: { event_category?: string; event_label?: string; value?: number },
+) => {
   if (!GA_TRACKING_ID) return;
   window.gtag('event', action, {
     event_category,

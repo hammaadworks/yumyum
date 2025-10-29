@@ -36,65 +36,87 @@ describe('Row Level Security for vendor_mappings', () => {
   // Test Case 2: Authenticated vendor can select their own vendor_mapping
   test('Authenticated vendor can select their own vendor_mapping', async () => {
     // Assuming a vendor_mapping exists for vendor1UserId
-    const { data, error } = await authenticatedSupabase.from('vendor_mappings').select('*').eq('user_id', vendor1UserId);
+    const { data, error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .select('*')
+      .eq('user_id', vendor1UserId);
     expect(error).toBeNull();
     expect(data).toHaveLength(1);
     expect(data[0].user_id).toBe(vendor1UserId);
   });
 
   // Test Case 3: Authenticated vendor cannot select another vendor's mapping
-  test('Authenticated vendor cannot select another vendor\'s mapping', async () => {
-    const { data, error } = await authenticatedSupabase.from('vendor_mappings').select('*').eq('user_id', vendor2UserId);
+  test("Authenticated vendor cannot select another vendor's mapping", async () => {
+    const { data, error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .select('*')
+      .eq('user_id', vendor2UserId);
     expect(error).toBeNull();
     expect(data).toEqual([]);
   });
 
   // Test Case 4: Authenticated vendor can update their own vendor_mapping
   test('Authenticated vendor can update their own vendor_mapping', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').update({ is_member: false }).eq('user_id', vendor1UserId);
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .update({ is_member: false })
+      .eq('user_id', vendor1UserId);
     expect(error).toBeNull();
   });
 
   // Test Case 5: Authenticated vendor cannot update another vendor's mapping
-  test('Authenticated vendor cannot update another vendor\'s mapping', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').update({ is_member: false }).eq('user_id', vendor2UserId);
+  test("Authenticated vendor cannot update another vendor's mapping", async () => {
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .update({ is_member: false })
+      .eq('user_id', vendor2UserId);
     expect(error).not.toBeNull();
     expect(error.code).toBe('42501'); // Permission denied
   });
 
   // Test Case 6: Authenticated vendor cannot insert a mapping for another user
   test('Authenticated vendor cannot insert a mapping for another user', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').insert({
-      vendor_slug: 'new-vendor-for-other-user',
-      backend_type: 'supabase',
-      imagekit_account_id: 'test',
-      user_id: vendor2UserId, // Trying to insert for another user
-    });
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .insert({
+        vendor_slug: 'new-vendor-for-other-user',
+        backend_type: 'supabase',
+        imagekit_account_id: 'test',
+        user_id: vendor2UserId, // Trying to insert for another user
+      });
     expect(error).not.toBeNull();
     expect(error.code).toBe('42501'); // Permission denied
   });
 
   // Test Case 7: Authenticated vendor can insert their own mapping
   test('Authenticated vendor can insert their own mapping', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').insert({
-      vendor_slug: 'new-vendor-for-self',
-      backend_type: 'supabase',
-      imagekit_account_id: 'test',
-      user_id: vendor1UserId, // Inserting for self
-    });
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .insert({
+        vendor_slug: 'new-vendor-for-self',
+        backend_type: 'supabase',
+        imagekit_account_id: 'test',
+        user_id: vendor1UserId, // Inserting for self
+      });
     expect(error).toBeNull();
   });
 
   // Test Case 8: Authenticated vendor cannot delete another vendor's mapping
-  test('Authenticated vendor cannot delete another vendor\'s mapping', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').delete().eq('user_id', vendor2UserId);
+  test("Authenticated vendor cannot delete another vendor's mapping", async () => {
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .delete()
+      .eq('user_id', vendor2UserId);
     expect(error).not.toBeNull();
     expect(error.code).toBe('42501'); // Permission denied
   });
 
   // Test Case 9: Authenticated vendor can delete their own mapping
   test('Authenticated vendor can delete their own mapping', async () => {
-    const { error } = await authenticatedSupabase.from('vendor_mappings').delete().eq('user_id', vendor1UserId);
+    const { error } = await authenticatedSupabase
+      .from('vendor_mappings')
+      .delete()
+      .eq('user_id', vendor1UserId);
     expect(error).toBeNull();
   });
 });

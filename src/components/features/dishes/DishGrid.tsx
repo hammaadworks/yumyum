@@ -17,7 +17,7 @@ export function DishGrid({ dishes, onDishSelect }: DishGridProps) {
     let filtered = [...dishes];
 
     if (vegOnly) {
-      filtered = filtered.filter(dish => dish.veg === 'veg');
+      filtered = filtered.filter((dish) => dish.veg === 'veg');
     }
 
     if (searchQuery) {
@@ -50,11 +50,7 @@ export function DishGrid({ dishes, onDishSelect }: DishGridProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {filteredAndSortedDishes.map((dish) => (
-        <DishCard
-          key={dish.id}
-          dish={dish}
-          onSelect={onDishSelect}
-        />
+        <DishCard key={dish.id} dish={dish} onSelect={onDishSelect} />
       ))}
     </div>
   );

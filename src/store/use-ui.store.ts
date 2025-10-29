@@ -49,6 +49,7 @@ export const useUIStore = create<UIState>((set) => ({
   closeQRCodeModal: () => set({ isQRCodeModalOpen: false }),
   isImageViewerOpen: false,
   imageViewerSrc: '',
-  openImageViewer: (src: string) => set({ isImageViewerOpen: true, imageViewerSrc: src }),
+  openImageViewer: (src: string) =>
+    set({ isImageViewerOpen: true, imageViewerSrc: src }),
   closeImageViewer: () => set({ isImageViewerOpen: false, imageViewerSrc: '' }),
 }));

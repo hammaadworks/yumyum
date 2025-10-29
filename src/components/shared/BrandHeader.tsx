@@ -2,7 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Brand } from '@/lib/types';
 import { cn, generateWhatsAppLink } from '@/lib/utils';
-import { LucideProps, Wallet,
+import {
+  LucideProps,
+  Wallet,
   MessageSquare,
   Phone,
   MapPin,
@@ -10,7 +12,8 @@ import { LucideProps, Wallet,
   Facebook,
   Youtube,
   Link as LinkIcon,
-  QrCode, } from 'lucide-react';
+  QrCode,
+} from 'lucide-react';
 import { useUIStore } from '@/store/use-ui.store';
 import { GlobalCart } from '@/components/shared/GlobalCart';
 
@@ -20,14 +23,20 @@ interface BrandHeaderProps {
 }
 
 interface IconMapEntry {
-  icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
   label: string;
   generateLink?: (value: string) => string;
 }
 
 const iconMap: Record<string, IconMapEntry> = {
   payment_link: { icon: Wallet, label: 'Payment Link' },
-  whatsapp: { icon: MessageSquare, label: 'Contact on WhatsApp', generateLink: (value: string) => generateWhatsAppLink(value) },
+  whatsapp: {
+    icon: MessageSquare,
+    label: 'Contact on WhatsApp',
+    generateLink: (value: string) => generateWhatsAppLink(value),
+  },
   contact: { icon: Phone, label: 'Contact Phone' },
   location_link: { icon: MapPin, label: 'Location on Map' },
   instagram: { icon: Instagram, label: 'Instagram Profile' },
@@ -46,10 +55,11 @@ export function BrandHeader({ brand, hasStatus }: BrandHeaderProps) {
           onClick={hasStatus ? openStatusViewer : undefined}
           className={cn(
             'w-24 h-24 rounded-full p-1',
-            hasStatus && 'bg-gradient-to-r from-primary to-primary-strong status-ring-active'
+            hasStatus &&
+              'bg-gradient-to-r from-primary to-primary-strong status-ring-active',
           )}
           disabled={!hasStatus}
-          aria-label={hasStatus ? "Open status viewer" : "Site logo"}
+          aria-label={hasStatus ? 'Open status viewer' : 'Site logo'}
         >
           <Image
             src={brand.logo_url}
@@ -73,25 +83,27 @@ export function BrandHeader({ brand, hasStatus }: BrandHeaderProps) {
       <p className="mt-2 text-sm">{brand.description}</p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2">
-        {Object.entries(iconMap).map(([key, { icon: Icon, label, generateLink }]) => {
-          const value = brand[key as keyof Brand];
-          if (!value) return null;
+        {Object.entries(iconMap).map(
+          ([key, { icon: Icon, label, generateLink }]) => {
+            const value = brand[key as keyof Brand];
+            if (!value) return null;
 
-          const href = generateLink ? generateLink(value) : value;
+            const href = generateLink ? generateLink(value) : value;
 
-          return (
-            <a
-              key={key}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="p-2 bg-secondary text-secondary-foreground rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-            >
-              <Icon size={20} />
-            </a>
-          );
-        })}
+            return (
+              <a
+                key={key}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="p-2 bg-secondary text-secondary-foreground rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <Icon size={20} />
+              </a>
+            );
+          },
+        )}
       </div>
     </div>
   );

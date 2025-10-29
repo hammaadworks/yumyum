@@ -11,7 +11,8 @@ interface DishCardProps {
 export function DishCard({ dish, onSelect }: DishCardProps) {
   const hasSpecialTag = dish.tag && dish.tag !== 'normal';
 
-  const buttonBaseClasses = "relative aspect-square w-full rounded-lg overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
+  const buttonBaseClasses =
+    'relative aspect-square w-full rounded-lg overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2';
 
   return (
     <button
@@ -49,4 +50,3 @@ export function DishCard({ dish, onSelect }: DishCardProps) {
     </button>
   );
 }
-

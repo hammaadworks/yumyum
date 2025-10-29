@@ -21,7 +21,7 @@ export const useCartStore = create<CartState>((set) => ({
       if (existingItem) {
         return {
           items: state.items.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
           ),
         };
       }
@@ -38,7 +38,7 @@ export const useCartStore = create<CartState>((set) => ({
       }
       return {
         items: state.items.map((i) =>
-          i.id === itemId ? { ...i, quantity } : i
+          i.id === itemId ? { ...i, quantity } : i,
         ),
       };
     }),
@@ -46,5 +46,11 @@ export const useCartStore = create<CartState>((set) => ({
 }));
 
 // Selectors
-export const useCartItemCount = () => useCartStore((state) => state.items.reduce((acc, item) => acc + item.quantity, 0));
-export const useCartTotal = () => useCartStore((state) => state.items.reduce((acc, item) => acc + item.price * item.quantity, 0));
+export const useCartItemCount = () =>
+  useCartStore((state) =>
+    state.items.reduce((acc, item) => acc + item.quantity, 0),
+  );
+export const useCartTotal = () =>
+  useCartStore((state) =>
+    state.items.reduce((acc, item) => acc + item.price * item.quantity, 0),
+  );

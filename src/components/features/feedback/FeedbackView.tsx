@@ -10,7 +10,13 @@ import {
 } from '@/components/ui/dialog';
 import { Brand } from '@/lib/types';
 import { useUIStore } from '@/store/use-ui.store';
-import { isValidHttpUrl, normalizeWhatsapp, validateWhatsapp, openPopup, generateWhatsAppLink } from '@/lib/utils';
+import {
+  isValidHttpUrl,
+  normalizeWhatsapp,
+  validateWhatsapp,
+  openPopup,
+  generateWhatsAppLink,
+} from '@/lib/utils';
 import { WHATSAPP_FEEDBACK_MESSAGE } from '@/lib/constants';
 
 interface FeedbackViewProps {
@@ -60,7 +66,10 @@ export function FeedbackView({ brand }: FeedbackViewProps) {
       }
 
       try {
-        const whatsappUrl = generateWhatsAppLink(brand.whatsapp, `${WHATSAPP_FEEDBACK_MESSAGE} for ${brand.name}`);
+        const whatsappUrl = generateWhatsAppLink(
+          brand.whatsapp,
+          `${WHATSAPP_FEEDBACK_MESSAGE} for ${brand.name}`,
+        );
 
         if (!openPopup(whatsappUrl)) {
           setError(

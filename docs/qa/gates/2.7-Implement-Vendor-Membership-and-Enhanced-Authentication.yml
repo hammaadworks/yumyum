@@ -1,42 +1,38 @@
 schema: 1
 story: '2.7'
 story_title: Implement Vendor Membership and Enhanced Authentication
-gate: FAIL
-status_reason: 'Review blocked by failing tests and a critical bug in the login flow preventing vendor email lookup.'
+gate: CONCERNS
+status_reason: 'The critical bug has been addressed with a new API route and service, and related tests are passing. However, the solution is incomplete as it relies on a manually deployed Supabase RPC function (`get_user_id_by_email`) which is not part of the codebase.'
 reviewer: Quinn (Test Architect)
 updated: '2025-10-28T12:00:00Z'
 
 top_issues:
-  - id: QA-2.7-001
+  - id: QA-2.7-003
     severity: high
-    description: 'The DoD checklist reports that two tests are failing. Passing tests are required before a review can proceed.'
-    recommendation: 'Fix the failing tests and ensure the entire test suite passes.'
-    suggested_owner: dev
-  - id: QA-2.7-002
-    severity: high
-    description: 'The `checkVendorEmailExists` service queries the `vendor_mappings` table by an `email` column which does not exist in the table schema.'
-    recommendation: 'The `vendor_mappings` table needs a foreign key to `auth.users` (e.g., `user_id`). The service should query by this ID, not by email. The schema and associated logic must be corrected.'
+    description: 'The `get_user_id_by_email` PostgreSQL function, critical for the new vendor email check flow, is not part of the codebase and requires manual deployment to Supabase.'
+    recommendation: 'Deploy the `get_user_id_by_email` PostgreSQL function to Supabase. Consider adding this function as a migration script in the future for better version control.'
     suggested_owner: dev
 
-quality_score: 60 # 100 - (20 * 2 FAILs)
+quality_score: 90 # 100 - (10 * 1 CONCERN)
 
 nfr_validation:
   security:
     status: CONCERNS
-    notes: 'The email enumeration risk (SEC-003) is noted, but the primary security mechanisms (RLS, Admin Auth) cannot be fully validated with failing tests.'
+    notes: 'The new server-side email check improves security by using an admin client and RPC, but the overall security posture depends on the correct implementation and deployment of the RPC function.'
   performance:
     status: PASS
-    notes: 'No performance issues identified in initial scan.'
+    notes: 'The new API route introduces an additional network hop, but the impact is likely minimal for this operation.'
   reliability:
-    status: FAIL
-    notes: 'The core login flow is not reliable due to the critical bug.'
+    status: CONCERNS
+    notes: 'The login flow is currently unreliable without the deployed RPC function.'
   maintainability:
     status: CONCERNS
-    notes: 'Inconsistent vendor lookup logic (email vs. user_id) harms maintainability.'
+    notes: 'Relying on a manually deployed RPC function outside of version control (migrations) introduces maintainability risks.'
 
 recommendations:
   immediate:
-    - action: 'Fix all failing tests.'
-      refs: ['Story DoD Checklist']
-    - action: 'Correct the database schema and service logic for vendor email lookup. Add a `user_id` foreign key to `vendor_mappings`.'
-      refs: ['src/services/vendor.ts', 'supabase/migrations']
+    - action: 'Deploy the `get_user_id_by_email` PostgreSQL function to Supabase.'
+      refs: ['Supabase Console']
+  future:
+    - action: 'Integrate the `get_user_id_by_email` RPC function definition into a Supabase migration script for version control and automated deployment.'
+      refs: ['supabase/migrations']

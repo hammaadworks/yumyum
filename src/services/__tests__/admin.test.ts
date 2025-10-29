@@ -31,7 +31,9 @@ describe('updateVendorMembership', () => {
 
   test('should return success if admin user updates membership successfully', async () => {
     (mockSupabase.auth.getUser as jest.Mock).mockResolvedValue({
-      data: { user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } } },
+      data: {
+        user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } },
+      },
       error: null,
     });
 
@@ -57,7 +59,9 @@ describe('updateVendorMembership', () => {
 
   test('should return error if user is not authorized (not admin)', async () => {
     (mockSupabase.auth.getUser as jest.Mock).mockResolvedValue({
-      data: { user: { id: 'non-admin-user-id', user_metadata: { role: 'user' } } },
+      data: {
+        user: { id: 'non-admin-user-id', user_metadata: { role: 'user' } },
+      },
       error: null,
     });
 
@@ -69,10 +73,15 @@ describe('updateVendorMembership', () => {
 
   test('should return error if Supabase update fails', async () => {
     (mockSupabase.auth.getUser as jest.Mock).mockResolvedValue({
-      data: { user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } } },
+      data: {
+        user: { id: 'admin-user-id', user_metadata: { role: ADMIN_ROLE } },
+      },
       error: null,
     });
-    mockEq.mockResolvedValue({ data: null, error: { message: 'Database error' } });
+    mockEq.mockResolvedValue({
+      data: null,
+      error: { message: 'Database error' },
+    });
 
     const result = await updateVendorMembership('vendor-id-1', false);
     expect(result.success).toBe(false);

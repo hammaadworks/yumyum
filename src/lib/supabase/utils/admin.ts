@@ -8,6 +8,6 @@ export const createAdminClient = () => {
       auth: {
         persistSession: false,
       },
-    }
+    },
   );
 };

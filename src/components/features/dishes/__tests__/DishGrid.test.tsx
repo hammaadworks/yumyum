@@ -21,10 +21,47 @@ jest.mock('@/store/use-ui.store', () => ({
 }));
 
 const MOCK_DISHES: Dish[] = [
-  { id: '1', name: 'Veggie Burger', category: 'Burgers', price: 10, veg: 'veg', image: 'https://example.com/v.png', description: '', instock: 'yes' },
-  { id: '2', name: 'Chicken Burger', category: 'Burgers', price: 12, veg: 'non-veg', image: 'https://example.com/c.png', description: '', instock: 'yes' },
-  { id: '3', name: 'Margherita Pizza', category: 'Pizza', price: 15, veg: 'veg', image: 'https://example.com/m.png', description: '', instock: 'yes', tag: 'bestseller' },
-  { id: '4', name: 'Pepperoni Pizza', category: 'Pizza', price: 8, veg: 'non-veg', image: 'https://example.com/p.png', description: '', instock: 'yes' },
+  {
+    id: '1',
+    name: 'Veggie Burger',
+    category: 'Burgers',
+    price: 10,
+    veg: 'veg',
+    image: 'https://example.com/v.png',
+    description: '',
+    instock: 'yes',
+  },
+  {
+    id: '2',
+    name: 'Chicken Burger',
+    category: 'Burgers',
+    price: 12,
+    veg: 'non-veg',
+    image: 'https://example.com/c.png',
+    description: '',
+    instock: 'yes',
+  },
+  {
+    id: '3',
+    name: 'Margherita Pizza',
+    category: 'Pizza',
+    price: 15,
+    veg: 'veg',
+    image: 'https://example.com/m.png',
+    description: '',
+    instock: 'yes',
+    tag: 'bestseller',
+  },
+  {
+    id: '4',
+    name: 'Pepperoni Pizza',
+    category: 'Pizza',
+    price: 8,
+    veg: 'non-veg',
+    image: 'https://example.com/p.png',
+    description: '',
+    instock: 'yes',
+  },
 ];
 
 describe('DishGrid Component', () => {
@@ -66,22 +103,35 @@ describe('DishGrid Component', () => {
     };
 
     // Set the mock implementation for the hooks
-    (useFilterStore as unknown as jest.MockedFunction<MockFilterStore>).mockImplementation(() => mockFilterStoreState);
-    (useUIStore as unknown as jest.MockedFunction<MockUIStore>).mockImplementation(() => mockUIStoreState);
+    (
+      useFilterStore as unknown as jest.MockedFunction<MockFilterStore>
+    ).mockImplementation(() => mockFilterStoreState);
+    (
+      useUIStore as unknown as jest.MockedFunction<MockUIStore>
+    ).mockImplementation(() => mockUIStoreState);
   });
 
   // Test Case: 1.6-G-01 - should render all dishes sorted by price ascending by default
   it('should render all dishes sorted by price ascending by default', () => {
     render(<DishGrid dishes={MOCK_DISHES} onDishSelect={() => {}} />);
-    const dishNames = screen.getAllByTestId('dish-card').map(card => card.getAttribute('data-dish-name'));
-    expect(dishNames).toEqual(['Pepperoni Pizza', 'Veggie Burger', 'Chicken Burger', 'Margherita Pizza']);
+    const dishNames = screen
+      .getAllByTestId('dish-card')
+      .map((card) => card.getAttribute('data-dish-name'));
+    expect(dishNames).toEqual([
+      'Pepperoni Pizza',
+      'Veggie Burger',
+      'Chicken Burger',
+      'Margherita Pizza',
+    ]);
   });
 
   // Test Case: 1.6-G-02 - should filter for veg dishes only
   it('should filter for veg dishes only', () => {
     mockFilterStoreState.vegOnly = true;
     render(<DishGrid dishes={MOCK_DISHES} onDishSelect={() => {}} />);
-    const dishNames = screen.getAllByTestId('dish-card').map(card => card.getAttribute('data-dish-name'));
+    const dishNames = screen
+      .getAllByTestId('dish-card')
+      .map((card) => card.getAttribute('data-dish-name'));
     expect(dishNames).toEqual(['Veggie Burger', 'Margherita Pizza']);
   });
 
@@ -89,8 +139,15 @@ describe('DishGrid Component', () => {
   it('should sort dishes by price descending', () => {
     mockFilterStoreState.sortBy = 'desc';
     render(<DishGrid dishes={MOCK_DISHES} onDishSelect={() => {}} />);
-    const dishNames = screen.getAllByTestId('dish-card').map(card => card.getAttribute('data-dish-name'));
-    expect(dishNames).toEqual(['Margherita Pizza', 'Chicken Burger', 'Veggie Burger', 'Pepperoni Pizza']);
+    const dishNames = screen
+      .getAllByTestId('dish-card')
+      .map((card) => card.getAttribute('data-dish-name'));
+    expect(dishNames).toEqual([
+      'Margherita Pizza',
+      'Chicken Burger',
+      'Veggie Burger',
+      'Pepperoni Pizza',
+    ]);
   });
 
   // Test Case: 1.6-G-04 - should filter and sort simultaneously
@@ -98,14 +155,18 @@ describe('DishGrid Component', () => {
     mockFilterStoreState.vegOnly = true;
     mockFilterStoreState.sortBy = 'desc';
     render(<DishGrid dishes={MOCK_DISHES} onDishSelect={() => {}} />);
-    const dishNames = screen.getAllByTestId('dish-card').map(card => card.getAttribute('data-dish-name'));
+    const dishNames = screen
+      .getAllByTestId('dish-card')
+      .map((card) => card.getAttribute('data-dish-name'));
     expect(dishNames).toEqual(['Margherita Pizza', 'Veggie Burger']);
   });
 
   it('should filter by search query', () => {
     mockFilterStoreState.searchQuery = 'chicken';
     render(<DishGrid dishes={MOCK_DISHES} onDishSelect={() => {}} />);
-    const dishNames = screen.getAllByTestId('dish-card').map(card => card.getAttribute('data-dish-name'));
+    const dishNames = screen
+      .getAllByTestId('dish-card')
+      .map((card) => card.getAttribute('data-dish-name'));
     expect(dishNames).toEqual(['Chicken Burger']);
   });
 });

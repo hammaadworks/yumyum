@@ -29,14 +29,20 @@ describe('ControlsBar', () => {
       setSearchQuery: mockSetSearchQuery,
     };
     // Set the mock implementation for the hook
-    (useFilterStore as unknown as jest.MockedFunction<MockFilterStore>).mockImplementation(() => mockFilterStoreState);
+    (
+      useFilterStore as unknown as jest.MockedFunction<MockFilterStore>
+    ).mockImplementation(() => mockFilterStoreState);
   });
 
   it('should render all controls', () => {
     render(<ControlsBar />);
     expect(screen.getByLabelText('Search menu')).toBeInTheDocument();
-    expect(screen.getByLabelText('Toggle vegetable only filter')).toBeInTheDocument();
-    expect(screen.getByLabelText('Sort by price, currently Low to High')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('Toggle vegetable only filter'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('Sort by price, currently Low to High'),
+    ).toBeInTheDocument();
   });
 
   it('should call toggleVegOnly when the switch is clicked', () => {
@@ -47,19 +53,23 @@ describe('ControlsBar', () => {
 
   it('should call toggleSortBy when the sort button is clicked', () => {
     render(<ControlsBar />);
-    fireEvent.click(screen.getByLabelText('Sort by price, currently Low to High'));
+    fireEvent.click(
+      screen.getByLabelText('Sort by price, currently Low to High'),
+    );
     expect(mockToggleSortBy).toHaveBeenCalled();
   });
 
   it('should call setSearchQuery when the search input changes', async () => {
     render(<ControlsBar />);
-    fireEvent.change(screen.getByLabelText('Search menu'), { target: { value: 'test' } });
+    fireEvent.change(screen.getByLabelText('Search menu'), {
+      target: { value: 'test' },
+    });
     // Wait for debounced call
     await waitFor(
       () => {
         expect(mockSetSearchQuery).toHaveBeenCalledWith('test');
       },
-      { timeout: 500 }
+      { timeout: 500 },
     );
   });
 });

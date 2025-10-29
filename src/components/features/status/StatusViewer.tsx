@@ -19,17 +19,14 @@ export function StatusViewer({ status }: StatusViewerProps) {
     const currentDuration = status[currentIndex]?.duration;
     const delay = (currentDuration !== undefined ? currentDuration : 5) * 1000;
 
-    const timer = setTimeout(
-      () => {
-        if (currentIndex < status.length - 1) {
-          setCurrentIndex((prev) => prev + 1);
-        } else {
-          closeStatusViewer();
-          setCurrentIndex(0);
-        }
-      },
-      delay,
-    );
+    const timer = setTimeout(() => {
+      if (currentIndex < status.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+      } else {
+        closeStatusViewer();
+        setCurrentIndex(0);
+      }
+    }, delay);
 
     return () => clearTimeout(timer);
   }, [currentIndex, status, isStatusViewerOpen, closeStatusViewer]);

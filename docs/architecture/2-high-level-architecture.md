@@ -6,19 +6,19 @@ The YumYum Premium Tier architecture is a modern, serverless, fullstack solution
 
 ## Platform and Infrastructure Choice
 
-*   **Platform:** Vercel and Supabase
-*   **Key Services:**
-    *   **Vercel:** Hosting, CI/CD (Free Tier), SEO.
-    *   **Supabase:** PostgreSQL Database, Authentication (Magic Link), Storage, Auto-generated APIs.
-    *   **ImageKit:** Multi-account media hosting and optimization.
-    *   **Lark:** Webhook for critical alerts.
-*   **Deployment Host and Regions:** Vercel (Global Edge Network), Supabase (`ap-south-1` Mumbai).
+- **Platform:** Vercel and Supabase
+- **Key Services:**
+  - **Vercel:** Hosting, CI/CD (Free Tier), SEO.
+  - **Supabase:** PostgreSQL Database, Authentication (Magic Link), Storage, Auto-generated APIs.
+  - **ImageKit:** Multi-account media hosting and optimization.
+  - **Lark:** Webhook for critical alerts.
+- **Deployment Host and Regions:** Vercel (Global Edge Network), Supabase (`ap-south-1` Mumbai).
 
 ## Repository Structure
 
-*   **Structure:** Monorepo
-*   **Monorepo Tool:** pnpm workspaces
-*   **Package Organization:** The existing monorepo structure will be maintained. New backend-related code (e.g., Supabase schema, RLS policies) will be organized within the existing project structure, likely in a new `supabase/` directory at the root.
+- **Structure:** Monorepo
+- **Monorepo Tool:** pnpm workspaces
+- **Package Organization:** The existing monorepo structure will be maintained. New backend-related code (e.g., Supabase schema, RLS policies) will be organized within the existing project structure, likely in a new `supabase/` directory at the root.
 
 ## High Level Architecture Diagram
 
@@ -71,13 +71,13 @@ graph TD
 
 ## Architectural Patterns
 
-*   **Jamstack Architecture:** The frontend remains a pre-rendered application served from a global CDN, with dynamic functionality handled by client-side JavaScript interacting with the Supabase backend.
-    *   *Rationale:* This ensures maximum performance and a great user experience.
-*   **Backend as a Service (BaaS):** We are leveraging Supabase to provide backend functionality out-of-the-box.
-    *   *Rationale:* This dramatically reduces backend development time, allowing us to focus on the vendor-facing dashboard and features.
-*   **Row-Level Security (RLS):** All data access will be controlled at the database level using Supabase's RLS policies.
-    *   *Rationale:* This is a highly secure and scalable way to enforce data isolation between vendors.
-*   **Client-Side Rendering (CSR) for Dashboard:** The vendor dashboard will be a dynamic, client-side rendered application.
-    *   *Rationale:* This provides a rich, app-like experience for logged-in vendors.
+- **Jamstack Architecture:** The frontend remains a pre-rendered application served from a global CDN, with dynamic functionality handled by client-side JavaScript interacting with the Supabase backend.
+  - _Rationale:_ This ensures maximum performance and a great user experience.
+- **Backend as a Service (BaaS):** We are leveraging Supabase to provide backend functionality out-of-the-box.
+  - _Rationale:_ This dramatically reduces backend development time, allowing us to focus on the vendor-facing dashboard and features.
+- **Row-Level Security (RLS):** All data access will be controlled at the database level using Supabase's RLS policies.
+  - _Rationale:_ This is a highly secure and scalable way to enforce data isolation between vendors.
+- **Client-Side Rendering (CSR) for Dashboard:** The vendor dashboard will be a dynamic, client-side rendered application.
+  - _Rationale:_ This provides a rich, app-like experience for logged-in vendors.
 
 ---

@@ -33,7 +33,9 @@ describe('MediaDisplay Component', () => {
     render(<MediaDisplay dish={MOCK_DISH_IMAGE_ONLY} />);
     const image = screen.getByRole('img');
     expect(image).toBeInTheDocument();
-    expect(image.getAttribute('src')).toContain(encodeURIComponent(MOCK_DISH_IMAGE_ONLY.image));
+    expect(image.getAttribute('src')).toContain(
+      encodeURIComponent(MOCK_DISH_IMAGE_ONLY.image),
+    );
     expect(screen.queryByTestId('video-element')).not.toBeInTheDocument();
   });
 

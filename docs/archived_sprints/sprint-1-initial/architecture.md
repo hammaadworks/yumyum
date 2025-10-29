@@ -18,9 +18,9 @@ Based on the analysis of `brief.md` and `ui-architecture.md`, this is a greenfie
 
 **Content:**
 
-| Date | Version | Description | Author |
-| :--- | :--- | :--- | :--- |
-| 2025-10-12 | 1.0 | Initial document creation. | Hammaad (Architect) |
+| Date       | Version | Description                | Author              |
+| :--------- | :------ | :------------------------- | :------------------ |
+| 2025-10-12 | 1.0     | Initial document creation. | Hammaad (Architect) |
 
 ---
 
@@ -36,21 +36,21 @@ The YumYum platform is designed as a serverless, mobile-first web application fo
 
 **Content:**
 
-*   **Key Services:**
-    *   **Google Sheets:** As the primary data source.
-    *   **GitHub Actions:** As for crons.
-    *   **ImageKit:** For media hosting and optimization.
-*   **Deployment Host and Regions:** Vercel (Global Edge Network)
+- **Key Services:**
+  - **Google Sheets:** As the primary data source.
+  - **GitHub Actions:** As for crons.
+  - **ImageKit:** For media hosting and optimization.
+- **Deployment Host and Regions:** Vercel (Global Edge Network)
 
 #### Repository Structure
 
 **Content:**
 
-*   **Structure:** Monorepo
-*   **Monorepo Tool:** pnpm workspaces
-*   **Package Organization:**
-    *   `apps/client`: The main Next.js frontend application.
-    *   `packages/`: For any future shared libraries (e.g., `ui`, `config`).
+- **Structure:** Monorepo
+- **Monorepo Tool:** pnpm workspaces
+- **Package Organization:**
+  - `apps/client`: The main Next.js frontend application.
+  - `packages/`: For any future shared libraries (e.g., `ui`, `config`).
 
 #### High Level Architecture Diagram
 
@@ -87,12 +87,12 @@ graph TD
 
 **Content:**
 
-*   **Jamstack Architecture:** The frontend is pre-rendered and served from a global CDN, with dynamic functionality handled by client-side JavaScript.
-    *   *Rationale:* This pattern ensures maximum performance, scalability, and security, which are key requirements for a "blazing-fast" user experience.
-*   **Component-Based UI:** The user interface is built using a collection of reusable React components.
-    *   *Rationale:* This promotes code reuse, maintainability, and consistency, aligning with the use of Shadcn UI and modern React practices.
-*   **Serverless:** The architecture avoids traditional server management.
-    *   *Rationale:* This minimizes operational complexity and cost, allowing the team to focus on feature development. The use of Google Sheets as a backend is a prime example of this approach.
+- **Jamstack Architecture:** The frontend is pre-rendered and served from a global CDN, with dynamic functionality handled by client-side JavaScript.
+  - _Rationale:_ This pattern ensures maximum performance, scalability, and security, which are key requirements for a "blazing-fast" user experience.
+- **Component-Based UI:** The user interface is built using a collection of reusable React components.
+  - _Rationale:_ This promotes code reuse, maintainability, and consistency, aligning with the use of Shadcn UI and modern React practices.
+- **Serverless:** The architecture avoids traditional server management.
+  - _Rationale:_ This minimizes operational complexity and cost, allowing the team to focus on feature development. The use of Google Sheets as a backend is a prime example of this approach.
 
 ---
 
@@ -100,26 +100,26 @@ graph TD
 
 **Content:**
 
-| Category | Technology | Version | Purpose | Rationale |
-| :--- | :--- | :--- | :--- | :--- |
-| Frontend Language | TypeScript | latest | Type safety and scalability | Industry standard for modern web development, reduces errors. |
-| Frontend Framework | Next.js | latest | Core application framework | Provides SSR, SSG, and a great developer experience. |
-| UI Component Library | Shadcn UI, Magic UI, Aceternity UI, React Bits, PatternCraft, Unicorn Studio | latest | UI components and animations | A rich ecosystem to accelerate development and achieve a high-quality, modern finish. |
-| State Management | Zustand | latest | Global state management | A small, fast, and scalable solution with a simple hook-based API. |
-| Backend Language | N/A | N/A | No custom backend logic | The backend is a Google Sheet, simplifying the stack. |
-| Backend Framework | N/A | N/A | No custom backend logic | Data is fetched via a simple URL endpoint. |
-| API Style | REST-like (CSV endpoint) | N/A | Data fetching from Google Sheets | The `gviz/tq` endpoint provides a simple, REST-like way to get data without APIs. |
-| Database | Google Sheets | N/A | Primary data store for vendors | Radically simple for the target user (vendors) to manage their menu. |
-| Cache | Local Storage (SWR) | N/A | Caching application data client-side | Implements a 'Stale-While-Revalidate' strategy for an offline-capable, app-like experience. |
-| File Storage | ImageKit | N/A | Media hosting and optimization | A powerful solution for managing and serving images efficiently. |
-| Authentication | N/A | N/A | All pages are public | The MVP focuses on a public-facing menu, no user authentication is required. |
-| Frontend Testing | Jest & React Testing Library | latest | Unit and integration testing | Industry-standard tools for testing React applications. |
-| E2E Testing | Playwright | latest | End-to-end user flow testing | A modern and reliable choice for ensuring critical user journeys work as expected. |
-| Build Tool | SWC (via Next.js) | latest | Fast code compilation | Integrated into Next.js for optimal performance. |
-| CI/CD | Vercel | N/A | Continuous integration & deployment | Seamlessly integrated with the hosting platform for automated builds and deploys. |
-| Monitoring | Google Analytics 4 | N/A | User behavior and funnel tracking | Provides essential product engagement KPIs. |
-| Logging | Lark Webhook | N/A | Critical error alerting | A simple mechanism to alert the development team of critical data fetch failures. |
-| CSS Framework | Tailwind CSS | latest | Utility-first styling | Allows for rapid UI development and easy maintenance. |
+| Category             | Technology                                                                   | Version | Purpose                              | Rationale                                                                                   |
+| :------------------- | :--------------------------------------------------------------------------- | :------ | :----------------------------------- | :------------------------------------------------------------------------------------------ |
+| Frontend Language    | TypeScript                                                                   | latest  | Type safety and scalability          | Industry standard for modern web development, reduces errors.                               |
+| Frontend Framework   | Next.js                                                                      | latest  | Core application framework           | Provides SSR, SSG, and a great developer experience.                                        |
+| UI Component Library | Shadcn UI, Magic UI, Aceternity UI, React Bits, PatternCraft, Unicorn Studio | latest  | UI components and animations         | A rich ecosystem to accelerate development and achieve a high-quality, modern finish.       |
+| State Management     | Zustand                                                                      | latest  | Global state management              | A small, fast, and scalable solution with a simple hook-based API.                          |
+| Backend Language     | N/A                                                                          | N/A     | No custom backend logic              | The backend is a Google Sheet, simplifying the stack.                                       |
+| Backend Framework    | N/A                                                                          | N/A     | No custom backend logic              | Data is fetched via a simple URL endpoint.                                                  |
+| API Style            | REST-like (CSV endpoint)                                                     | N/A     | Data fetching from Google Sheets     | The `gviz/tq` endpoint provides a simple, REST-like way to get data without APIs.           |
+| Database             | Google Sheets                                                                | N/A     | Primary data store for vendors       | Radically simple for the target user (vendors) to manage their menu.                        |
+| Cache                | Local Storage (SWR)                                                          | N/A     | Caching application data client-side | Implements a 'Stale-While-Revalidate' strategy for an offline-capable, app-like experience. |
+| File Storage         | ImageKit                                                                     | N/A     | Media hosting and optimization       | A powerful solution for managing and serving images efficiently.                            |
+| Authentication       | N/A                                                                          | N/A     | All pages are public                 | The MVP focuses on a public-facing menu, no user authentication is required.                |
+| Frontend Testing     | Jest & React Testing Library                                                 | latest  | Unit and integration testing         | Industry-standard tools for testing React applications.                                     |
+| E2E Testing          | Playwright                                                                   | latest  | End-to-end user flow testing         | A modern and reliable choice for ensuring critical user journeys work as expected.          |
+| Build Tool           | SWC (via Next.js)                                                            | latest  | Fast code compilation                | Integrated into Next.js for optimal performance.                                            |
+| CI/CD                | Vercel                                                                       | N/A     | Continuous integration & deployment  | Seamlessly integrated with the hosting platform for automated builds and deploys.           |
+| Monitoring           | Google Analytics 4                                                           | N/A     | User behavior and funnel tracking    | Provides essential product engagement KPIs.                                                 |
+| Logging              | Lark Webhook                                                                 | N/A     | Critical error alerting              | A simple mechanism to alert the development team of critical data fetch failures.           |
+| CSS Framework        | Tailwind CSS                                                                 | latest  | Utility-first styling                | Allows for rapid UI development and easy maintenance.                                       |
 
 ---
 
@@ -129,49 +129,55 @@ graph TD
 
 #### Brand
 
-*   **Purpose:** Represents the vendor's brand identity and contact information, as defined in the `brand` tab of their Google Sheet.
-*   **TypeScript Interface:**
-    ```typescript
-    export interface Brand {
-      name: string;
-      logo_url: string;
-      cuisine: string;
-      description: string;
-      payment_link: string;
-      whatsapp: string;
-      contact: string;
-      location_link?: string;
-      review_link?: string;
-      instagram?: string;
-      facebook?: string;
-      youtube?: string;
-      custom?: string;
-      full_menu_pic?: string;
-    }
-    ```
+- **Purpose:** Represents the vendor's brand identity and contact information, as defined in the `brand` tab of their Google Sheet.
+- **TypeScript Interface:**
+  ```typescript
+  export interface Brand {
+    name: string;
+    logo_url: string;
+    cuisine: string;
+    description: string;
+    payment_link: string;
+    whatsapp: string;
+    contact: string;
+    location_link?: string;
+    review_link?: string;
+    instagram?: string;
+    facebook?: string;
+    youtube?: string;
+    custom?: string;
+    full_menu_pic?: string;
+  }
+  ```
 
 #### Dish
 
-*   **Purpose:** Represents a single item on the menu, as defined in the `dishes` tab.
-*   **TypeScript Interface:**
-    ```typescript
-    export type InStockStatus = 'yes' | 'no' | 'hide';
-    export type DietaryInfo = 'veg' | 'non-veg';
-    export type DishTag = 'bestseller' | "chef's special" | 'new' | 'limited edition' | 'normal';
+- **Purpose:** Represents a single item on the menu, as defined in the `dishes` tab.
+- **TypeScript Interface:**
 
-    export interface Dish {
-      id: string; // System-Generated from name, not a sheet column
-      category: string;
-      name: string;
-      image: string;
-      reel?: string;
-      description: string;
-      price: number;
-      instock: InStockStatus;
-      veg: DietaryInfo;
-      tag?: DishTag;
-    }
-    ```
+  ```typescript
+  export type InStockStatus = 'yes' | 'no' | 'hide';
+  export type DietaryInfo = 'veg' | 'non-veg';
+  export type DishTag =
+    | 'bestseller'
+    | "chef's special"
+    | 'new'
+    | 'limited edition'
+    | 'normal';
+
+  export interface Dish {
+    id: string; // System-Generated from name, not a sheet column
+    category: string;
+    name: string;
+    image: string;
+    reel?: string;
+    description: string;
+    price: number;
+    instock: InStockStatus;
+    veg: DietaryInfo;
+    tag?: DishTag;
+  }
+  ```
 
 ---
 
@@ -181,10 +187,10 @@ graph TD
 
 The project does not have a traditional backend API (e.g., REST, GraphQL). Data is fetched directly from a public Google Sheet using a specific URL format that returns data as a CSV file.
 
-*   **Endpoint:** `https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}`
-*   **Method:** `GET`
-*   **Authentication:** None (the sheet must be public).
-*   **Response Format:** CSV
+- **Endpoint:** `https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}`
+- **Method:** `GET`
+- **Authentication:** None (the sheet must be public).
+- **Response Format:** CSV
 
 This approach is a core architectural decision for the MVP to ensure radical simplicity for the vendor, as it eliminates the need for any backend code or database management. All data parsing from CSV to the TypeScript models defined above happens on the client-side within the Next.js application.
 
@@ -197,24 +203,29 @@ This approach is a core architectural decision for the MVP to ensure radical sim
 The UI is composed of a set of modular components, organized by feature and reusability.
 
 #### `BrandHeader`
-*   **Responsibility:** Displays the vendor's logo, name, bio, and contact links.
-*   **Dependencies:** `Brand` data model.
+
+- **Responsibility:** Displays the vendor's logo, name, bio, and contact links.
+- **Dependencies:** `Brand` data model.
 
 #### `CategoryHighlights`
-*   **Responsibility:** Renders the horizontally-scrolling, Instagram-style category bubbles.
-*   **Dependencies:** `Dish[]` data model (derives categories from the list of dishes).
+
+- **Responsibility:** Renders the horizontally-scrolling, Instagram-style category bubbles.
+- **Dependencies:** `Dish[]` data model (derives categories from the list of dishes).
 
 #### `DishGrid` / `DishCard`
-*   **Responsibility:** Displays the main grid of menu items on the profile page.
-*   **Dependencies:** `Dish` data model.
+
+- **Responsibility:** Displays the main grid of menu items on the profile page.
+- **Dependencies:** `Dish` data model.
 
 #### `ReelView`
-*   **Responsibility:** Provides the full-screen, vertical-scrolling menu browsing experience.
-*   **Dependencies:** `Dish` data model.
+
+- **Responsibility:** Provides the full-screen, vertical-scrolling menu browsing experience.
+- **Dependencies:** `Dish` data model.
 
 #### `CartSummary`
-*   **Responsibility:** A bottom-sheet drawer that shows the current order and allows checkout.
-*   **Dependencies:** `useCartStore` (Zustand).
+
+- **Responsibility:** A bottom-sheet drawer that shows the current order and allows checkout.
+- **Dependencies:** `useCartStore` (Zustand).
 
 ---
 
@@ -223,29 +234,34 @@ The UI is composed of a set of modular components, organized by feature and reus
 **Content:**
 
 #### Google Sheets API
-*   **Purpose:** Serves as the primary database for all vendor and menu information.
-*   **Documentation:** N/A (uses the `gviz` CSV export URL, not the formal API).
-*   **Authentication:** None (requires public sheet access).
+
+- **Purpose:** Serves as the primary database for all vendor and menu information.
+- **Documentation:** N/A (uses the `gviz` CSV export URL, not the formal API).
+- **Authentication:** None (requires public sheet access).
 
 #### ImageKit API
-*   **Purpose:** Hosts, optimizes, and serves all media assets (vendor logos, dish images).
-*   **Documentation:** [https://docs.imagekit.io/](https://docs.imagekit.io/)
-*   **Authentication:** API Key and Secret for upload operations (server-side). Public URLs for consumption.
+
+- **Purpose:** Hosts, optimizes, and serves all media assets (vendor logos, dish images).
+- **Documentation:** [https://docs.imagekit.io/](https://docs.imagekit.io/)
+- **Authentication:** API Key and Secret for upload operations (server-side). Public URLs for consumption.
 
 #### WhatsApp Click to Chat API
-*   **Purpose:** Enables the frictionless ordering flow by opening WhatsApp with a pre-formatted message.
-*   **Documentation:** [https://faq.whatsapp.com/general/chats/how-to-use-click-to-chat](https://faq.whatsapp.com/general/chats/how-to-use-click-to-chat)
-*   **Authentication:** None.
+
+- **Purpose:** Enables the frictionless ordering flow by opening WhatsApp with a pre-formatted message.
+- **Documentation:** [https://faq.whatsapp.com/general/chats/how-to-use-click-to-chat](https://faq.whatsapp.com/general/chats/how-to-use-click-to-chat)
+- **Authentication:** None.
 
 #### Google Analytics 4
-*   **Purpose:** Tracks user interactions, menu conversions, and other key performance indicators.
-*   **Documentation:** [https://developers.google.com/analytics/devguides/collection/ga4](https://developers.google.com/analytics/devguides/collection/ga4)
-*   **Authentication:** Measurement ID (public).
+
+- **Purpose:** Tracks user interactions, menu conversions, and other key performance indicators.
+- **Documentation:** [https://developers.google.com/analytics/devguides/collection/ga4](https://developers.google.com/analytics/devguides/collection/ga4)
+- **Authentication:** Measurement ID (public).
 
 #### Lark Webhook API
-*   **Purpose:** Used for sending critical system alerts (e.g., data fetch failures, low ratings) to the development team's communication channel.
-*   **Documentation:** Specific to the configured incoming webhook URL.
-*   **Authentication:** None (relies on the secrecy of the webhook URL).
+
+- **Purpose:** Used for sending critical system alerts (e.g., data fetch failures, low ratings) to the development team's communication channel.
+- **Documentation:** Specific to the configured incoming webhook URL.
+- **Authentication:** None (relies on the secrecy of the webhook URL).
 
 ---
 
@@ -285,25 +301,27 @@ sequenceDiagram
 The "database" is a structured Google Sheet. Each vendor has their own sheet, which must contain the following tabs with the specified columns, as defined in the PRD.
 
 #### `brand` Tab
-| Column | Optionality | Description |
-| :--- | :--- | :--- |
-| `name` | Required | The display name of the brand. |
-| `logo_url` | Required | URL for the brand's logo. |
-| `cuisine` | Required | Type of cuisine (e.g., "South Indian"). |
-| `description`| Required | A short bio for the brand. |
-| `payment_link`| Required | UPI or other payment deep link. |
-| `whatsapp` | Required | The number for receiving WhatsApp orders. |
-| `contact` | Required | A primary contact phone number. |
-| `location_link`| Optional | Google Maps link to the vendor's location. |
-| `review_link`| Optional | The direct link for customers to leave a review. |
-| `instagram` | Optional | Link to Instagram profile. |
-| `facebook` | Optional | Link to Facebook page. |
-| `youtube` | Optional | Link to YouTube channel. |
-| `custom` | Optional | A custom link (will use a generic 'link' icon). |
-| `full_menu_pic`| Optional | URL to a single, static image of the full menu for offline fallback. |
+
+| Column          | Optionality | Description                                                          |
+| :-------------- | :---------- | :------------------------------------------------------------------- |
+| `name`          | Required    | The display name of the brand.                                       |
+| `logo_url`      | Required    | URL for the brand's logo.                                            |
+| `cuisine`       | Required    | Type of cuisine (e.g., "South Indian").                              |
+| `description`   | Required    | A short bio for the brand.                                           |
+| `payment_link`  | Required    | UPI or other payment deep link.                                      |
+| `whatsapp`      | Required    | The number for receiving WhatsApp orders.                            |
+| `contact`       | Required    | A primary contact phone number.                                      |
+| `location_link` | Optional    | Google Maps link to the vendor's location.                           |
+| `review_link`   | Optional    | The direct link for customers to leave a review.                     |
+| `instagram`     | Optional    | Link to Instagram profile.                                           |
+| `facebook`      | Optional    | Link to Facebook page.                                               |
+| `youtube`       | Optional    | Link to YouTube channel.                                             |
+| `custom`        | Optional    | A custom link (will use a generic 'link' icon).                      |
+| `full_menu_pic` | Optional    | URL to a single, static image of the full menu for offline fallback. |
 
 #### `dishes` Tab
-*Note: The `id` field is system-generated from the `name` during data fetch and is not an actual column in the sheet.*
+
+_Note: The `id` field is system-generated from the `name` during data fetch and is not an actual column in the sheet._
 | Column | Description |
 | :--- | :--- |
 | `category` | The menu category this dish belongs to. |
@@ -324,10 +342,10 @@ The "database" is a structured Google Sheet. Each vendor has their own sheet, wh
 
 The frontend architecture is detailed extensively in the `docs/ui-architecture.md` document. This section provides a high-level summary.
 
-*   **Component Organization:** Components are structured into `ui/` (Shadcn primitives), `shared/` (reusable across features), and `features/` (feature-specific).
-*   **State Management:** Global state (e.g., the shopping cart) is managed by Zustand. Local component state is managed with React hooks (`useState`, `useReducer`).
-*   **Routing:** Handled by the Next.js App Router, with a dynamic route `/[vendor_slug]` serving as the main entry point.
-*   **Data Fetching:** A dedicated service layer in `src/services/gsheets.ts` is responsible for fetching and parsing all data from the Google Sheets backend. This layer will implement caching and error handling.
+- **Component Organization:** Components are structured into `ui/` (Shadcn primitives), `shared/` (reusable across features), and `features/` (feature-specific).
+- **State Management:** Global state (e.g., the shopping cart) is managed by Zustand. Local component state is managed with React hooks (`useState`, `useReducer`).
+- **Routing:** Handled by the Next.js App Router, with a dynamic route `/[vendor_slug]` serving as the main entry point.
+- **Data Fetching:** A dedicated service layer in `src/services/gsheets.ts` is responsible for fetching and parsing all data from the Google Sheets backend. This layer will implement caching and error handling.
 
 ---
 
@@ -378,15 +396,17 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 **Content:**
 
 #### Local Development Setup
-*   **Prerequisites:** `pnpm`, `Node.js`
-*   **Initial Setup:** `pnpm install`
-*   **Development Commands:**
-    *   Start dev server: `pnpm dev`
-    *   Run tests: `pnpm test`
-    *   Build for production: `pnpm build`
+
+- **Prerequisites:** `pnpm`, `Node.js`
+- **Initial Setup:** `pnpm install`
+- **Development Commands:**
+  - Start dev server: `pnpm dev`
+  - Run tests: `pnpm test`
+  - Build for production: `pnpm build`
 
 #### Environment Configuration
-*   All environment variables are managed in an `.env.local` file in the `apps/client` directory. See the `ui-architecture.md` for the full list of required variables.
+
+- All environment variables are managed in an `.env.local` file in the `apps/client` directory. See the `ui-architecture.md` for the full list of required variables.
 
 ---
 
@@ -395,15 +415,17 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 **Content:**
 
 #### Deployment Strategy
-*   **Platform:** Vercel
-*   **Deployment Method:** Continuous Deployment via Git integration. Every push to the `main` branch will trigger an automatic build and deployment to production. Preview deployments will be created for all pull requests.
-*   **Frontend Deployment:**
-    *   **Build Command:** `pnpm build`
-    *   **Output Directory:** `.next`
-    *   **CDN/Edge:** Handled automatically by Vercel's Global Edge Network.
+
+- **Platform:** Vercel
+- **Deployment Method:** Continuous Deployment via Git integration. Every push to the `main` branch will trigger an automatic build and deployment to production. Preview deployments will be created for all pull requests.
+- **Frontend Deployment:**
+  - **Build Command:** `pnpm build`
+  - **Output Directory:** `.next`
+  - **CDN/Edge:** Handled automatically by Vercel's Global Edge Network.
 
 #### CI/CD Pipeline
-*   The CI/CD pipeline is managed entirely by Vercel. The `vercel.json` file can be used to configure project-specific settings if needed.
+
+- The CI/CD pipeline is managed entirely by Vercel. The `vercel.json` file can be used to configure project-specific settings if needed.
 
 ---
 
@@ -412,13 +434,15 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 **Content:**
 
 #### Security Requirements
-*   **Data Security:** The primary data source (Google Sheet) is public by design. No sensitive user data is stored.
-*   **Frontend Security:** Standard web security best practices will be followed (e.g., preventing XSS). Vercel provides additional protections at the edge.
+
+- **Data Security:** The primary data source (Google Sheet) is public by design. No sensitive user data is stored.
+- **Frontend Security:** Standard web security best practices will be followed (e.g., preventing XSS). Vercel provides additional protections at the edge.
 
 #### Performance Optimization
-*   **Loading Strategy:** Next.js provides automatic code splitting, static site generation (SSG), and server-side rendering (SSR) to ensure fast initial page loads.
-*   **Media Optimization:** All images are served via ImageKit for automatic optimization and format selection.
-*   **Caching:** Data fetched from Google Sheets is cached on the client-side using a Local Storage-based "Stale-While-Revalidate" (SWR) strategy. Static assets are cached at browser.
+
+- **Loading Strategy:** Next.js provides automatic code splitting, static site generation (SSG), and server-side rendering (SSR) to ensure fast initial page loads.
+- **Media Optimization:** All images are served via ImageKit for automatic optimization and format selection.
+- **Caching:** Data fetched from Google Sheets is cached on the client-side using a Local Storage-based "Stale-While-Revalidate" (SWR) strategy. Static assets are cached at browser.
 
 ---
 
@@ -428,9 +452,9 @@ This serverless, backend-less approach is a deliberate choice for the MVP to max
 
 The testing strategy follows the "Testing Pyramid" model, focusing on a large base of unit tests, a smaller set of integration tests, and a few critical end-to-end tests.
 
-*   **Unit Tests:** Jest & React Testing Library will be used to test individual components and utility functions in isolation.
-*   **Integration Tests:** Will test the interaction between multiple components, such as the process of adding an item to the cart and seeing the summary update.
-*   **E2E Tests:** Playwright will be used to simulate a full user journey, from landing on the page to successfully preparing an order for WhatsApp.
+- **Unit Tests:** Jest & React Testing Library will be used to test individual components and utility functions in isolation.
+- **Integration Tests:** Will test the interaction between multiple components, such as the process of adding an item to the cart and seeing the summary update.
+- **E2E Tests:** Playwright will be used to simulate a full user journey, from landing on the page to successfully preparing an order for WhatsApp.
 
 ---
 
@@ -440,13 +464,13 @@ The testing strategy follows the "Testing Pyramid" model, focusing on a large ba
 
 All frontend development must adhere to the standards defined in `docs/ui-architecture.md`.
 
-*   **Critical Rules:**
-    1.  Never fetch data directly in components; use the service layer.
-    2.  Use Zustand for global state only; prefer local state.
-    3.  Style with Tailwind utility classes; avoid custom CSS files.
-    4.  Use environment variables for all secrets.
-    5.  Maintain strict TypeScript typing; avoid `any`.
-*   **Naming Conventions:** Follow the `PascalCase` for components and `useCamelCase` for hooks convention.
+- **Critical Rules:**
+  1.  Never fetch data directly in components; use the service layer.
+  2.  Use Zustand for global state only; prefer local state.
+  3.  Style with Tailwind utility classes; avoid custom CSS files.
+  4.  Use environment variables for all secrets.
+  5.  Maintain strict TypeScript typing; avoid `any`.
+- **Naming Conventions:** Follow the `PascalCase` for components and `useCamelCase` for hooks convention.
 
 ---
 
@@ -455,9 +479,11 @@ All frontend development must adhere to the standards defined in `docs/ui-archit
 **Content:**
 
 #### Error Handling
-*   **Data Fetching:** If the Google Sheet data fails to load, the UI will display a user-friendly error message.
-*   **Critical Alerts:** On a critical data fetch failure, a notification will be sent to a pre-configured Lark webhook to alert the development team immediately.
+
+- **Data Fetching:** If the Google Sheet data fails to load, the UI will display a user-friendly error message.
+- **Critical Alerts:** On a critical data fetch failure, a notification will be sent to a pre-configured Lark webhook to alert the development team immediately.
 
 #### Monitoring
-*   **User Analytics:** Google Analytics 4 will be used to monitor user behavior, track the conversion funnel (`menu_views` -> `order_placed_clicks`), and gather insights on product engagement.
-*   **Performance:** Vercel Analytics will be used to monitor Core Web Vitals and overall application performance.
+
+- **User Analytics:** Google Analytics 4 will be used to monitor user behavior, track the conversion funnel (`menu_views` -> `order_placed_clicks`), and gather insights on product engagement.
+- **Performance:** Vercel Analytics will be used to monitor Core Web Vitals and overall application performance.

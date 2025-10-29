@@ -32,7 +32,7 @@ export function ReelCategoryNavigator({
             onClick={() => onSelectCategory(index)}
             className={cn(
               'transition-all duration-300 ease-in-out text-white/50',
-              index === activeIndex && 'active text-white font-bold scale-110'
+              index === activeIndex && 'active text-white font-bold scale-110',
             )}
           >
             {name}

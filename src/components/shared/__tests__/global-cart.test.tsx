@@ -46,7 +46,9 @@ describe('GlobalCart', () => {
       openImageViewer: jest.fn(),
       closeImageViewer: jest.fn(),
     };
-    (useUIStore as unknown as jest.MockedFunction<MockUIStore>).mockImplementation(() => mockUIStoreState);
+    (
+      useUIStore as unknown as jest.MockedFunction<MockUIStore>
+    ).mockImplementation(() => mockUIStoreState);
   });
 
   it('should render the cart icon', () => {

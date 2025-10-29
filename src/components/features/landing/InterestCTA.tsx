@@ -13,7 +13,10 @@ export const InterestCTA = () => {
       event_label: 'Premium CTA Clicked',
     });
 
-    window.location.href = generateWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_INTEREST_MESSAGE);
+    window.location.href = generateWhatsAppLink(
+      WHATSAPP_NUMBER,
+      WHATSAPP_INTEREST_MESSAGE,
+    );
   };
 
   return (

@@ -15,5 +15,3 @@
   "fastapi": "https://context7.com/websites/fastapi_tiangolo/llms.txt"
 }
 ```
-
-

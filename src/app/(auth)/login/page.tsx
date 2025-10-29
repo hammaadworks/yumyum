@@ -19,7 +19,9 @@ export default function LoginPage() {
     const vendorExists = await checkVendorEmailExists(email);
 
     if (!vendorExists) {
-      setError('This email is not registered with YumYum. Please contact support if you believe this is an error.');
+      setError(
+        'This email is not registered with YumYum. Please contact support if you believe this is an error.',
+      );
       setMessage('');
       setShowGoHome(true); // Show "Go Home" button
       return; // Stop the login process
@@ -49,7 +51,10 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Email:
             </label>
             <input
@@ -68,7 +73,9 @@ export default function LoginPage() {
             Send Magic Link
           </button>
         </form>
-        {message && <p className="mt-4 text-green-500 text-center">{message}</p>}
+        {message && (
+          <p className="mt-4 text-green-500 text-center">{message}</p>
+        )}
         {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
         {showGoHome && (
           <div className="mt-4 text-center">

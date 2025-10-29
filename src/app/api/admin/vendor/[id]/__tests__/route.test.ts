@@ -1,101 +1,119 @@
-import { createClient } from '@/lib/supabase/utils/server';
+import { PATCH } from '../route';
 import { NextResponse } from 'next/server';
 
+// Mock the Supabase client
+const mockFrom = jest.fn();
+const mockEq = jest.fn();
+const mockUpdate = jest.fn();
+
+const mockGetUser = jest.fn();
+
+jest.mock('@/lib/supabase/utils/server', () => ({
+  createClient: jest.fn(() => ({
+    auth: {
+      getUser: mockGetUser,
+    },
+    from: mockFrom,
+  })),
+}));
+
+// Mock NextResponse
+jest.mock('next/server', () => ({
+  NextResponse: {
+    json: jest.fn((data, init) => ({
+      json: () => Promise.resolve(data),
+      status: init?.status || 200,
+      headers: init?.headers || {},
+    })),
+    // Mocking the constructor for other uses like new NextResponse
+    __esModule: true,
+    NextResponse: jest.fn((body, init) => ({
+      json: () => Promise.resolve(JSON.parse(body)),
+      status: init?.status || 200,
+      headers: init?.headers || {},
+    })),
+  },
+}));
+
+// Mock next/headers cookies
 jest.mock('next/headers', () => ({
   cookies: jest.fn(() => ({
     get: jest.fn(),
     set: jest.fn(),
-    delete: jest.fn(),
+    remove: jest.fn(),
   })),
 }));
 
-// Mock the Supabase client and NextResponse
-jest.mock('@/lib/supabase/utils/server', () => ({
-  createClient: jest.fn(),
-}));
-jest.mock('next/server', () => ({
-  NextResponse: {
-    json: jest.fn((data, options) => ({ data, options })),
-  },
-}));
-
 describe('Admin Vendor API - PATCH', () => {
-  // Import PATCH inside describe to ensure mocks are applied
-  const { PATCH } = require('@/app/api/admin/vendor/[id]/route');
-
-  const mockCreateClient = createClient as jest.Mock;
-  const mockNextResponse = NextResponse as jest.Mocked<typeof NextResponse>;
-
-  let mockAuthGetUser: jest.Mock;
-  let mockFrom: jest.Mock;
-  let mockUpdate: jest.Mock;
-  let mockEq: jest.Mock;
-  let mockSelect: jest.Mock;
-
   beforeEach(() => {
     jest.clearAllMocks();
-
-    mockAuthGetUser = jest.fn();
-    mockSelect = jest.fn();
-    mockEq = jest.fn(() => ({ select: mockSelect }));
-    mockUpdate = jest.fn(() => ({ eq: mockEq }));
-    mockFrom = jest.fn(() => ({ update: mockUpdate }));
-
-    mockCreateClient.mockReturnValue({
-      auth: {
-        getUser: mockAuthGetUser,
+    mockGetUser.mockResolvedValue({
+      data: {
+        user: {
+          id: 'user-123',
+          email: 'admin@example.com',
+          user_metadata: { role: 'admin' },
+        },
       },
-      from: mockFrom,
-    } as any);
+      error: null,
+    });
+    mockFrom.mockReturnValue({ update: mockUpdate });
+    mockUpdate.mockReturnValue({ eq: mockEq });
+    mockEq.mockImplementation((_key, _value) => ({
+      data: [{ id: 1, is_member: true }], // Default successful update
+      error: null,
+    }));
   });
 
-  test('should return 401 if user is unauthorized', async () => {
-    mockAuthGetUser.mockResolvedValue({ data: { user: null } });
+  it('should return 401 if user is unauthorized', async () => {
+    mockGetUser.mockResolvedValueOnce({ data: { user: null }, error: null });
 
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: true }),
-    });
+    const request = { json: () => Promise.resolve({ is_member: true }) } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
-    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'Unauthorized' }, { status: 401 });
-    expect(response.options.status).toBe(401);
+    expect(response.status).toBe(401);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ error: 'Unauthorized' });
   });
 
-  test('should return 403 if user is forbidden', async () => {
-    mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'user' } } } });
-
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: true }),
+  it('should return 403 if user is forbidden', async () => {
+    mockGetUser.mockResolvedValueOnce({
+      data: {
+        user: {
+          id: 'user-123',
+          email: 'user@example.com',
+          user_metadata: { role: 'user' },
+        },
+      },
+      error: null,
     });
+
+    const request = { json: () => Promise.resolve({ is_member: true }) } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
-    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'Forbidden' }, { status: 403 });
-    expect(response.options.status).toBe(403);
+    expect(response.status).toBe(403);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ error: 'Forbidden' });
   });
 
-  test('should return 400 if is_member is not a boolean', async () => {
-    mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: 'not-a-boolean' }),
-    });
+  it('should return 400 if is_member is not a boolean', async () => {
+    const request = {
+      json: () => Promise.resolve({ is_member: 'not-a-boolean' }),
+    } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
-    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'Invalid is_member value' }, { status: 400 });
-    expect(response.options.status).toBe(400);
+    expect(response.status).toBe(400);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ error: 'Invalid is_member value' });
   });
 
-  test('should return 404 if vendor not found', async () => {
-    mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockEq.mockResolvedValue({ data: [], error: null });
+  it('should return 404 if vendor not found', async () => {
+    mockEq.mockImplementationOnce((_key, _value) => ({
+      data: [], // Simulate no rows found
+      error: null,
+    }));
 
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: true }),
-    });
+    const request = { json: () => Promise.resolve({ is_member: true }) } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
     expect(response.status).toBe(404);
@@ -103,34 +121,33 @@ describe('Admin Vendor API - PATCH', () => {
     expect(responseBody).toEqual({ error: 'Vendor not found' });
   });
 
-  test('should successfully update is_member status', async () => {
-    const mockVendor = { id: '123', is_member: true, vendor_slug: 'test-vendor' };
-    mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockEq.mockResolvedValue({ data: [mockVendor], error: null });
+  it('should successfully update is_member status', async () => {
+    mockEq.mockImplementationOnce((_key, _value) => ({
+      data: [{ id: 1, is_member: true }],
+      error: null,
+    }));
 
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: true }),
-    });
+    const request = { json: () => Promise.resolve({ is_member: true }) } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
     expect(mockUpdate).toHaveBeenCalledWith({ is_member: true });
     expect(mockEq).toHaveBeenCalledWith('id', '123');
-    expect(mockNextResponse.json).toHaveBeenCalledWith(mockVendor);
-    expect(response.data).toEqual(mockVendor);
+    expect(response.status).toBe(200);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ id: 1, is_member: true }); // Expecting single object, not array
   });
 
-  test('should return 500 if Supabase update fails', async () => {
-    mockAuthGetUser.mockResolvedValue({ data: { user: { id: 'user-123', user_metadata: { role: 'admin' } } } });
-    mockEq.mockResolvedValue({ data: null, error: { message: 'DB Error' } });
+  it('should return 500 if Supabase update fails', async () => {
+    mockEq.mockImplementationOnce((_key, _value) => ({
+      data: null,
+      error: { code: '22P02', message: 'DB Error' }, // Simulate a generic DB error
+    }));
 
-    const request = new Request('http://localhost/api/admin/vendor/123', {
-      method: 'PATCH',
-      body: JSON.stringify({ is_member: false }),
-    });
+    const request = { json: () => Promise.resolve({ is_member: true }) } as any;
     const response = await PATCH(request, { params: { id: '123' } });
 
-    expect(mockNextResponse.json).toHaveBeenCalledWith({ error: 'DB Error' }, { status: 500 });
-    expect(response.options.status).toBe(500);
+    expect(response.status).toBe(500);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({ error: 'DB Error' }); // Expecting error.message
   });
 });

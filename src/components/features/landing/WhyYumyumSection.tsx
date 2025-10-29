@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
 
@@ -17,7 +16,9 @@ export const WhyYumyumSection = () => {
     <section className="py-20 bg-[#FEF3E2]">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold text-[#0B0B0B]">Why Yumyum?</h2>
-        <p className="text-xl text-muted-foreground mt-2">You cook, we handle the tech.</p>
+        <p className="text-xl text-muted-foreground mt-2">
+          You cook, we handle the tech.
+        </p>
         <div className="grid md:grid-cols-2 gap-8 mt-12 text-left max-w-2xl mx-auto">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center gap-4">

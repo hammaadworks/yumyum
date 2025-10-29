@@ -23,7 +23,7 @@ CREATE TABLE public.vendor_mappings (
   created_at timestamp with time zone NOT NULL DEFAULT now()
 );
 
--- RLS (Row Level Security) needs to be created for this table. 
+-- RLS (Row Level Security) needs to be created for this table.
 -- Vendors should only be able to see their own mapping.
 
 -----------------------------------------------------------------

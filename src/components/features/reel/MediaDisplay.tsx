@@ -39,12 +39,7 @@ export function MediaDisplay({ dish }: MediaDisplayProps) {
       className="w-full h-full object-contain"
     />
   ) : (
-    <Image
-      src={dish.image}
-      alt={dish.name}
-      fill
-      className="object-contain"
-    />
+    <Image src={dish.image} alt={dish.name} fill className="object-contain" />
   );
 
   return (

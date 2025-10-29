@@ -21,7 +21,10 @@ export const HowToJoinSection = () => {
           </ol>
         </div>
         <a
-          href={generateWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_INTEREST_MESSAGE)}
+          href={generateWhatsAppLink(
+            WHATSAPP_NUMBER,
+            WHATSAPP_INTEREST_MESSAGE,
+          )}
           target="_blank"
           rel="noopener noreferrer"
         >

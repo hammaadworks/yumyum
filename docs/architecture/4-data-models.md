@@ -2,93 +2,94 @@
 
 ## `vendor_mappings`
 
-*   **Purpose:** To act as the master directory for all vendors. It will determine whether a vendor's data is on Google Sheets or Supabase and provide the necessary connection info.
-*   **TypeScript Interface:**
-    ```typescript
-    export type BackendType = 'supabase' | 'gsheets';
+- **Purpose:** To act as the master directory for all vendors. It will determine whether a vendor's data is on Google Sheets or Supabase and provide the necessary connection info.
+- **TypeScript Interface:**
 
-    export interface VendorMapping {
-      id: number;
-      vendor_slug: string; // e.g., 'the-burger-den'
-      backend_type: BackendType; // 'supabase' or 'gsheets'
-      
-      // Supabase-specific fields
-      supabase_project_id?: string; // Which of the 4 Supabase projects
-      
-      // Google Sheets-specific fields
-      gsheet_id?: string;
+  ```typescript
+  export type BackendType = 'supabase' | 'gsheets';
 
-      // ImageKit account is common to both
-      imagekit_account_id: string; // Which of the 4 ImageKit accounts
+  export interface VendorMapping {
+    id: number;
+    vendor_slug: string; // e.g., 'the-burger-den'
+    backend_type: BackendType; // 'supabase' or 'gsheets'
 
-      // Membership and Payment Tracking
-      // Default values on creation:
-      // membership_fee: 0
-      // membership_validity: current date + 10 days
-      // is_member: true
-      membership_fee: number;
-      membership_validity: string; // ISO 8601 date string
-      is_member: boolean;
-    }
-    ```
+    // Supabase-specific fields
+    supabase_project_id?: string; // Which of the 4 Supabase projects
+
+    // Google Sheets-specific fields
+    gsheet_id?: string;
+
+    // ImageKit account is common to both
+    imagekit_account_id: string; // Which of the 4 ImageKit accounts
+
+    // Membership and Payment Tracking
+    // Default values on creation:
+    // membership_fee: 0
+    // membership_validity: current date + 10 days
+    // is_member: true
+    membership_fee: number;
+    membership_validity: string; // ISO 8601 date string
+    is_member: boolean;
+  }
+  ```
 
 ## `Brand`
 
-*   **Purpose:** Represents the vendor's brand identity.
-*   **TypeScript Interface:** (No changes from previous version)
-    ```typescript
-    export interface Brand {
-      id: number;
-      vendor_id: string; // Foreign Key to auth.users.id
-      name: string;
-      logo_url: string;
-      cuisine: string;
-      description: string;
-      payment_link: string;
-      whatsapp: string;
-      contact: string;
-      location_link?: string;
-      review_link?: string;
-      instagram?: string;
-      facebook?: string;
-      youtube?: string;
-      custom?: string;
-      full_menu_pic?: string;
-    }
-    ```
+- **Purpose:** Represents the vendor's brand identity.
+- **TypeScript Interface:** (No changes from previous version)
+  ```typescript
+  export interface Brand {
+    id: number;
+    vendor_id: string; // Foreign Key to auth.users.id
+    name: string;
+    logo_url: string;
+    cuisine: string;
+    description: string;
+    payment_link: string;
+    whatsapp: string;
+    contact: string;
+    location_link?: string;
+    review_link?: string;
+    instagram?: string;
+    facebook?: string;
+    youtube?: string;
+    custom?: string;
+    full_menu_pic?: string;
+  }
+  ```
 
 ## `Dish`
 
-*   **Purpose:** Represents a single menu item.
-*   **TypeScript Interface (Updated):**
-    ```typescript
-    export interface Dish {
-      id: number;
-      vendor_id: string; // Foreign Key to auth.users.id
-      category: string;
-      name: string;
-      description: string | null;
-      price: number | null;
-      instock: 'yes' | 'no' | 'hide' | null;
-      veg: 'veg' | 'non-veg' | null;
-      tag: string | null;
-      image: string | null;
-      reel: string | null;
-      created_at: string;
-    }
-    ```
+- **Purpose:** Represents a single menu item.
+- **TypeScript Interface (Updated):**
+  ```typescript
+  export interface Dish {
+    id: number;
+    vendor_id: string; // Foreign Key to auth.users.id
+    category: string;
+    name: string;
+    description: string | null;
+    price: number | null;
+    instock: 'yes' | 'no' | 'hide' | null;
+    veg: 'veg' | 'non-veg' | null;
+    tag: string | null;
+    image: string | null;
+    reel: string | null;
+    created_at: string;
+  }
+  ```
 
 ## `Status`
 
-*   **Purpose:** Represents a daily status update.
-*   **TypeScript Interface:** (No changes from previous version)
-    ```typescript
-    export interface Status {
-      id: number;
-      vendor_id: string; // Foreign Key to auth.users.id
-      content: string;
-      type: 'image' | 'video' | 'text';
-    }
-    ```
+- **Purpose:** Represents a daily status update.
+- **TypeScript Interface:** (No changes from previous version)
+  ```typescript
+  export interface Status {
+    id: number;
+    vendor_id: string; // Foreign Key to auth.users.id
+    content: string;
+    type: 'image' | 'video' | 'text';
+  }
+  ```
 
 ---

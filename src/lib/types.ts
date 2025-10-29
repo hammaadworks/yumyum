@@ -32,7 +32,12 @@ export interface VendorMapping {
 
 export type InStockStatus = 'yes' | 'no' | 'hide';
 export type DietaryInfo = 'veg' | 'non-veg';
-export type DishTag = 'bestseller' | "chef's special" | 'new' | 'limited edition' | 'normal';
+export type DishTag =
+  | 'bestseller'
+  | "chef's special"
+  | 'new'
+  | 'limited edition'
+  | 'normal';
 
 export interface Dish {
   id: string;

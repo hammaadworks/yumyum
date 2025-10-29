@@ -13,7 +13,9 @@ jest.mock('motion/react', () => ({
 describe('PremiumMarketingSection', () => {
   it('renders its marketing content', () => {
     render(<PremiumMarketingSection />);
-    const heading = screen.getByRole('heading', { name: /Go Premium, Unlock Growth/i });
+    const heading = screen.getByRole('heading', {
+      name: /Go Premium, Unlock Growth/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 });

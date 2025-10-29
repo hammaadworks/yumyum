@@ -272,7 +272,9 @@ describe('Switch Component', () => {
     it.skip('should handle name attribute', () => {
       const { container } = render(<Switch name="feature-toggle" />);
 
-      const hiddenInput = container.querySelector('input[name="feature-toggle"]');
+      const hiddenInput = container.querySelector(
+        'input[name="feature-toggle"]',
+      );
       expect(hiddenInput).toBeInTheDocument();
       expect(hiddenInput).toHaveAttribute('name', 'feature-toggle');
     });

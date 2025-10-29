@@ -16,11 +16,15 @@ export const TierComparison = () => {
   return (
     <section className="py-20 bg-[#FEF3E2]">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold text-[#0B0B0B] mb-12">Find the Right Plan for You</h2>
+        <h2 className="text-3xl font-bold text-[#0B0B0B] mb-12">
+          Find the Right Plan for You
+        </h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <Card className="bg-white">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-[#0B0B0B]">Free Tier</CardTitle>
+              <CardTitle className="text-2xl font-bold text-[#0B0B0B]">
+                Free Tier
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 text-left">
@@ -39,7 +43,9 @@ export const TierComparison = () => {
           </Card>
           <Card className="bg-white border-2 border-[#FAB12F]">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-[#0B0B0B]">Premium Tier</CardTitle>
+              <CardTitle className="text-2xl font-bold text-[#0B0B0B]">
+                Premium Tier
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 text-left">

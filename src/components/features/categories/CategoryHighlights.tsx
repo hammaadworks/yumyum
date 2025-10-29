@@ -7,13 +7,18 @@ interface CategoryHighlightsProps {
   onCategorySelect: (category: string) => void;
 }
 
-export const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes, onCategorySelect }) => {
+export const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({
+  dishes,
+  onCategorySelect,
+}) => {
   const specialCategory = {
     name: 'Specials',
     gradient: 'from-yellow-400 via-red-500 to-pink-500',
   };
 
-  const categories = Array.from(new Set(dishes.map((dish) => dish.category))).sort();
+  const categories = Array.from(
+    new Set(dishes.map((dish) => dish.category)),
+  ).sort();
   const hasSpecials = dishes.some((dish) => dish.tag && dish.tag !== 'normal');
 
   if (!hasSpecials && categories.length === 0) {
@@ -31,13 +36,19 @@ export const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes, 
     return gradients[index % gradients.length];
   };
 
-  const buttonBaseClasses = "flex-shrink-0 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
+  const buttonBaseClasses =
+    'flex-shrink-0 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2';
 
   return (
     <div className="flex space-x-4 overflow-x-auto p-4 scrollbar-hide">
       {hasSpecials && (
-        <button className={cn(buttonBaseClasses)} onClick={() => onCategorySelect('Specials')}>
-          <div className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${specialCategory.gradient}`}>
+        <button
+          className={cn(buttonBaseClasses)}
+          onClick={() => onCategorySelect('Specials')}
+        >
+          <div
+            className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${specialCategory.gradient}`}
+          >
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
               <span className="text-xs font-bold">{specialCategory.name}</span>
             </div>
@@ -45,8 +56,14 @@ export const CategoryHighlights: React.FC<CategoryHighlightsProps> = ({ dishes, 
         </button>
       )}
       {categories.map((category, index) => (
-        <button key={category} className={cn(buttonBaseClasses)} onClick={() => onCategorySelect(category)}>
-          <div className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${getGradient(index)}`}>
+        <button
+          key={category}
+          className={cn(buttonBaseClasses)}
+          onClick={() => onCategorySelect(category)}
+        >
+          <div
+            className={`w-16 h-16 rounded-full p-1 bg-gradient-to-r ${getGradient(index)}`}
+          >
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
               <span className="text-xs font-bold">{category}</span>
             </div>

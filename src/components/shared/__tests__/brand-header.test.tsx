@@ -23,7 +23,7 @@ jest.mock('@/store/use-ui.store', () => ({
 }));
 
 // Mock Lucide icons once globally
-jest.mock("lucide-react", () => ({
+jest.mock('lucide-react', () => ({
   Wallet: () => <div data-testid="wallet-icon" />,
   MessageSquare: () => <div data-testid="whatsapp-icon" />,
   Phone: () => <div data-testid="phone-icon" />,
@@ -37,42 +37,45 @@ jest.mock("lucide-react", () => ({
 
 // ---- Mock Data ----
 const MOCK_BRAND_FULL: Brand = {
-  name: "The Burger Den",
-  logo_url: "https://example.com/logo.png",
-  cuisine: "American",
-  description: "The best burgers in town.",
-  payment_link: "https://example.com/pay",
-  whatsapp: "1112223333",
-  contact: "4445556666",
-  location_link: "https://maps.google.com",
-  instagram: "https://instagram.com/burgerden",
-  facebook: "https://facebook.com/burgerden",
-  youtube: "https://youtube.com/burgerden",
-  custom: "https://example.com/custom",
+  name: 'The Burger Den',
+  logo_url: 'https://example.com/logo.png',
+  cuisine: 'American',
+  description: 'The best burgers in town.',
+  payment_link: 'https://example.com/pay',
+  whatsapp: '1112223333',
+  contact: '4445556666',
+  location_link: 'https://maps.google.com',
+  instagram: 'https://instagram.com/burgerden',
+  facebook: 'https://facebook.com/burgerden',
+  youtube: 'https://youtube.com/burgerden',
+  custom: 'https://example.com/custom',
 };
 
 const MOCK_BRAND_MINIMAL: Brand = {
-  name: "The Pizza Place",
-  logo_url: "https://example.com/pizza.png",
-  cuisine: "Italian",
-  description: "Authentic Italian pizza.",
-  payment_link: "",
-  whatsapp: "",
-  contact: "",
+  name: 'The Pizza Place',
+  logo_url: 'https://example.com/pizza.png',
+  cuisine: 'Italian',
+  description: 'Authentic Italian pizza.',
+  payment_link: '',
+  whatsapp: '',
+  contact: '',
 };
 
 // ---- Tests ----
-describe("BrandHeader", () => {
-  it("renders all information when provided with full data", () => {
+describe('BrandHeader', () => {
+  it('renders all information when provided with full data', () => {
     render(<BrandHeader brand={MOCK_BRAND_FULL} hasStatus={true} />);
 
-    expect(screen.getByText("The Burger Den")).toBeInTheDocument();
-    expect(screen.getByText("American")).toBeInTheDocument();
-    expect(screen.getByText("The best burgers in town.")).toBeInTheDocument();
+    expect(screen.getByText('The Burger Den')).toBeInTheDocument();
+    expect(screen.getByText('American')).toBeInTheDocument();
+    expect(screen.getByText('The best burgers in town.')).toBeInTheDocument();
 
-    const image = screen.getByRole("img", { name: /The Burger Den logo/i });
+    const image = screen.getByRole('img', { name: /The Burger Den logo/i });
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", expect.stringContaining("https://example.com/logo.png"));
+    expect(image).toHaveAttribute(
+      'src',
+      expect.stringContaining('https://example.com/logo.png'),
+    );
 
     expect(screen.getByLabelText(/Payment Link/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Contact on WhatsApp/i)).toBeInTheDocument();
@@ -84,41 +87,51 @@ describe("BrandHeader", () => {
     expect(screen.getByLabelText(/Custom Link/i)).toBeInTheDocument();
   });
 
-  it("renders only required information when optional data is missing", () => {
+  it('renders only required information when optional data is missing', () => {
     render(<BrandHeader brand={MOCK_BRAND_MINIMAL} hasStatus={false} />);
 
-    expect(screen.getByText("The Pizza Place")).toBeInTheDocument();
+    expect(screen.getByText('The Pizza Place')).toBeInTheDocument();
     expect(screen.queryByLabelText(/Payment Link/i)).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(/Contact on WhatsApp/i)).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(/Instagram Profile/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/Contact on WhatsApp/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/Instagram Profile/i),
+    ).not.toBeInTheDocument();
   });
 
-  it("has correct aria-labels for icon links", () => {
+  it('has correct aria-labels for icon links', () => {
     render(<BrandHeader brand={MOCK_BRAND_FULL} hasStatus={false} />);
 
     const labels = [
-      "Payment Link",
-      "Contact on WhatsApp",
-      "Contact Phone",
-      "Location on Map",
-      "Instagram Profile",
-      "Facebook Page",
-      "YouTube Channel",
-      "Custom Link",
+      'Payment Link',
+      'Contact on WhatsApp',
+      'Contact Phone',
+      'Location on Map',
+      'Instagram Profile',
+      'Facebook Page',
+      'YouTube Channel',
+      'Custom Link',
     ];
 
-    labels.forEach(label => {
-      expect(screen.getByLabelText(label)).toHaveAttribute("aria-label", label);
+    labels.forEach((label) => {
+      expect(screen.getByLabelText(label)).toHaveAttribute('aria-label', label);
     });
   });
 
-  it("displays a gradient ring when hasStatus is true", () => {
-    const { container } = render(<BrandHeader brand={MOCK_BRAND_FULL} hasStatus={true} />);
-    expect(container.querySelector(".status-ring-active")).toBeInTheDocument();
+  it('displays a gradient ring when hasStatus is true', () => {
+    const { container } = render(
+      <BrandHeader brand={MOCK_BRAND_FULL} hasStatus={true} />,
+    );
+    expect(container.querySelector('.status-ring-active')).toBeInTheDocument();
   });
 
-  it("does not display a gradient ring when hasStatus is false", () => {
-    const { container } = render(<BrandHeader brand={MOCK_BRAND_FULL} hasStatus={false} />);
-    expect(container.querySelector(".status-ring-active")).not.toBeInTheDocument();
+  it('does not display a gradient ring when hasStatus is false', () => {
+    const { container } = render(
+      <BrandHeader brand={MOCK_BRAND_FULL} hasStatus={false} />,
+    );
+    expect(
+      container.querySelector('.status-ring-active'),
+    ).not.toBeInTheDocument();
   });
 });

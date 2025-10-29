@@ -13,7 +13,9 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign in process completes
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (user) {
     const { data: vendorMapping, error: vendorError } = await supabase
@@ -23,7 +25,9 @@ export async function GET(request: Request) {
       .single();
 
     if (vendorMapping) {
-      return NextResponse.redirect(`${requestUrl.origin}/${vendorMapping.vendor_slug}/dashboard`);
+      return NextResponse.redirect(
+        `${requestUrl.origin}/${vendorMapping.vendor_slug}/dashboard`,
+      );
     } else {
       console.error('Vendor mapping not found for user:', user.id, vendorError);
       // Redirect to a generic dashboard or error page if vendor_slug is not found

@@ -4,13 +4,15 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   // 1. Authentication and Authorization Check
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +30,10 @@ export async function PATCH(
   const { is_member } = await request.json();
 
   if (typeof is_member !== 'boolean') {
-    return NextResponse.json({ error: 'Invalid is_member value' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid is_member value' },
+      { status: 400 },
+    );
   }
 
   const { data, error } = await supabase

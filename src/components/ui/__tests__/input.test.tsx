@@ -156,7 +156,9 @@ describe('Input Component', () => {
     it('should handle special characters in placeholder', () => {
       render(<Input placeholder={'Enter <>&" text'} />);
 
-      expect(screen.getByPlaceholderText('Enter <>&" text')).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText('Enter <>&" text'),
+      ).toBeInTheDocument();
     });
   });
 
@@ -195,7 +197,7 @@ describe('Input Component', () => {
       render(
         <form>
           <Input required name="test-input" />
-        </form>
+        </form>,
       );
 
       const input = screen.getByRole('textbox');
@@ -221,7 +223,7 @@ describe('Input Component', () => {
         <>
           <label htmlFor="test-input">Label</label>
           <Input id="test-input" />
-        </>
+        </>,
       );
 
       const input = screen.getByLabelText('Label');
@@ -299,7 +301,10 @@ describe('Input Component', () => {
     it('should accept aria-invalid attribute', () => {
       render(<Input aria-invalid="true" />);
 
-      expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+      expect(screen.getByRole('textbox')).toHaveAttribute(
+        'aria-invalid',
+        'true',
+      );
     });
 
     it('should accept aria-describedby attribute', () => {
@@ -307,7 +312,7 @@ describe('Input Component', () => {
 
       expect(screen.getByRole('textbox')).toHaveAttribute(
         'aria-describedby',
-        'error-message'
+        'error-message',
       );
     });
   });
@@ -316,13 +321,19 @@ describe('Input Component', () => {
     it('should accept autocomplete attribute', () => {
       render(<Input autoComplete="email" />);
 
-      expect(screen.getByRole('textbox')).toHaveAttribute('autocomplete', 'email');
+      expect(screen.getByRole('textbox')).toHaveAttribute(
+        'autocomplete',
+        'email',
+      );
     });
 
     it('should handle autocomplete off', () => {
       render(<Input autoComplete="off" />);
 
-      expect(screen.getByRole('textbox')).toHaveAttribute('autocomplete', 'off');
+      expect(screen.getByRole('textbox')).toHaveAttribute(
+        'autocomplete',
+        'off',
+      );
     });
   });
 
@@ -376,7 +387,10 @@ describe('Input Component', () => {
     it('should support aria-required', () => {
       render(<Input aria-required="true" />);
 
-      expect(screen.getByRole('textbox')).toHaveAttribute('aria-required', 'true');
+      expect(screen.getByRole('textbox')).toHaveAttribute(
+        'aria-required',
+        'true',
+      );
     });
 
     it('should be keyboard navigable', () => {
@@ -394,7 +408,7 @@ describe('Input Component', () => {
           <label htmlFor="accessible-input">Accessible Input</label>
           <Input id="accessible-input" aria-describedby="help-text" />
           <span id="help-text">Help text</span>
-        </>
+        </>,
       );
 
       const input = screen.getByLabelText('Accessible Input');

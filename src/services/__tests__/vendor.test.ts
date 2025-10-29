@@ -4,6 +4,18 @@ import { checkVendorEmailExists, getVendorMappingByUserId } from '../vendor';
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
+// Mock the createClient for getVendorMappingByUserId tests
+const mockFrom = jest.fn();
+const mockSelect = jest.fn();
+const mockEq = jest.fn();
+const mockSingle = jest.fn();
+
+jest.mock('@/lib/supabase/utils/client', () => ({
+  createClient: jest.fn(() => ({
+    from: mockFrom,
+  })),
+}));
+
 describe('checkVendorEmailExists', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -22,7 +34,7 @@ describe('checkVendorEmailExists', () => {
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ email: 'test@example.com' }),
-      })
+      }),
     );
   });
 
@@ -39,7 +51,7 @@ describe('checkVendorEmailExists', () => {
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ email: 'nonexistent@example.com' }),
-      })
+      }),
     );
   });
 
@@ -53,7 +65,7 @@ describe('checkVendorEmailExists', () => {
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ email: 'error@example.com' }),
-      })
+      }),
     );
   });
 
@@ -70,23 +82,11 @@ describe('checkVendorEmailExists', () => {
 });
 
 describe('getVendorMappingByUserId', () => {
-  // Mock the createClient for this test suite
-  const mockFrom = jest.fn();
-  const mockSelect = jest.fn();
-  const mockEq = jest.fn();
-  const mockSingle = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
     mockFrom.mockReturnValue({ select: mockSelect });
     mockSelect.mockReturnValue({ eq: mockEq });
     mockEq.mockReturnValue({ single: mockSingle });
-
-    jest.mock('@/lib/supabase/utils/client', () => ({
-      createClient: jest.fn(() => ({
-        from: mockFrom,
-      })),
-    }));
   });
 
   it('should return vendor mapping if found', async () => {
@@ -110,14 +110,20 @@ describe('getVendorMappingByUserId', () => {
   });
 
   it('should return null if vendor mapping not found', async () => {
-    mockSingle.mockResolvedValueOnce({ data: null, error: { code: 'PGRST116' } });
+    mockSingle.mockResolvedValueOnce({
+      data: null,
+      error: { code: 'PGRST116' },
+    });
 
     const mapping = await getVendorMappingByUserId('nonexistent-user');
     expect(mapping).toBeNull();
   });
 
   it('should return null if there is a Supabase error (other than no rows found)', async () => {
-    mockSingle.mockResolvedValueOnce({ data: null, error: { code: '500', message: 'Database error' } });
+    mockSingle.mockResolvedValueOnce({
+      data: null,
+      error: { code: '500', message: 'Database error' },
+    });
 
     const mapping = await getVendorMappingByUserId('error-user');
     expect(mapping).toBeNull();

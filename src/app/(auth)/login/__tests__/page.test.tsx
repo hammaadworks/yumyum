@@ -32,13 +32,19 @@ describe('LoginPage Integration', () => {
 
     render(<LoginPage />);
 
-    fireEvent.change(screen.getByLabelText(/Email:/i), { target: { value: 'unregistered@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Email:/i), {
+      target: { value: 'unregistered@example.com' },
+    });
     fireEvent.click(screen.getByRole('button', { name: /Send Magic Link/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/This email is not registered with YumYum/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/This email is not registered with YumYum/i),
+      ).toBeInTheDocument();
     });
-    expect(screen.getByRole('button', { name: /Go Home/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Go Home/i }),
+    ).toBeInTheDocument();
     expect(mockSignInWithOtp).not.toHaveBeenCalled();
   });
 
@@ -48,11 +54,15 @@ describe('LoginPage Integration', () => {
 
     render(<LoginPage />);
 
-    fireEvent.change(screen.getByLabelText(/Email:/i), { target: { value: 'registered@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Email:/i), {
+      target: { value: 'registered@example.com' },
+    });
     fireEvent.click(screen.getByRole('button', { name: /Send Magic Link/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Check your email for a magic link to log in!/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Check your email for a magic link to log in!/i),
+      ).toBeInTheDocument();
     });
     expect(mockSignInWithOtp).toHaveBeenCalledWith({
       email: 'registered@example.com',
@@ -60,22 +70,30 @@ describe('LoginPage Integration', () => {
         emailRedirectTo: `http://localhost/auth/callback`,
       },
     });
-    expect(screen.queryByRole('button', { name: /Go Home/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Go Home/i }),
+    ).not.toBeInTheDocument();
   });
 
   test('should display Supabase error if magic link sending fails', async () => {
     mockCheckVendorEmailExists.mockResolvedValue(true);
-    mockSignInWithOtp.mockResolvedValue({ error: { message: 'Supabase auth error' } });
+    mockSignInWithOtp.mockResolvedValue({
+      error: { message: 'Supabase auth error' },
+    });
 
     render(<LoginPage />);
 
-    fireEvent.change(screen.getByLabelText(/Email:/i), { target: { value: 'registered@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Email:/i), {
+      target: { value: 'registered@example.com' },
+    });
     fireEvent.click(screen.getByRole('button', { name: /Send Magic Link/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/Supabase auth error/i)).toBeInTheDocument();
     });
     expect(mockSignInWithOtp).toHaveBeenCalled();
-    expect(screen.queryByRole('button', { name: /Go Home/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Go Home/i }),
+    ).not.toBeInTheDocument();
   });
 });

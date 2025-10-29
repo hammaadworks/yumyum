@@ -8,8 +8,8 @@ This is an evolution of an existing project. The initial MVP was a greenfield ap
 
 ## Section 1.2 of 18: Change Log
 
-| Date | Version | Description | Author |
-| :--- | :--- | :--- | :--- |
-| 2025-10-21 | 2.0 | Initial architecture for the Premium Tier. | Winston (Architect) |
+| Date       | Version | Description                                | Author              |
+| :--------- | :------ | :----------------------------------------- | :------------------ |
+| 2025-10-21 | 2.0     | Initial architecture for the Premium Tier. | Winston (Architect) |
 
 ---

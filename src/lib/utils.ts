@@ -32,7 +32,10 @@ export function generateDishId(name: string): string {
  * @param message Optional pre-filled message.
  * @returns The WhatsApp link.
  */
-export function generateWhatsAppLink(phoneNumber: string, message?: string): string {
+export function generateWhatsAppLink(
+  phoneNumber: string,
+  message?: string,
+): string {
   const encodedMessage = message ? encodeURIComponent(message) : '';
   const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}${encodedMessage ? `&text=${encodedMessage}` : ''}`;
   const whatsappWebLink = `https://wa.me/${phoneNumber}${encodedMessage ? `?text=${encodedMessage}` : ''}`;
@@ -107,7 +110,8 @@ export const isValidHttpUrl = (url: string) => {
   }
 };
 
-export const normalizeWhatsapp = (number: string) => number.replace(/[^+\d]/g, '');
+export const normalizeWhatsapp = (number: string) =>
+  number.replace(/[^+\d]/g, '');
 
 export const validateWhatsapp = (number: string) => {
   const normalized = normalizeWhatsapp(number);
@@ -118,4 +122,3 @@ export const openPopup = (url: string): boolean => {
   const popup = window.open(url, '_blank');
   return popup !== null;
 };
-

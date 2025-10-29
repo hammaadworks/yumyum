@@ -1,11 +1,12 @@
-
-{/*
+{
+  /*
 Project: Yumyum – Digital Menus for Street Food Vendors
 Task: Build a High-Converting, Emotionally Resonant Landing Page
 Goal: Maximize signups, sales, and profitability while maintaining human warmth and trust.
 
 // ... (rest of the prompt)
-*/}
+*/
+}
 
 import React from 'react';
 

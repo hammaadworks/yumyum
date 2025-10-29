@@ -30,7 +30,7 @@ describe('InterestCTA', () => {
   it('renders the button', () => {
     render(<InterestCTA />);
     expect(
-      screen.getByRole('button', { name: /Chat on WhatsApp/i })
+      screen.getByRole('button', { name: /Chat on WhatsApp/i }),
     ).toBeInTheDocument();
   });
 
@@ -49,7 +49,7 @@ describe('InterestCTA', () => {
     // Deep link applied
     const encodedMessage = encodeURIComponent(WHATSAPP_INTEREST_MESSAGE);
     expect(window.location.href).toBe(
-      `whatsapp://send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`
+      `whatsapp://send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`,
     );
 
     // Fallback after timeout
@@ -58,7 +58,7 @@ describe('InterestCTA', () => {
     });
 
     expect(window.location.href).toBe(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`,
     );
   });
 });

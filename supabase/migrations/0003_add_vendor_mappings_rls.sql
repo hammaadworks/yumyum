@@ -6,3 +6,6 @@ CREATE POLICY "Vendors can view and update their own mappings."
 ON public.vendor_mappings FOR ALL
 USING (auth.uid() = user_id)
 WITH CHECK (auth.uid() = user_id);
+
+-- NOTE: The `get_user_id_by_email` RPC function is used for server-side email checks.
+-- Its DDL is documented in `wiki/supabase_ddl_commands.md`.

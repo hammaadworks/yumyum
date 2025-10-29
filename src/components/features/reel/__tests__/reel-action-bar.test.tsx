@@ -28,7 +28,13 @@ describe('ReelActionBar Component', () => {
 
   // Test Case: 2.4-R-01
   it('should render all three action buttons', () => {
-    render(<ReelActionBar dish={MOCK_DISH} onFilterClick={() => {}} onDescriptionClick={() => {}} />);
+    render(
+      <ReelActionBar
+        dish={MOCK_DISH}
+        onFilterClick={() => {}}
+        onDescriptionClick={() => {}}
+      />,
+    );
     expect(screen.getByLabelText(/filter/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/share/i)).toBeInTheDocument();
@@ -37,7 +43,13 @@ describe('ReelActionBar Component', () => {
   // Test Case: 2.4-C-01
   it('should call onFilterClick when filter button is clicked', () => {
     const handleFilterClick = jest.fn();
-    render(<ReelActionBar dish={MOCK_DISH} onFilterClick={handleFilterClick} onDescriptionClick={() => {}} />);
+    render(
+      <ReelActionBar
+        dish={MOCK_DISH}
+        onFilterClick={handleFilterClick}
+        onDescriptionClick={() => {}}
+      />,
+    );
     fireEvent.click(screen.getByLabelText(/filter/i));
     expect(handleFilterClick).toHaveBeenCalledTimes(1);
   });
@@ -45,7 +57,13 @@ describe('ReelActionBar Component', () => {
   // Test Case: 2.4-C-02
   it('should call onDescriptionClick when description button is clicked', () => {
     const handleDescriptionClick = jest.fn();
-    render(<ReelActionBar dish={MOCK_DISH} onFilterClick={() => {}} onDescriptionClick={handleDescriptionClick} />);
+    render(
+      <ReelActionBar
+        dish={MOCK_DISH}
+        onFilterClick={() => {}}
+        onDescriptionClick={handleDescriptionClick}
+      />,
+    );
     fireEvent.click(screen.getByLabelText(/description/i));
     expect(handleDescriptionClick).toHaveBeenCalledTimes(1);
   });
@@ -53,7 +71,13 @@ describe('ReelActionBar Component', () => {
   // Test Case: 2.4-C-03
   it('should call navigator.share with the correct data when share button is clicked', async () => {
     (navigator.share as jest.Mock).mockResolvedValue(undefined);
-    render(<ReelActionBar dish={MOCK_DISH} onFilterClick={() => {}} onDescriptionClick={() => {}} />);
+    render(
+      <ReelActionBar
+        dish={MOCK_DISH}
+        onFilterClick={() => {}}
+        onDescriptionClick={() => {}}
+      />,
+    );
 
     fireEvent.click(screen.getByLabelText(/share/i));
 

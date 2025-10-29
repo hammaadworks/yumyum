@@ -26,7 +26,9 @@ export async function checkVendorEmailExists(email: string): Promise<boolean> {
   }
 }
 
-export async function getVendorMappingByUserId(userId: string): Promise<VendorMapping | null> {
+export async function getVendorMappingByUserId(
+  userId: string,
+): Promise<VendorMapping | null> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('vendor_mappings')

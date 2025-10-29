@@ -46,12 +46,17 @@ describe('Auth Callback Route', () => {
   });
 
   test('should redirect to /login if no code is provided', async () => {
-    mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null }, error: null });
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: null },
+      error: null,
+    });
 
     const request = new Request('http://localhost/auth/callback');
     const response = await GET(request);
 
-    expect(mockNextResponse.redirect).toHaveBeenCalledWith('http://localhost/login');
+    expect(mockNextResponse.redirect).toHaveBeenCalledWith(
+      'http://localhost/login',
+    );
     expect(response.url).toBe('http://localhost/login');
   });
 
@@ -61,20 +66,31 @@ describe('Auth Callback Route', () => {
       data: { user: { id: 'user-123', email: 'vendor@example.com' } },
       error: null,
     });
-    mockSupabase.from().select().eq().single.mockResolvedValue({
-      data: { vendor_slug: 'test-vendor' },
-      error: null,
-    });
+    mockSupabase
+      .from()
+      .select()
+      .eq()
+      .single.mockResolvedValue({
+        data: { vendor_slug: 'test-vendor' },
+        error: null,
+      });
 
     const request = new Request('http://localhost/auth/callback?code=123');
     const response = await GET(request);
 
-    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith('123');
+    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith(
+      '123',
+    );
     expect(mockSupabase.auth.getUser).toHaveBeenCalled();
     expect(mockSupabase.from).toHaveBeenCalledWith('vendor_mappings');
     expect(mockSupabase.from().select).toHaveBeenCalledWith('vendor_slug');
-    expect(mockSupabase.from().select().eq).toHaveBeenCalledWith('user_id', 'user-123');
-    expect(mockNextResponse.redirect).toHaveBeenCalledWith('http://localhost/test-vendor/dashboard');
+    expect(mockSupabase.from().select().eq).toHaveBeenCalledWith(
+      'user_id',
+      'user-123',
+    );
+    expect(mockNextResponse.redirect).toHaveBeenCalledWith(
+      'http://localhost/test-vendor/dashboard',
+    );
     expect(response.url).toBe('http://localhost/test-vendor/dashboard');
   });
 
@@ -84,20 +100,31 @@ describe('Auth Callback Route', () => {
       data: { user: { id: 'user-123', email: 'vendor@example.com' } },
       error: null,
     });
-    mockSupabase.from().select().eq().single.mockResolvedValue({
-      data: null,
-      error: { code: 'PGRST116', message: 'No rows found' },
-    });
+    mockSupabase
+      .from()
+      .select()
+      .eq()
+      .single.mockResolvedValue({
+        data: null,
+        error: { code: 'PGRST116', message: 'No rows found' },
+      });
 
     const request = new Request('http://localhost/auth/callback?code=123');
     const response = await GET(request);
 
-    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith('123');
+    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith(
+      '123',
+    );
     expect(mockSupabase.auth.getUser).toHaveBeenCalled();
     expect(mockSupabase.from).toHaveBeenCalledWith('vendor_mappings');
     expect(mockSupabase.from().select).toHaveBeenCalledWith('vendor_slug');
-    expect(mockSupabase.from().select().eq).toHaveBeenCalledWith('user_id', 'user-123');
-    expect(mockNextResponse.redirect).toHaveBeenCalledWith('http://localhost/dashboard-error');
+    expect(mockSupabase.from().select().eq).toHaveBeenCalledWith(
+      'user_id',
+      'user-123',
+    );
+    expect(mockNextResponse.redirect).toHaveBeenCalledWith(
+      'http://localhost/dashboard-error',
+    );
     expect(response.url).toBe('http://localhost/dashboard-error');
   });
 
@@ -111,9 +138,13 @@ describe('Auth Callback Route', () => {
     const request = new Request('http://localhost/auth/callback?code=123');
     const response = await GET(request);
 
-    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith('123');
+    expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith(
+      '123',
+    );
     expect(mockSupabase.auth.getUser).toHaveBeenCalled();
-    expect(mockNextResponse.redirect).toHaveBeenCalledWith('http://localhost/login');
+    expect(mockNextResponse.redirect).toHaveBeenCalledWith(
+      'http://localhost/login',
+    );
     expect(response.url).toBe('http://localhost/login');
   });
 });

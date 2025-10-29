@@ -4,7 +4,8 @@ ACTIVATION-NOTICE: This prompt contains your full agent operating guidelines. DO
 
 CRITICAL: Read the full YAML BLOCK that FOLLOWS IN THIS FILE to understand your operating params, start and follow exactly your activation-instructions to alter your state of being, stay in this being until told to exit this mode:
 
-## Task: 
+## Task:
+
 1. develop-story `docs/stories/1.1.story.md`
 
 ### COMPLETE AGENT DEFINITION FOLLOWS - NO EXTERNAL FILES NEEDED
@@ -88,28 +89,28 @@ dependencies:
 
 Whenever referencing or reasoning about a library, framework, or SDK:
 
-1. **Locate the Documentation**  
-   - Check `./docs/library_docs_help.md` for the library key.  
-   - Use the URL exactly if provided (e.g., `https://context7.com/vercel/next.js/llms.txt`).  
+1. **Locate the Documentation**
+   - Check `./docs/library_docs_help.md` for the library key.
+   - Use the URL exactly if provided (e.g., `https://context7.com/vercel/next.js/llms.txt`).
    - The URL is treated as authoritative and up-to-date.
 
-2. **Selective Retrieval with Snippet Cap**  
-   - Never read the entire document at once.  
-   - Fetch or load **only the section(s)** relevant to the current task.  
-     - Use headings, function names, API names to locate relevant parts (e.g., `## Routing`, `## Middleware`, `## Models`).  
-   - **Cap the snippet to ≤ 4000 tokens**.  
+2. **Selective Retrieval with Snippet Cap**
+   - Never read the entire document at once.
+   - Fetch or load **only the section(s)** relevant to the current task.
+     - Use headings, function names, API names to locate relevant parts (e.g., `## Routing`, `## Middleware`, `## Models`).
+   - **Cap the snippet to ≤ 4000 tokens**.
    - If the relevant section exceeds this limit, summarise or truncate to fit.
 
-3. **Memory and Context Control**  
-   - After extracting what you need, discard the rest of the document content.  
+3. **Memory and Context Control**
+   - After extracting what you need, discard the rest of the document content.
    - Do not retain large chunks across turns; keep only short, essential context snippets.
 
-4. **Missing Documentation Link**  
+4. **Missing Documentation Link**
    - If the library appears in code but is missing in `./docs/library_docs_help.md`, add it with an empty value:
      ```json
      { "new_library_name": "" }
      ```
    - Notify or log that the documentation link needs to be filled.
 
-5. **Clarify Scope When Needed**  
+5. **Clarify Scope When Needed**
    - If you’re unsure which part of the library docs to load (e.g., “Are we dealing with authentication vs routing vs data models in FastAPI?”), ask the user for clarification rather than loading a large ambiguous section.

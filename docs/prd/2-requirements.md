@@ -1,6 +1,7 @@
 # 2. Requirements
 
 #### **Functional Requirements**
+
 1.  **FR1:** The main landing page (`/`) shall be updated to include a marketing section advertising the Premium Tier.
 2.  **FR2:** The system shall provide a secure login page for vendors using a Magic Link (passwordless) system via Supabase Auth. The login process must first verify the user's email against the `vendor_mappings` table. If the email is not found, the system shall display an appropriate error message and a home button, without sending a magic link. Upon successful login, the user shall be redirected to `/{vendor-slug}/dashboard`.
 3.  **FR3:** A logged-in vendor shall have access to a protected, in-app management dashboard at `/vendor/dashboard`.
@@ -12,6 +13,7 @@
 9.  **FR9:** The YumYum admin panel shall provide APIs to easily manage and update the `is_member` status for vendors.
 
 #### **Non-Functional Requirements**
+
 1.  **NFR1:** The entire system architecture must operate within the free tiers of all underlying platforms.
 2.  **NFR2:** The backend architecture must support a multi-account strategy for Supabase and ImageKit.
 3.  **NFR3:** For the MVP, vendor allocation to a Supabase account shall be a manual process.

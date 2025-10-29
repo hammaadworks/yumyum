@@ -35,6 +35,7 @@ CREATE POLICY "Enable read access for all authenticated users" ON public.vendor_
 -- CREATE POLICY "Allow admin to update vendor mappings" ON public.vendor_mappings FOR UPDATE USING (auth.role() = 'service_role');
 -- CREATE POLICY "Allow admin to delete vendor mappings" ON public.vendor_mappings FOR DELETE USING (auth.role() = 'service_role');
 
+
 -----------------------------------------------------------------
 -- DDL for EACH of the VENDOR Supabase projects (e.g., 4 separate projects)
 -----------------------------------------------------------------
@@ -109,3 +110,7 @@ CREATE POLICY "Vendors can insert their own status" ON public.status FOR INSERT 
 CREATE POLICY "Vendors can update their own status" ON public.status FOR UPDATE USING (auth.uid() = vendor_id);
 CREATE POLICY "Vendors can delete their own status" ON public.status FOR DELETE USING (auth.uid() = vendor_id);
 ```
+
+### RPC Functions
+
+-- The `get_user_id_by_email` RPC function is now defined in `supabase/migrations/0004_create_get_user_id_by_email_rpc.sql`.

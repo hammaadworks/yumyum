@@ -4,7 +4,11 @@ import { useFilterStore } from '@/store/use-filter.store';
 describe('useFilterStore', () => {
   beforeEach(() => {
     act(() => {
-      useFilterStore.setState({ vegOnly: false, sortBy: 'asc', searchQuery: '' });
+      useFilterStore.setState({
+        vegOnly: false,
+        sortBy: 'asc',
+        searchQuery: '',
+      });
     });
   });
 
