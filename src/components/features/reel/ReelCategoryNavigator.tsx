@@ -13,15 +13,12 @@ export function ReelCategoryNavigator({
   onSelectCategory,
 }: ReelCategoryNavigatorProps) {
   const getVisibleCategories = () => {
-    const visible = [];
-    if (activeIndex > 0) {
-      visible.push({ name: categories[activeIndex - 1], index: activeIndex - 1 });
-    }
-    visible.push({ name: categories[activeIndex], index: activeIndex });
-    if (activeIndex < categories.length - 1) {
-      visible.push({ name: categories[activeIndex + 1], index: activeIndex + 1 });
-    }
-    return visible;
+    const start = Math.max(0, activeIndex - 1);
+    const end = Math.min(categories.length, activeIndex + 2);
+    return categories.slice(start, end).map((name, i) => ({
+      name,
+      index: start + i,
+    }));
   };
 
   const visibleCategories = getVisibleCategories();

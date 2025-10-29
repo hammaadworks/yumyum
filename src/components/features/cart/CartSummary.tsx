@@ -9,6 +9,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { Brand } from '@/lib/types';
+import { generateWhatsAppLink } from '@/lib/utils';
 import { useCartStore } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { X } from 'lucide-react';
@@ -23,7 +24,7 @@ interface CartSummaryProps {
 
 export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
   const { items } = useCartStore();
-  const { openFeedbackView } = useUIStore();
+  const { openFeedbackView, isFeedbackViewOpen } = useUIStore();
   const total = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
@@ -35,19 +36,19 @@ export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
       message += `${item.name} x ${item.quantity} - ₹${(item.price * item.quantity).toFixed(2)}\n`;
     });
     message += `\nTotal: ₹${total.toFixed(2)}`;
-    return encodeURIComponent(message);
+    return message;
   };
 
   const handleWhatsAppOrder = () => {
     const message = formatWhatsAppMessage();
-    window.open(`https://wa.me/${brand.whatsapp}?text=${message}`, '_blank');
+    window.open(generateWhatsAppLink(brand.whatsapp, message), '_blank');
   };
 
   const handleUpiPay = () => {
     if (brand.payment_link) {
       window.open(brand.payment_link, '_blank');
     } else {
-      alert('UPI payment is not available for this brand.');
+      console.warn('UPI payment is not available for this brand.');
     }
   };
 
@@ -108,7 +109,7 @@ export function CartSummary({ open, onOpenChange, brand }: CartSummaryProps) {
             </DrawerFooter>
           )}
         </div>
-        <FeedbackView brand={brand} />
+        {isFeedbackViewOpen && <FeedbackView brand={brand} />}
       </DrawerContent>
     </Drawer>
   );

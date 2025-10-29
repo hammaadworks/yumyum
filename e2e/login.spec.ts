@@ -21,10 +21,8 @@ test.describe('Login Page E2E Tests', () => {
     // For this E2E test, we'll simulate the successful flow.
 
     // Mock the checkVendorEmailExists to return true
-    await page.evaluate(() => {
-      window.checkVendorEmailExists = async (email: string) => {
-        return email === 'registered@example.com';
-      };
+    await page.exposeFunction('checkVendorEmailExists', async (email: string) => {
+      return email === 'registered@example.com';
     });
 
     await page.fill('input[type="email"]', 'registered@example.com');

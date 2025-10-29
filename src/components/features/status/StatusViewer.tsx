@@ -39,6 +39,8 @@ export function StatusViewer({ status }: StatusViewerProps) {
   const currentStatus = status[currentIndex];
   if (!currentStatus) return null;
 
+  const progressBarDuration = (currentStatus.duration || 5) * 1000;
+
   return (
     <div
       className="fixed inset-0 bg-black z-50 flex items-center justify-center"
@@ -78,13 +80,14 @@ export function StatusViewer({ status }: StatusViewerProps) {
               className="flex-1 h-1 bg-white/30 overflow-hidden rounded"
             >
               <div
-                className={`h-full bg-white transition-all duration-[5000ms] ease-linear ${
+                className={`h-full bg-white transition-all ease-linear ${
                   i === currentIndex
                     ? 'w-full'
                     : i < currentIndex
                       ? 'w-full'
                       : 'w-0'
                 }`}
+                style={{ transitionDuration: `${progressBarDuration}ms` }}
               />
             </div>
           ))}

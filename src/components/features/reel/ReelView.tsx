@@ -1,4 +1,3 @@
-import { GlobalCart } from '@/components/shared/GlobalCart';
 import { Button } from '@/components/ui/button';
 import { Dish } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -100,7 +99,6 @@ export function ReelView({
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
         >
-          <GlobalCart />
           <ReelCategoryNavigator
             categories={categories}
             activeIndex={activeIndex}
@@ -131,6 +129,9 @@ export function ReelView({
                 )}
               >
                 <MediaDisplay dish={dish} />
+                <h2 className="absolute bottom-0 left-0 p-3 text-white font-semibold text-lg">
+                  {dish.name}
+                </h2>
                 <ReelActionBar
                   dish={dish}
                   onFilterClick={() => setFilterDrawerOpen(true)}

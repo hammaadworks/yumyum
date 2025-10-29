@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
+import { generateWhatsAppLink } from '@/lib/utils';
+import { WHATSAPP_NUMBER, WHATSAPP_INTEREST_MESSAGE } from '@/lib/constants';
 
 export const HowToJoinSection = () => {
   return (
@@ -18,13 +20,19 @@ export const HowToJoinSection = () => {
             <li>3. Share your QR or link with customers.</li>
           </ol>
         </div>
-        <Button
-          size="lg"
-          className="mt-8 bg-[#FAB12F] text-[#0B0B0B] hover:bg-[#FAB12F]/90"
+        <a
+          href={generateWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_INTEREST_MESSAGE)}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <MessageSquare className="mr-2 h-4 w-4" />
-          Join on WhatsApp
-        </Button>
+          <Button
+            size="lg"
+            className="mt-8 bg-[#FAB12F] text-[#0B0B0B] hover:bg-[#FAB12F]/90"
+          >
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Join on WhatsApp
+          </Button>
+        </a>
         <p className="text-sm text-muted-foreground mt-4">
           No fees to start. No app downloads. Cancel anytime.
         </p>

@@ -2,24 +2,14 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, X } from 'lucide-react';
 
-const freeFeatures = [
-  { name: 'Google Sheets Backend', included: true },
-  { name: 'WhatsApp Integration', included: true },
-  { name: 'Basic Digital Menu', included: true },
-  { name: 'In-App Dashboard', included: false },
-  { name: 'Secure Login', included: false },
-  { name: 'Direct Image Uploads', included: false },
-  { name: 'Priority Support', included: false },
-];
-
-const premiumFeatures = [
-  { name: 'Google Sheets Backend', included: true },
-  { name: 'WhatsApp Integration', included: true },
-  { name: 'Basic Digital Menu', included: true },
-  { name: 'In-App Dashboard', included: true },
-  { name: 'Secure Login', included: true },
-  { name: 'Direct Image Uploads', included: true },
-  { name: 'Priority Support', included: true },
+const allFeatures = [
+  { name: 'Google Sheets Backend', free: true, premium: true },
+  { name: 'WhatsApp Integration', free: true, premium: true },
+  { name: 'Basic Digital Menu', free: true, premium: true },
+  { name: 'In-App Dashboard', free: false, premium: true },
+  { name: 'Secure Login', free: false, premium: true },
+  { name: 'Direct Image Uploads', free: false, premium: true },
+  { name: 'Priority Support', free: false, premium: true },
 ];
 
 export const TierComparison = () => {
@@ -34,9 +24,9 @@ export const TierComparison = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 text-left">
-                {freeFeatures.map((feature, index) => (
+                {allFeatures.map((feature, index) => (
                   <li key={index} className="flex items-center gap-3">
-                    {feature.included ? (
+                    {feature.free ? (
                       <Check className="text-green-500 w-5 h-5" />
                     ) : (
                       <X className="text-red-500 w-5 h-5" />
@@ -53,9 +43,13 @@ export const TierComparison = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 text-left">
-                {premiumFeatures.map((feature, index) => (
+                {allFeatures.map((feature, index) => (
                   <li key={index} className="flex items-center gap-3">
-                    <Check className="text-green-500 w-5 h-5" />
+                    {feature.premium ? (
+                      <Check className="text-green-500 w-5 h-5" />
+                    ) : (
+                      <X className="text-red-500 w-5 h-5" />
+                    )}
                     <span>{feature.name}</span>
                   </li>
                 ))}

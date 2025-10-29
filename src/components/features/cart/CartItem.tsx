@@ -1,13 +1,7 @@
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { Dish } from '@/lib/types';
 import { useCartStore } from '@/store/use-cart.store';
+import { useUIStore } from '@/store/use-ui.store';
 import { motion } from 'framer-motion';
 import { Eye, Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
@@ -18,6 +12,7 @@ interface CartItemProps {
 
 export function CartItem({ item }: CartItemProps) {
   const { removeItem, updateItemQuantity } = useCartStore();
+  const { openImageViewer } = useUIStore();
 
   return (
     <div className="relative">
@@ -59,31 +54,16 @@ export function CartItem({ item }: CartItemProps) {
         >
           <Trash2 className="h-4 w-4" />
         </Button>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="secondary"
-              size="icon"
-              className="h-full w-16 rounded-r-none"
-            >
-              <Eye className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{item.name}</DialogTitle>
-            </DialogHeader>
-            <div className="relative aspect-square w-full">
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                className="object-contain"
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button
+          variant="secondary"
+          size="icon"
+          className="h-full w-16 rounded-r-none"
+          onClick={() => openImageViewer(item.image)}
+        >
+          <Eye className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
 }
+

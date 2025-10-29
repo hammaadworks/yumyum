@@ -2,6 +2,7 @@ import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
 import { Brand, Dish, Status, StatusItem, DishTag } from '@/lib/types'; // Corrected import
 import Papa from 'papaparse';
 import { sendLarkMessage } from './lark';
+import axios from 'axios';
 
 const ADMIN_SHEET_ID = process.env.NEXT_PUBLIC_ADMIN_SHEET_ID;
 
@@ -16,11 +17,8 @@ export async function getSheetIdForSlug(slug: string): Promise<string | null> {
   }
   const url = `https://docs.google.com/spreadsheets/d/${ADMIN_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=vendors`;
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch admin config');
-    }
-    const csvText = await response.text();
+    const response = await axios.get(url);
+    const csvText = response.data;
     const rows = parseCSV(csvText);
 
     const slugRow = rows.find((row) => row[0] === slug);
@@ -46,11 +44,8 @@ async function fetchSheetData(
 ): Promise<string[][]> {
   const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-    const csvText = await response.text();
+    const response = await axios.get(url);
+    const csvText = response.data;
     return parseCSV(csvText);
   } catch (error) {
     console.error(`Failed to fetch sheet "${sheetName}":`, error);

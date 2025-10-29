@@ -270,12 +270,11 @@ describe('Switch Component', () => {
     });
 
     it('should handle name attribute', () => {
-      render(<Switch name="feature-toggle" />);
+      const { container } = render(<Switch name="feature-toggle" />);
 
-      expect(screen.getByRole('switch')).toHaveAttribute(
-        'name',
-        'feature-toggle',
-      );
+      const hiddenInput = container.querySelector('input[name="feature-toggle"]');
+      expect(hiddenInput).toBeInTheDocument();
+      expect(hiddenInput).toHaveAttribute('name', 'feature-toggle');
     });
 
     it('should merge custom className with default classes', () => {

@@ -1,9 +1,26 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { BrandHeader } from '@/components/shared/BrandHeader';
+import { Brand } from '@/lib/types';
+import { useUIStore } from '@/store/use-ui.store';
 
-import { BrandHeader } from "../BrandHeader";
-import { Brand } from "@/lib/types";
+// Mock next/image
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props: any) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} />;
+  },
+}));
+
+// Mock useUIStore
+jest.mock('@/store/use-ui.store', () => ({
+  useUIStore: jest.fn(() => ({
+    openStatusViewer: jest.fn(),
+    openQRCodeModal: jest.fn(),
+  })),
+}));
 
 // Mock Lucide icons once globally
 jest.mock("lucide-react", () => ({

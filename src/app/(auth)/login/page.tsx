@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { checkVendorEmailExists } from '@/src/services/vendor'; // Import the new service
+import { checkVendorEmailExists } from '@/services/vendor'; // Import the new service
 import Link from 'next/link'; // Import Link for "Go Home" button
 
 export default function LoginPage() {

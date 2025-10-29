@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Dish } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 interface DishCardProps {
   dish: Dish;
@@ -10,9 +11,11 @@ interface DishCardProps {
 export function DishCard({ dish, onSelect }: DishCardProps) {
   const hasSpecialTag = dish.tag && dish.tag !== 'normal';
 
+  const buttonBaseClasses = "relative aspect-square w-full rounded-lg overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
+
   return (
     <button
-      className="relative aspect-square w-full rounded-lg overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      className={cn(buttonBaseClasses)}
       onClick={() => onSelect(dish)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -33,7 +36,7 @@ export function DishCard({ dish, onSelect }: DishCardProps) {
       />
       {hasSpecialTag && (
         <div className="absolute top-2 right-2">
-          <span className="relative flex h-3 w-3">
+          <span className="relative flex h-3 w-3" data-testid="pulsing-dot">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-primary-strong"></span>
           </span>
@@ -46,3 +49,4 @@ export function DishCard({ dish, onSelect }: DishCardProps) {
     </button>
   );
 }
+

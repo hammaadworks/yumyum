@@ -1,9 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Brand } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import {
-  Wallet,
+import { cn, generateWhatsAppLink } from '@/lib/utils';
+import { LucideProps, Wallet,
   MessageSquare,
   Phone,
   MapPin,
@@ -11,8 +10,7 @@ import {
   Facebook,
   Youtube,
   Link as LinkIcon,
-  QrCode,
-} from 'lucide-react';
+  QrCode, } from 'lucide-react';
 import { useUIStore } from '@/store/use-ui.store';
 import { GlobalCart } from '@/components/shared/GlobalCart';
 
@@ -21,9 +19,15 @@ interface BrandHeaderProps {
   hasStatus: boolean;
 }
 
-const iconMap = {
+interface IconMapEntry {
+  icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+  label: string;
+  generateLink?: (value: string) => string;
+}
+
+const iconMap: Record<string, IconMapEntry> = {
   payment_link: { icon: Wallet, label: 'Payment Link' },
-  whatsapp: { icon: MessageSquare, label: 'Contact on WhatsApp' },
+  whatsapp: { icon: MessageSquare, label: 'Contact on WhatsApp', generateLink: (value: string) => generateWhatsAppLink(value) },
   contact: { icon: Phone, label: 'Contact Phone' },
   location_link: { icon: MapPin, label: 'Location on Map' },
   instagram: { icon: Instagram, label: 'Instagram Profile' },
@@ -69,9 +73,11 @@ export function BrandHeader({ brand, hasStatus }: BrandHeaderProps) {
       <p className="mt-2 text-sm">{brand.description}</p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2">
-        {Object.entries(iconMap).map(([key, { icon: Icon, label }]) => {
-          const href = brand[key as keyof Brand];
-          if (!href) return null;
+        {Object.entries(iconMap).map(([key, { icon: Icon, label, generateLink }]) => {
+          const value = brand[key as keyof Brand];
+          if (!value) return null;
+
+          const href = generateLink ? generateLink(value) : value;
 
           return (
             <a

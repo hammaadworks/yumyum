@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { WHATSAPP_INTEREST_MESSAGE, WHATSAPP_NUMBER } from '@/lib/constants';
 import { event } from '@/lib/gtag';
+import { generateWhatsAppLink } from '@/lib/utils';
 import { MessageCircle } from 'lucide-react';
 
 export const InterestCTA = () => {
@@ -12,16 +13,7 @@ export const InterestCTA = () => {
       event_label: 'Premium CTA Clicked',
     });
 
-    const encodedMessage = encodeURIComponent(WHATSAPP_INTEREST_MESSAGE);
-    const phone = WHATSAPP_NUMBER;
-
-    // Try deep link first for mobile
-    window.location.href = `whatsapp://send?phone=${phone}&text=${encodedMessage}`;
-
-    // Fallback for desktop/browsers that block the deep link
-    setTimeout(() => {
-      window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
-    }, 2000); // 2s delay to allow the deep link to attempt opening
+    window.location.href = generateWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_INTEREST_MESSAGE);
   };
 
   return (

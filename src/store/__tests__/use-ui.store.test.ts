@@ -1,4 +1,4 @@
-import { useUIStore } from './use-ui.store';
+import { useUIStore } from '@/store/use-ui.store';
 import { act, renderHook } from '@testing-library/react';
 
 describe('useUIStore', () => {

@@ -30,7 +30,7 @@ describe('GlobalCart', () => {
       setActiveIndex: jest.fn(),
       activeIndex: 0,
       isCartSummaryOpen: false,
-      openCartSummary: mockOpenCartSummary,
+      openCartSummary: jest.fn(),
       closeCartSummary: jest.fn(),
       isFeedbackViewOpen: false,
       openFeedbackView: jest.fn(),
@@ -41,6 +41,10 @@ describe('GlobalCart', () => {
       isQRCodeModalOpen: false,
       openQRCodeModal: jest.fn(),
       closeQRCodeModal: jest.fn(),
+      isImageViewerOpen: false,
+      imageViewerSrc: '',
+      openImageViewer: jest.fn(),
+      closeImageViewer: jest.fn(),
     };
     (useUIStore as unknown as jest.MockedFunction<MockUIStore>).mockImplementation(() => mockUIStoreState);
   });

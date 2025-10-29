@@ -38,8 +38,7 @@ export function ReelActionBar({
         console.error('Error sharing:', error);
       }
     } else {
-      console.log('Web Share API not supported.');
-      alert('Share functionality is not available on this browser.');
+      console.warn('Web Share API not supported. Share functionality is not available on this browser.');
     }
   };
 

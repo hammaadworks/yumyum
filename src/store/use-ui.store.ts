@@ -21,6 +21,10 @@ export interface UIState {
   isQRCodeModalOpen: boolean;
   openQRCodeModal: () => void;
   closeQRCodeModal: () => void;
+  isImageViewerOpen: boolean;
+  imageViewerSrc: string;
+  openImageViewer: (src: string) => void;
+  closeImageViewer: () => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -43,4 +47,8 @@ export const useUIStore = create<UIState>((set) => ({
   isQRCodeModalOpen: false,
   openQRCodeModal: () => set({ isQRCodeModalOpen: true }),
   closeQRCodeModal: () => set({ isQRCodeModalOpen: false }),
+  isImageViewerOpen: false,
+  imageViewerSrc: '',
+  openImageViewer: (src: string) => set({ isImageViewerOpen: true, imageViewerSrc: src }),
+  closeImageViewer: () => set({ isImageViewerOpen: false, imageViewerSrc: '' }),
 }));

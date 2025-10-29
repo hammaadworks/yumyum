@@ -13,6 +13,9 @@ if (typeof window !== 'undefined') {
   };
 
   window.gtag = jest.fn();
+
+  // Mock scrollIntoView
+  HTMLElement.prototype.scrollIntoView = jest.fn();
 }
 
 // ✅ Basic Next.js API mocks
