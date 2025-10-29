@@ -4,14 +4,16 @@ import dotenv from 'dotenv';
 // ✅ Load test environment variables
 dotenv.config({ path: '.env.test' });
 
-// ✅ Mock browser-only APIs
-window.IntersectionObserver = class {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-};
+// ✅ Mock browser-only APIs. Only run these if we're in jsdom
+if (typeof window !== 'undefined') {
+  window.IntersectionObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
 
-window.gtag = jest.fn();
+  window.gtag = jest.fn();
+}
 
 // ✅ Basic Next.js API mocks
 class HeadersMock {

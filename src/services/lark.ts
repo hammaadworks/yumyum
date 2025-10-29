@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 /**
  * Types for Lark API responses
  */
@@ -20,11 +22,13 @@ function formatLarkMessage(message: string): string {
  * Sends a message to a Lark webhook with retries and timeout.
  * @param message The message to send.
  * @param retryCount Number of retry attempts (default: 2)
+ * @param delays
  * @returns Promise<boolean> indicating success or failure
  */
 export async function sendLarkMessage(
   message: string,
   retryCount = 2,
+  delays: number[] = [1000, 3000, 5000],
 ): Promise<boolean> {
   const webhookUrl = process.env.LARK_WEBHOOK_URL;
 
@@ -44,34 +48,26 @@ export async function sendLarkMessage(
     content: { text: `yay-alert: ${formattedMessage}` },
   };
 
-  const delays = [1000, 3000, 5000]; // 1s, 3s, 5s backoff
-
   for (let attempt = 0; attempt <= retryCount; attempt++) {
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000); // 5s timeout
-
-      const res = await fetch(webhookUrl, {
-        method: 'POST',
+      const res = await axios.post<LarkResponse>(webhookUrl, payload, {
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: controller.signal,
+        timeout: 5000, // 5s timeout
+        validateStatus: () => true, // allow non-2xx responses to be handled manually
       });
 
-      clearTimeout(timeout);
-
-      const data = (await res.json().catch(() => null)) as LarkResponse | null;
-
-      if (!res.ok || !data || data.code !== 0) {
+      if (res.status !== 200 || res.data.code !== 0) {
         throw new Error(
-          `Lark API error: ${res.status} ${data?.msg ?? 'Unknown error'}`,
+          `Lark API error: ${res.status} ${res.data?.msg ?? 'Unknown error'}`,
         );
       }
 
       return true;
-    } catch (err) {
+    } catch (err: any) {
       const msg =
-        err instanceof Error ? err.message : JSON.stringify(err, null, 2);
+        err?.response?.data?.msg ||
+        err?.message ||
+        JSON.stringify(err, null, 2);
       console.error(`[Lark] Attempt ${attempt + 1} failed: ${msg}`);
 
       if (attempt >= retryCount) {

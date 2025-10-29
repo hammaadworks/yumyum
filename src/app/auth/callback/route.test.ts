@@ -24,6 +24,23 @@ jest.mock('next/server', () => ({
   },
 }));
 
+// Mock the createClient to return a consistent structure
+jest.mock('@/lib/supabase/server', () => ({
+  createClient: jest.fn(() => ({
+    auth: {
+      exchangeCodeForSession: jest.fn(),
+      getUser: jest.fn().mockResolvedValue({ data: { user: { id: 'test-user-id' } } }), // Default mock for getUser
+    },
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          single: jest.fn(),
+        })),
+      })),
+    })),
+  })),
+}));
+
 describe('Auth Callback Route', () => {
   const mockCreateClient = createClient as jest.Mocked<typeof createClient>;
   const mockNextResponse = NextResponse as jest.Mocked<typeof NextResponse>;
