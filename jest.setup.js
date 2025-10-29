@@ -1,15 +1,78 @@
 import '@testing-library/jest-dom';
+import dotenv from 'dotenv';
 
-const intersectionObserverMock = () => ({
-  observe: () => null,
-  unobserve: () => null,
-  disconnect: () => null,
-});
+// ✅ Load test environment variables
+dotenv.config({ path: '.env.test' });
 
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+// ✅ Mock browser-only APIs
+window.IntersectionObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 
-// Mock gtag
 window.gtag = jest.fn();
 
-process.env.NEXT_PUBLIC_ADMIN_SHEET_ID = 'test-admin-sheet-id';
-process.env.NEXT_PUBLIC_LARK_WEBHOOK_URL = 'https://lark.webhook.url';
+// ✅ Basic Next.js API mocks
+class HeadersMock {
+  constructor(init = {}) {
+    this.map = new Map(Object.entries(init));
+  }
+  append(name, value) {
+    this.map.set(name, value);
+  }
+  get(name) {
+    return this.map.get(name);
+  }
+  set(name, value) {
+    this.map.set(name, value);
+  }
+  has(name) {
+    return this.map.has(name);
+  }
+  delete(name) {
+    this.map.delete(name);
+  }
+  forEach(callback) {
+    this.map.forEach((value, name) => callback(value, name, this));
+  }
+}
+
+class RequestMock {
+  constructor(input, init = {}) {
+    this.url = input;
+    this.method = init.method || 'GET';
+    this.headers = new HeadersMock(init.headers);
+    this._body = init.body;
+  }
+  async json() {
+    return JSON.parse(this._body || '{}');
+  }
+  async text() {
+    return this._body || '';
+  }
+}
+
+class ResponseMock {
+  constructor(body, init = {}) {
+    this._body = body;
+    this.status = init.status || 200;
+    this.ok = this.status >= 200 && this.status < 300;
+    this.headers = new HeadersMock(init.headers);
+  }
+  async json() {
+    return JSON.parse(this._body);
+  }
+  async text() {
+    return this._body;
+  }
+}
+
+globalThis.Request = RequestMock;
+globalThis.Response = ResponseMock;
+globalThis.Headers = HeadersMock;
+
+// ✅ Global fetch mock (safe default)
+if (!global.fetch) {
+  global.fetch = jest.fn();
+}

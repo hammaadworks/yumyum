@@ -2,28 +2,44 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { checkVendorEmailExists } from '@/src/services/vendor'; // Import the new service
+import Link from 'next/link'; // Import Link for "Go Home" button
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [showGoHome, setShowGoHome] = useState(false); // State to control "Go Home" button visibility
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
+
+    // Check if vendor email exists
+    const vendorExists = await checkVendorEmailExists(email);
+
+    if (!vendorExists) {
+      setError('This email is not registered with YumYum. Please contact support if you believe this is an error.');
+      setMessage('');
+      setShowGoHome(true); // Show "Go Home" button
+      return; // Stop the login process
+    }
+
+    const { error: signInError } = await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
 
-    if (error) {
-      setError(error.message);
+    if (signInError) {
+      setError(signInError.message);
       setMessage('');
+      setShowGoHome(false);
     } else {
       setMessage('Check your email for a magic link to log in!');
       setError('');
+      setShowGoHome(false);
     }
   };
 
@@ -54,6 +70,15 @@ export default function LoginPage() {
         </form>
         {message && <p className="mt-4 text-green-500 text-center">{message}</p>}
         {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
+        {showGoHome && (
+          <div className="mt-4 text-center">
+            <Link href="/">
+              <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Go Home
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
