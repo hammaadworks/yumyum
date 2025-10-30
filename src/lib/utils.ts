@@ -42,9 +42,11 @@ export function generateWhatsAppLink(
 
   // Attempt deep link first, then fallback to web after a short delay
   // This pattern provides a better user experience on mobile while still working on desktop.
-  setTimeout(() => {
-    window.location.href = whatsappWebLink;
-  }, 500);
+  if (typeof window !== 'undefined') { // Guard window access
+    setTimeout(() => {
+      window.location.href = whatsappWebLink;
+    }, 500);
+  }
 
   return whatsappDeepLink;
 }
@@ -119,6 +121,9 @@ export const validateWhatsapp = (number: string) => {
 };
 
 export const openPopup = (url: string): boolean => {
-  const popup = window.open(url, '_blank');
-  return popup !== null;
+  if (typeof window !== 'undefined') { // Guard window access
+    const popup = window.open(url, '_blank');
+    return popup !== null;
+  }
+  return false; // Return false if window is not defined
 };
