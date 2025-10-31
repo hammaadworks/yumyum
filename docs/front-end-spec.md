@@ -36,10 +36,12 @@ This document defines the user experience goals, information architecture, user 
 graph TD
     subgraph Public Site
         A[/ Landing Page] --> C[/login - Magic Link Page];
+        A -- "Vendor Login" Button --> M[Login Modal];
+        M -- Submits Email --> C;
     end
 
     subgraph Authenticated App
-        C -- Successful Login --> D[/vendor/dashboard];
+        C -- Successful Login --> D[/[vendor_slug]/dashboard];
         D --> E[Dishes Management];
         D --> F[Brand Profile Management];
         D --> G[Status Management];
@@ -52,7 +54,9 @@ graph TD
 
 #### **Navigation Structure**
 
-- **Primary Navigation (Vendor Dashboard):** Once a vendor is logged in, the primary navigation within the `/vendor/dashboard` will consist of a simple, clear mechanism (e.g., a sidebar or top tabs) to switch between the three main management areas: "Dishes," "Brand Profile," and "Status."
+- **Primary Navigation (Vendor Dashboard):** Once a vendor is logged in, the primary navigation within the `/[vendor_slug]/dashboard` will consist of a simple, clear mechanism (e.g., a sidebar or top tabs) to switch between the three main management areas: "Dishes," "Brand Profile," and "Status."
+- **Global Cart Visibility:** The global cart icon will be hidden on the homepage (`/`) and the login page (`/login`), as these are public pages without user-specific cart state.
+- **Login Entry Point:** A "Vendor Login" button will be present on the landing page, directing users to the `/login` page.
 - **Secondary Navigation:** This will consist of controls within a specific management area, such as "Add New Dish" or "Search Dishes" within the Dishes view.
 - **Breadcrumb Strategy:** A breadcrumb trail (e.g., `Dashboard > Dishes > Edit 'Spicy Pizza'`) should be used within the dashboard to ensure the vendor always knows where they are, especially on mobile devices.
 
@@ -82,29 +86,31 @@ graph TD
 #### **Flow 2: Vendor Login via Magic Link**
 
 - **User Goal:** To securely access the vendor dashboard.
-- **Entry Points:** Visiting `/vendor/dashboard` directly when not logged in; clicking a "Login" button.
+- **Entry Points:** Clicking the "Vendor Login" button on the landing page (opens modal); or visiting `/login` directly.
 - **Success Criteria:** The user is successfully authenticated and redirected to their dashboard.
 
 ##### Flow Diagram
 
 ```mermaid
 graph TD
-    A[User navigates to /login] --> B[Enters email];
-    B --> C[Clicks "Send Magic Link"];
-    C --> D{System calls Supabase Auth};
-    D --> E[User sees "Check your email" message];
+    A[User Clicks "Vendor Login" on Landing Page] --> B[Login Modal Opens];
+    B --> C[Enters email in Modal];
+    C --> D[Clicks "Send Magic Link"];
+    D --> E{System calls Supabase Auth};
+    E --> F[User sees "Check your email" message in Modal];
     subgraph User's Email Client
-        F[User opens email] --> G[Clicks unique login link];
+        G[User opens email] --> H[Clicks unique login link];
     end
-    G --> H{User is redirected to the app};
-    H --> I[App verifies token];
-    I --> J[/vendor/dashboard is displayed];
+    H --> I{User is redirected to the app};
+    I --> J[App verifies token];
+    J --> K[/[vendor_slug]/dashboard is displayed];
 ```
 
 ##### Edge Cases & Error Handling:
 
-- If the user enters an email not associated with a premium account, the system should still send a link, but the page they land on will inform them they do not have access and will guide them to the "Interested?" flow.
+- If the user enters an email not associated with a premium account, an error message will be displayed within the modal. The user can then close the modal to return to the landing page.
 - If the magic link has expired, the user will be shown a message and prompted to request a new one.
+- The login modal can be dismissed by the user at any time.
 
 ---
 
@@ -143,9 +149,29 @@ graph TD
 
 - High-fidelity mockups and prototypes will be created and maintained in **Figma**. A link will be added here once the file is created.
 
----
+#### Main Profile & Menu Screen
 
-#### **Key Screen Layout: Vendor Dashboard**
+- **Purpose:** To serve as the vendor's primary digital storefront. It establishes the brand's identity, provides top-level menu navigation, and allows users to browse all available dishes at a glance.
+- **Key Elements:**
+  1.  **Brand Header:** (Top of the screen) Contains the vendor's logo, name, cuisine type, bio, and a row of icon-based links (e.g., WhatsApp, payment, location).
+  2.  **Category Highlights:** (Below the header) A horizontally-scrolling list of circular category buttons, each with a colored gradient ring, similar to Instagram Stories.
+  3.  **Controls Bar:** (Below categories) A simple bar containing the "Veg Only" toggle, a "Sort by Price" control, and a Search input field.
+  4.  **Dish Grid:** (Main content area) A responsive 3-column grid of square dish images that fills the rest of the screen.
+- **Interaction Notes:** Tapping a category button or a dish card smoothly transitions the user into the full-screen "Reel View". The controls in the `ControlsBar` filter the `DishGrid` instantly on the client-side.
+
+#### Key Screen Layout: Landing Page (`/`)
+
+- **Purpose:** To provide an engaging and informative entry point for prospective vendors, showcasing YumYum's value proposition and highlighting popular vendors.
+- **Key Elements:**
+  1.  **Login Entry Point:** A "Vendor Login" button in the top-right corner, which triggers a modal containing the login form.
+  2.  **Hero Section:** Prominent display of YumYum's core value.
+  3.  **Top Vendors Section:** A section displaying cards for the top 10 most visited vendors, including their name, cuisine, and logo, linking to their respective public pages.
+  4.  **Marketing Sections:** Various sections detailing "How It Works," "Why Yumyum," "Vendor Stories," "Premium Marketing," "Tier Comparison," "How to Join," "FAQ," "About," and "Conversion."
+  5.  **Interest CTA:** A Floating Action Button (FAB) for quick contact via WhatsApp.
+  6.  **Footer:** Standard footer with links and copyright information.
+- **Interaction Notes:** The page is designed for clear navigation and calls-to-action, guiding users through the sales funnel.
+
+#### **Key Screen Layout: Vendor Dashboard (`/[vendor_slug]/dashboard`)**
 
 - **Purpose:**
   To provide a central, simple, and efficient hub for vendors to manage all aspects of their digital storefront without leaving the application.
@@ -168,7 +194,7 @@ graph TD
 
 ---
 
-#### **Core Components (New for Dashboard)**
+#### **Core Components (New for Dashboard & Auth)**
 
 - **`DashboardNav`**
   - **Purpose:** To provide the primary tab-based navigation within the vendor dashboard.
@@ -178,6 +204,9 @@ graph TD
 
 - **`EntityForm`**
   - **Purpose:** A generic form component for creating/editing dishes, brand info, and statuses, including the ImageKit image uploader.
+
+- **`LoginFormContent`**
+  - **Purpose:** A reusable component encapsulating the email input and magic link sending logic for vendor login.
 
 ---
 

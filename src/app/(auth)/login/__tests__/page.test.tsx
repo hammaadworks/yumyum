@@ -27,7 +27,7 @@ describe('LoginPage Integration', () => {
     });
   });
 
-  test('should display error and Go Home button if email is not registered', async () => {
+  test('should display error and Close button if email is not registered', async () => {
     mockCheckVendorEmailExists.mockResolvedValue(false);
 
     render(<LoginPage />);
@@ -43,7 +43,7 @@ describe('LoginPage Integration', () => {
       ).toBeInTheDocument();
     });
     expect(
-      screen.getByRole('button', { name: /Go Home/i }),
+      screen.getByRole('button', { name: /Close/i }),
     ).toBeInTheDocument();
     expect(mockSignInWithOtp).not.toHaveBeenCalled();
   });

@@ -25,12 +25,14 @@ The current Google Sheets-based architecture, while effective for initial onboar
 #### **Functional Requirements**
 
 1.  **FR1:** The main landing page (`/`) shall be updated to include a marketing section advertising the Premium Tier.
-2.  **FR2:** The system shall provide a secure login page for vendors using a Magic Link (passwordless) system via Supabase Auth.
-3.  **FR3:** A logged-in vendor shall have access to a protected, in-app management dashboard at `/vendor/dashboard`.
+2.  **FR2:** The system shall provide a secure login page for vendors using a Magic Link (passwordless) system via Supabase Auth. This login can be initiated directly from the `/login` page or via a modal on the main landing page (`/`). The login process must first verify the user's email against the `vendor_mappings` table. If the email is not found, the system shall display an appropriate error message. Upon successful login, the user shall be redirected to `/{vendor-slug}/dashboard`.
+3.  **FR3:** A logged-in vendor shall have access to a protected, in-app management dashboard at `/[vendor_slug]/dashboard`.
 4.  **FR4:** The dashboard shall provide CRUD functionality for all of that vendor's data, including their `brand` profile, `dishes`, and daily `status`.
 5.  **FR5:** The application shall provide a UI element that allows a free-tier user to request an upgrade, which triggers a Lark webhook notification.
 6.  **FR6:** The public-facing menu for a premium vendor shall fetch its data from the Supabase backend.
 7.  **FR7:** The system shall track user interaction with the premium features via the specified Google Analytics events.
+8.  **FR8:** The main landing page (`/`) shall include a clear entry point (e.g., a button or link) for vendors/admin to navigate to the `/login` page.
+9.  **FR9:** The main landing page (`/`) shall include a "Top Vendors" feature section displaying the 10 most visited vendor pages, updated weekly from Google Analytics data.
 
 #### **Non-Functional Requirements**
 
@@ -43,6 +45,7 @@ The current Google Sheets-based architecture, while effective for initial onboar
 7.  **NFR7:** For the MVP, all data migration shall be a manual process.
 8.  **NFR8:** The authentication system must ensure a single user identity, linking new login methods to an existing user if they share the same verified email.
 9.  **NFR9:** Comprehensive documentation must be maintained. A `/wiki` directory will be created at the project root to house all technical documentation, workflow guides, and user training materials.
+10. **NFR10:** The "Top Vendors" list shall be automatically generated weekly via a GitHub Actions workflow, querying Google Analytics data from BigQuery and updating a static JSON file.
 
 ---
 
@@ -52,9 +55,11 @@ The current Google Sheets-based architecture, while effective for initial onboar
 - **Key Interaction Paradigms:** The dashboard will use standard UI patterns: simple forms, tables/lists for viewing, and clear buttons for actions.
 - **Core Screens and Views:**
   1.  Login Page (for Magic Link)
-  2.  Vendor Dashboard (`/vendor/dashboard`)
+  2.  Vendor Dashboard (`/[vendor_slug]/dashboard`)
   3.  Landing Page (Updated Premium Section & "Request an Invite" Section)
-  4.  "Interested?" Drawer (with WhatsApp and Form options)
+  4.  "Interested?" FAB (Floating Action Button)
+  5.  "Vendor Login" Entry Point on Landing Page
+  6.  "Top Vendors" Feature Section on Landing Page
 - **Accessibility:** WCAG 2.1 Level AA
 - **Branding:** Adhere to existing brand guidelines.
 - **Target Device and Platforms:** Web Responsive (Mobile & Desktop).
@@ -109,7 +114,7 @@ The current Google Sheets-based architecture, while effective for initial onboar
   - **Acceptance Criteria:** 1. A `/login` page is created. 2. Submitting an email triggers the Supabase magic link function. 3. The UI informs the user to check their email. 4. Clicking the link authenticates the user.
 - **Story 2.4: Create Protected Dashboard Route & Logout**
   - _As a vendor, I want the management dashboard to be private, so that my business data is secure._
-  - **Acceptance Criteria:** 1. A new route is created at `/vendor/dashboard`. 2. Unauthenticated users are redirected to `/login`. 3. A "Logout" button is available and functional.
+  - **Acceptance Criteria:** 1. A new protected dynamic route is created at `/[vendor_slug]/dashboard`. 2. Unauthenticated users are redirected to `/login`. 3. A "Logout" button is available and functional.
 - **Story 2.5: Create Project Wiki and Initial Documents**
   - _As a new team member, I want a central place for documentation, so that I can get up to speed quickly._
   - **Acceptance Criteria:** 1. A `/wiki` directory is created at the project root. 2. An initial document explaining the multi-account architecture is created. 3. A second document detailing the manual vendor onboarding workflows is created.
@@ -118,7 +123,7 @@ The current Google Sheets-based architecture, while effective for initial onboar
 
 - **Story 3.1: Build Dashboard Layout and Data Connection**
   - _As a logged-in vendor, I want a clear dashboard layout that correctly loads my data, so that I have a central place to manage my storefront._
-  - **Acceptance Criteria:** 1. A basic layout is created for `/vendor/dashboard`. 2. The layout includes navigation for "Dishes," "Brand Profile," and "Status." 3. The dashboard fetches and displays data for the logged-in vendor from the correct Supabase project. 4. The "Logout" button is present.
+  - **Acceptance Criteria:** 1. A basic layout is created for `/[vendor_slug]/dashboard`. 2. The layout includes navigation for "Dishes," "Brand Profile," and "Status." 3. The dashboard fetches and displays data for the logged-in vendor from the correct Supabase project. 4. The "Logout" button is present.
 - **Story 3.2: Implement "Dishes" CRUD Interface**
   - _As a vendor, I want to add, view, update, and delete my menu dishes from within the app, so that I can manage my menu efficiently._
   - **Acceptance Criteria:** 1. The "Dishes" section displays a list of dishes. 2. An "Add New Dish" button opens a creation form. 3. Each dish has "Edit" and "Delete" controls. 4. The forms correctly perform `INSERT`, `UPDATE`, and `DELETE` operations.

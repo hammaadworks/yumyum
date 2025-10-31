@@ -2,7 +2,7 @@
 
 This section details the frontend-specific architecture for the Premium Tier dashboard.
 
-## Component Architecture
+#### Component Architecture
 
 - **Component Organization:**
   ```plaintext
@@ -12,9 +12,11 @@ This section details the frontend-specific architecture for the Premium Tier das
   │   │   └── login/
   │   │       └── page.tsx
   │   └── (dashboard)/
-  │       ├── vendor/
-  │       │   └── dashboard/
-  │       │       ├── layout.tsx
+  │       ├── [vendor_slug]/  # <-- Dynamic segment for vendor-specific routes
+  │       │   ├── dashboard/
+  │       │   │   ├── layout.tsx
+  │       │   │   └── page.tsx
+  │       │   └── upload/
   │       │       └── page.tsx
   │       └── layout.tsx
   ├── components/
@@ -38,7 +40,8 @@ This section details the frontend-specific architecture for the Premium Tier das
 ## Routing
 
 - **`/login`**: Public route for the Magic Link login form.
-- **`/vendor/dashboard`**: A protected route that will redirect to `/login` if the user is not authenticated. This will be the main entry point for the vendor dashboard.
+- **`/[vendor_slug]/dashboard`**: A protected route that will redirect to `/login` if the user is not authenticated. This will be the main entry point for the vendor dashboard.
+- **`/[vendor_slug]/upload`**: A protected route for authenticated vendors to upload media assets. It will redirect to `/login` if the user is not authenticated.
 - **Protected Route Pattern:** We will implement a higher-order component (HOC) or a layout component that checks for an active user session. If no session exists, it will redirect the user to the `/login` page.
 
 ## Frontend Services Layer

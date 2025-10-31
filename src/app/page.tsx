@@ -23,11 +23,15 @@ import { FooterSection } from '@/components/features/landing/FooterSection';
 import { PremiumMarketingSection } from '@/components/features/landing/PremiumMarketingSection';
 import { TierComparison } from '@/components/features/landing/TierComparison';
 import { InterestCTA } from '@/components/features/landing/InterestCTA';
+import { LoginEntryPoint } from '@/components/shared/LoginEntryPoint';
+import { TopVendorsSection } from '@/components/features/landing/TopVendorsSection'; // Import TopVendorsSection
 
 export default function LandingPage() {
   return (
     <div>
+      <LoginEntryPoint />
       <HeroSection />
+      <TopVendorsSection /> {/* Add TopVendorsSection here */}
       <HowItWorksSection />
       <WhyYumyumSection />
       <VisualDemoSection />

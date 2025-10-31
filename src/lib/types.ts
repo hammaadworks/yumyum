@@ -59,3 +59,10 @@ export interface StatusItem {
 }
 
 export type Status = StatusItem[];
+
+export interface TopVendor {
+  name: string;
+  cuisine: string;
+  vendor_slug: string;
+  logo_url: string;
+}

@@ -329,25 +329,32 @@ This modular service architecture is a significant improvement. It allows for mo
  */
 
 // src/app/
-// ├── [vendor_slug]/
-// │   ├── page.tsx      -> (Main Route) Renders the menu for a given vendor.
-// │   │                  - URL: /:vendor_slug (e.g., /the-burger-den)
-// │   │
-// │   └── layout.tsx    -> Layout specific to the vendor page.
+// ├── [vendor_slug]/        # Dynamic route for each vendor's public menu
+// │   ├── page.tsx          # Main vendor profile page component
+// │   └── layout.tsx        # Layout specific to the vendor page
 // │
-// ├── vendor/
-// │   └── upload/
-// │       └── page.tsx  -> (Utility Route) Renders the public media uploader page.
-// │                      - URL: /vendor/upload
+// ├── (auth)/               # Route group for authentication pages
+// │   └── login/
+// │       └── page.tsx      # Login page
 // │
-// └── layout.tsx        -> The root layout for the entire application.
+// ├── (dashboard)/          # Route group for authenticated vendor dashboard
+// │   ├── [vendor_slug]/
+// │   │   ├── dashboard/
+// │   │   │   ├── layout.tsx
+// │   │   │   └── page.tsx  # Vendor management dashboard
+// │   │   └── upload/
+// │   │       └── page.tsx  # Protected media uploader page
+// │   └── layout.tsx        # Layout for authenticated dashboard routes
+// │
+// └── layout.tsx            # The root layout for the entire application.
 
 /**
  * --- Architectural Notes ---
  *
- * 1.  **Public Routes:** All routes in the MVP are public.
- * 2.  **Lazy Loading:** The Next.js App Router automatically code-splits and lazy-loads each route.
- * 3.  **Dynamic Routes:** The `[vendor_slug]` directory is a dynamic segment.
+ * 1.  **Public Routes:** `/`, `/[vendor_slug]`, `/login` are public.
+ * 2.  **Protected Routes:** `/[vendor_slug]/dashboard`, `/[vendor_slug]/upload` are protected and require authentication.
+ * 3.  **Lazy Loading:** The Next.js App Router automatically code-splits and lazy-loads each route.
+ * 4.  **Dynamic Routes:** The `[vendor_slug]` directory is a dynamic segment.
  */
 ```
 

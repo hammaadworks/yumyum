@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/utils/admin';
+import { NO_ROWS_FOUND_ERROR_CODE } from '@/lib/constants';
 
 export async function POST(request: Request) {
   const { email } = await request.json();
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
     .eq('user_id', userId)
     .single();
 
-  if (vendorError && vendorError.code !== 'PGRST116') {
+  if (vendorError && vendorError.code !== NO_ROWS_FOUND_ERROR_CODE) {
     // PGRST116 is "No rows found"
     console.error('Error checking vendor mapping:', vendorError);
     return new NextResponse(

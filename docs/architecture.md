@@ -358,6 +358,16 @@ sequenceDiagram
     Frontend-->>User: Shows 'Saved!' toast notification
 ```
 
+This ensures that only registered vendors can access the system and are directed to their personalized dashboard immediately after login.
+
+## 8.2 Top Vendors List Automation
+
+- **Purpose:** To automatically generate and update a list of the most visited vendor pages for display on the homepage.
+- **Process:** A weekly GitHub Actions workflow queries Google Analytics data from BigQuery (based on total page views for `/[vendor_slug]` pages), fetches additional vendor details (name, cuisine, logo_url) from Supabase, and saves the top 10 vendors to a static JSON file (`public/top-vendors.json`).
+- **Data Source:** Google Analytics 4 (GA4) via BigQuery Export.
+- **Trigger:** Weekly GitHub Actions cron job (every Sunday at 00:00 UTC).
+- **Output:** `public/top-vendors.json` (consumed by `TopVendorsSection` component on the homepage).
+
 ---
 
 ### Section 9 of 18: Database Schema (v3)
@@ -681,6 +691,16 @@ This section outlines the deployment strategy for the YumYum Premium Tier applic
   1.  Developers will generate new migration files locally using the CLI.
   2.  These migration files will be committed to the repository in the `/supabase/migrations` directory.
   3.  When deploying changes to the Supabase backend (e.g., staging or production), these migrations will be applied manually using the Supabase CLI to ensure controlled updates.
+
+## 14.1 Environment Variable Management
+
+- **Purpose:** To securely manage configuration settings and sensitive credentials across different environments (local, development, production).
+- **Local Development:** Environment variables are managed in a `.env.local` file, which is based on the `.env.local.example` template. This file is excluded from version control.
+- **Production/Deployment:** Variables are securely configured in the hosting platform (e.g., Vercel) and GitHub Actions secrets.
+- **Public vs. Private:**
+  - **Public Variables:** Prefixed with `NEXT_PUBLIC_` (e.g., `NEXT_PUBLIC_SUPABASE_ACCT_1_URL`). These are safe to expose to the client-side application.
+  - **Private Variables:** Not prefixed with `NEXT_PUBLIC_` (e.g., `SUPABASE_SERVICE_ROLE_KEY`, `GA4_BIGQUERY_PROJECT_ID`). These must *never* be exposed to the client-side and are used only in server-side code or build processes.
+- **Consistency:** The `.env.local.example` file serves as the single source of truth for all required environment variables, detailing their purpose and whether they are public or private.
 
 ---
 

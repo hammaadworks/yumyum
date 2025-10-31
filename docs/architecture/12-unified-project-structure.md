@@ -13,8 +13,10 @@ This is the target project structure for our monorepo.
 │   │   ├── (auth)/
 │   │   │   └── login/
 │   │   ├── (dashboard)/
-│   │   │   └── vendor/
-│   │   │       └── dashboard/
+│   │   │   ├── [vendor_slug]/
+│   │   │   │   ├── dashboard/
+│   │   │   │   └── upload/
+│   │   │   └── layout.tsx
 │   │   └── [vendor_slug]/
 │   │       └── page.tsx      # <-- Public, server-rendered vendor page
 │   ├── components/

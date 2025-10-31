@@ -1,0 +1,49 @@
+name: Update Top Vendors List
+
+on: 
+  workflow_dispatch: # Allow manual trigger
+  schedule:
+    - cron: '0 0 * * SUN' # Run every Sunday at 00:00 UTC
+
+jobs:
+  update-top-vendors:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create Google Application Credentials file
+        run: echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > google-credentials.json
+        shell: bash
+
+      - name: Generate Top Vendors JSON
+        env:
+          GA4_BIGQUERY_PROJECT_ID: ${{ secrets.GA4_BIGQUERY_PROJECT_ID }}
+          GA4_BIGQUERY_DATASET: ${{ secrets.GA4_BIGQUERY_DATASET }}
+          GA4_BIGQUERY_TABLE_PREFIX: ${{ secrets.GA4_BIGQUERY_TABLE_PREFIX }}
+          NEXT_PUBLIC_SUPABASE_ACCT_1_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS_PATH: google-credentials.json
+        run: pnpm generate-top-vendors
+
+      - name: Commit and push changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/top-vendors.json
+          git commit -m "chore: Update top vendors list [skip ci]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

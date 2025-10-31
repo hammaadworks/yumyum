@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
@@ -26,7 +26,8 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const { id } = params;
+  const resolvedParams = await context.params;
+  const { id } = resolvedParams;
   const { is_member } = await request.json();
 
   if (typeof is_member !== 'boolean') {

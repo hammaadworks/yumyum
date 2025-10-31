@@ -35,7 +35,7 @@ YumYum is a mobile-first digital menu platform designed for hyperlocal food vend
 - **FR7:** The system shall provide a downloadable QR code that links directly to the vendor's brand page.
 - **FR8:** The system shall include a feedback mechanism allowing users to provide a star rating (1-5).
 - **FR9:** If the feedback rating is high (≥ 4 stars), the system shall prompt the user to leave a review on the vendor's specified social media page.
-- **FR10:** The system shall provide a `/vendor/upload` page allowing vendors to upload images/videos to ImageKit and receive a URL.
+- **FR10:** The system shall provide a `/[vendor_slug]/upload` page allowing authenticated vendors to upload images/videos to ImageKit and receive a URL.
 - **FR11:** A "Veg Only" toggle in the UI shall filter the `Dishes` list on the client-side.
 - **FR12:** The UI shall provide a mechanism to sort the menu by price (low-to-high / high-to-low).
 - **FR13:** A biweekly scheduled job shall run to find and delete any media in ImageKit that is no longer referenced in any vendor's Google Sheet.
