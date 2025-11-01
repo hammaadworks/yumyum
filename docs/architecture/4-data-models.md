@@ -49,24 +49,26 @@
 - **Purpose:** Represents the vendor's brand identity.
 - **TypeScript Interface:**
   ```typescript
-  export interface Brand {
-    id: number;
-    auth_user_id: string; // Foreign Key to auth.users.id
-    name: string;
-    logo_url: string;
-    cuisine: string;
-    description: string;
-    payment_link: string;
-    whatsapp: string;
-    contact: string;
-    location_link?: string;
-    review_link?: string;
-    instagram?: string;
-    facebook?: string;
-    youtube?: string;
-    custom?: string;
-    full_menu_pic?: string;
-  }
+export interface Brand {
+  id: number;
+  auth_user_id: string; // Foreign Key to auth.users.id
+  name: string;
+  logo_url: string;
+  cuisine: string;
+  address?: string;
+  city?: string;
+  description: string;
+  payment_link: string;
+  whatsapp: string;
+  contact: string;
+  location_link?: string;
+  review_link?: string;
+  instagram?: string;
+  facebook?: string;
+  youtube?: string;
+  custom?: string;
+  full_menu_pic?: string;
+}
   ```
 
 #### `Dish`

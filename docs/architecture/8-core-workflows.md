@@ -16,7 +16,7 @@ sequenceDiagram
     User->>Frontend: Clicks Magic Link in email
     Frontend->>SupabaseAuth: Verifies token, creates session
     SupabaseAuth-->>Frontend: Returns authenticated user session
-    Frontend-->>User: Redirects to /vendor/dashboard
+    Frontend-->>User: Redirects to /[vendor_slug]/dashboard
 
     User->>Frontend: Navigates to 'Dishes' section
     Frontend->>SupabaseAPI: GET /rest/v1/dishes

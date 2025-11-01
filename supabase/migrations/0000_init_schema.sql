@@ -1,8 +1,7 @@
-# Section 9 of 18: Database Schema (v3)
+-- Initial Schema for YumYum Premium Tier
 
-This section provides the SQL schema for the tables in our Supabase Postgres database, reflecting the multi-project architecture.
-
--- Function to automatically update modify_time
+-- Functions
+-- Function to automatically update modify_time column
 CREATE OR REPLACE FUNCTION public.update_modify_time()
 RETURNS TRIGGER AS $$
 BEGIN
