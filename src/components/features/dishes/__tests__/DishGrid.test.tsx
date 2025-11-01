@@ -2,11 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DishGrid } from '@/components/features/dishes/DishGrid';
-import { useFilterStore } from '@/store/use-filter.store';
-import { useUIStore } from '@/store/use-ui.store';
-import { Dish } from '@/lib/types';
-import { FilterState } from '@/store/use-filter.store';
-import { UIState } from '@/store/use-ui.store';
+import { FilterState, useFilterStore } from '@/store/use-filter.store';
+import { UIState, useUIStore } from '@/store/use-ui.store';
+import { MOCK_DISHES } from '@/lib/mock-data';
 
 // Define mock types for the Zustand stores
 type MockFilterStore = typeof useFilterStore;
@@ -19,50 +17,6 @@ jest.mock('@/store/use-filter.store', () => ({
 jest.mock('@/store/use-ui.store', () => ({
   useUIStore: jest.fn(),
 }));
-
-const MOCK_DISHES: Dish[] = [
-  {
-    id: '1',
-    name: 'Veggie Burger',
-    category: 'Burgers',
-    price: 10,
-    veg: 'veg',
-    image: 'https://example.com/v.png',
-    description: '',
-    instock: 'yes',
-  },
-  {
-    id: '2',
-    name: 'Chicken Burger',
-    category: 'Burgers',
-    price: 12,
-    veg: 'non-veg',
-    image: 'https://example.com/c.png',
-    description: '',
-    instock: 'yes',
-  },
-  {
-    id: '3',
-    name: 'Margherita Pizza',
-    category: 'Pizza',
-    price: 15,
-    veg: 'veg',
-    image: 'https://example.com/m.png',
-    description: '',
-    instock: 'yes',
-    tag: 'bestseller',
-  },
-  {
-    id: '4',
-    name: 'Pepperoni Pizza',
-    category: 'Pizza',
-    price: 8,
-    veg: 'non-veg',
-    image: 'https://example.com/p.png',
-    description: '',
-    instock: 'yes',
-  },
-];
 
 describe('DishGrid Component', () => {
   let mockFilterStoreState: FilterState;

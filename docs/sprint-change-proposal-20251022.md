@@ -53,7 +53,7 @@ The following two stories have been drafted, approved, and added to the current 
 
 - **Story:** As an authenticated vendor, I need a private and secure page to upload my media assets, so that I can manage my content without having to log in repeatedly.
 - **Acceptance Criteria:**
-  1.  A **private** page is created at `/vendor/upload`.
+  1.  A **private** page is created at `/[vendor-slug]/upload`.
   2.  Access to this page is protected. Any unauthenticated users attempting to access it must be redirected to the `/login` page.
   3.  The page must use the existing magic link authentication system. If the vendor has a valid, active session, they must be granted access without needing to re-authenticate.
   4.  The uploader automatically uses the authenticated vendor's mapped ImageKit account (no manual selection needed).

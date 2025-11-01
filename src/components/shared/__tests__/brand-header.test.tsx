@@ -37,6 +37,8 @@ jest.mock('lucide-react', () => ({
 
 // ---- Mock Data ----
 const MOCK_BRAND_FULL: Brand = {
+  id: 1,
+  auth_user_id: '1',
   name: 'The Burger Den',
   logo_url: 'https://example.com/logo.png',
   cuisine: 'American',
@@ -49,9 +51,13 @@ const MOCK_BRAND_FULL: Brand = {
   facebook: 'https://facebook.com/burgerden',
   youtube: 'https://youtube.com/burgerden',
   custom: 'https://example.com/custom',
+  create_time: '',
+  modify_time: '',
 };
 
 const MOCK_BRAND_MINIMAL: Brand = {
+  id: 2,
+  auth_user_id: '2',
   name: 'The Pizza Place',
   logo_url: 'https://example.com/pizza.png',
   cuisine: 'Italian',
@@ -59,6 +65,8 @@ const MOCK_BRAND_MINIMAL: Brand = {
   payment_link: '',
   whatsapp: '',
   contact: '',
+  create_time: '',
+  modify_time: '',
 };
 
 // ---- Tests ----

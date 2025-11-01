@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
-import dotenv from 'dotenv';
+require('@testing-library/jest-dom');
+const dotenv = require('dotenv');
 
 // ✅ Load test environment variables
 dotenv.config({ path: '.env.test' });

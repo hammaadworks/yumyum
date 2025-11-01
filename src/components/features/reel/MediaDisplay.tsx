@@ -38,9 +38,9 @@ export function MediaDisplay({ dish }: MediaDisplayProps) {
       playsInline
       className="w-full h-full object-contain"
     />
-  ) : (
+  ) : dish.image ? (
     <Image src={dish.image} alt={dish.name} fill className="object-contain" />
-  );
+  ) : null;
 
   return (
     <div className="relative w-full h-full" onDoubleClick={handleDoubleClick}>

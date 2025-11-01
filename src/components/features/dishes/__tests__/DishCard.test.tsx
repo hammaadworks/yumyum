@@ -1,52 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DishCard } from '@/components/features/dishes/DishCard';
-import { Dish, DishTag } from '@/lib/types';
-
-const MOCK_DISHES: Dish[] = [
-  {
-    id: '1',
-    name: 'Veggie Burger',
-    category: 'Burgers',
-    price: 10,
-    veg: 'veg',
-    image: 'https://example.com/v.png',
-    description: '',
-    instock: 'yes',
-  },
-  {
-    id: '2',
-    name: 'Chicken Burger',
-    category: 'Burgers',
-    price: 12,
-    veg: 'non-veg',
-    image: 'https://example.com/c.png',
-    description: '',
-    instock: 'yes',
-  },
-  {
-    id: '3',
-    name: 'Margherita Pizza',
-    category: 'Pizza',
-    price: 15,
-    veg: 'veg',
-    image: 'https://example.com/m.png',
-    description: '',
-    instock: 'yes',
-    tag: 'bestseller',
-  },
-  {
-    id: '4',
-    name: 'Pepperoni Pizza',
-    category: 'Pizza',
-    price: 8,
-    veg: 'non-veg',
-    image: 'https://example.com/p.png',
-    description: '',
-    instock: 'yes',
-  },
-];
+import { MOCK_DISHES } from '@/lib/mock-data';
 
 describe('DishCard Component', () => {
   it('should render the dish name', () => {

@@ -33,7 +33,12 @@ describe('DashboardLayout', () => {
   it('redirects to /login if user is not authenticated', async () => {
     (createClient as jest.Mock).mockReturnValue({
       auth: {
-        getUser: jest.fn(() => Promise.resolve({ data: { user: null }, error: new Error('No user') })),
+        getUser: jest.fn(() =>
+          Promise.resolve({
+            data: { user: null },
+            error: new Error('No user'),
+          }),
+        ),
       },
     });
 
@@ -45,11 +50,15 @@ describe('DashboardLayout', () => {
   it('renders children if user is authenticated', async () => {
     (createClient as jest.Mock).mockReturnValue({
       auth: {
-        getUser: jest.fn(() => Promise.resolve({ data: { user: { id: '123' } }, error: null })),
+        getUser: jest.fn(() =>
+          Promise.resolve({ data: { user: { id: '123' } }, error: null }),
+        ),
       },
     });
 
-    const { getByText } = render(await DashboardLayout({ children: <div>Protected Content</div> }));
+    const { getByText } = render(
+      await DashboardLayout({ children: <div>Protected Content</div> }),
+    );
 
     expect(redirect).not.toHaveBeenCalled();
     expect(getByText('Protected Content')).toBeInTheDocument();

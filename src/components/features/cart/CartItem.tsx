@@ -4,7 +4,6 @@ import { useCartStore } from '@/store/use-cart.store';
 import { useUIStore } from '@/store/use-ui.store';
 import { motion } from 'framer-motion';
 import { Eye, Minus, Plus, Trash2 } from 'lucide-react';
-import Image from 'next/image';
 
 interface CartItemProps {
   item: Dish & { quantity: number };
@@ -58,7 +57,7 @@ export function CartItem({ item }: CartItemProps) {
           variant="secondary"
           size="icon"
           className="h-full w-16 rounded-r-none"
-          onClick={() => openImageViewer(item.image)}
+          onClick={() => item.image && openImageViewer(item.image)}
         >
           <Eye className="h-4 w-4" />
         </Button>

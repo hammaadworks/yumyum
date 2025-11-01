@@ -35,9 +35,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev',
+    command: 'bash ./start-dev.sh',
     url: 'http://localhost:3000',
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
+    env: process.env as Record<string, string>,
   },
 });

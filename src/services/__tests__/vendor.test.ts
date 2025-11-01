@@ -106,7 +106,7 @@ describe('getVendorMappingByUserId', () => {
     expect(mapping).toEqual(mockVendorMapping);
     expect(mockFrom).toHaveBeenCalledWith('vendor_mappings');
     expect(mockSelect).toHaveBeenCalledWith('*');
-    expect(mockEq).toHaveBeenCalledWith('user_id', 'user-123');
+    expect(mockEq).toHaveBeenCalledWith('auth_user_id', 'user-123');
   });
 
   it('should return null if vendor mapping not found', async () => {

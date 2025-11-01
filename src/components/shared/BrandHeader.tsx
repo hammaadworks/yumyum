@@ -80,6 +80,11 @@ export function BrandHeader({ brand, hasStatus }: BrandHeaderProps) {
 
       <h1 className="text-2xl font-bold">{brand.name}</h1>
       <p className="text-muted-foreground">{brand.cuisine}</p>
+      {(brand.address || brand.city) && (
+        <p className="text-muted-foreground text-sm mt-1">
+          {[brand.address, brand.city].filter(Boolean).join(', ')}
+        </p>
+      )}
       <p className="mt-2 text-sm">{brand.description}</p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2">
@@ -88,7 +93,7 @@ export function BrandHeader({ brand, hasStatus }: BrandHeaderProps) {
             const value = brand[key as keyof Brand];
             if (!value) return null;
 
-            const href = generateLink ? generateLink(value) : value;
+            const href = generateLink ? generateLink(String(value)) : String(value);
 
             return (
               <a

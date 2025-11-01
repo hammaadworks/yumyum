@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { createClient } from '@/lib/supabase/utils/client';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,10 @@ const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout} className="px-4 py-2 rounded-md bg-red-500 text-white">
+    <button
+      onClick={handleLogout}
+      className="px-4 py-2 rounded-md bg-red-500 text-white"
+    >
       Logout
     </button>
   );

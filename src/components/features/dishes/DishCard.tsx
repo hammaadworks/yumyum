@@ -28,13 +28,13 @@ export function DishCard({ dish, onSelect }: DishCardProps) {
       data-testid="dish-card"
       data-dish-name={dish.name}
     >
-      <Image
+      {dish.image && <Image
         src={dish.image}
         alt={dish.name}
         fill
         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
-      />
+      />}
       {hasSpecialTag && (
         <div className="absolute top-2 right-2">
           <span className="relative flex h-3 w-3" data-testid="pulsing-dot">

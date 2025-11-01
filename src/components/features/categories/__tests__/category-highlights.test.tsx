@@ -2,11 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CategoryHighlights } from '@/components/features/categories/CategoryHighlights';
-import { Dish, DishTag } from '@/lib/types';
+import { Dish } from '@/lib/types';
 
 const MOCK_DISHES_NO_SPECIALS: Dish[] = [
   {
-    id: '1',
+    id: 1,
+    brand_id: 1,
     name: 'Burger',
     category: 'Burgers',
     price: 10,
@@ -14,9 +15,12 @@ const MOCK_DISHES_NO_SPECIALS: Dish[] = [
     image: '',
     instock: 'yes',
     description: '',
+    create_time: '',
+    modify_time: '',
   },
   {
-    id: '2',
+    id: 2,
+    brand_id: 1,
     name: 'Pizza',
     category: 'Pizza',
     price: 12,
@@ -24,12 +28,15 @@ const MOCK_DISHES_NO_SPECIALS: Dish[] = [
     image: '',
     instock: 'yes',
     description: '',
+    create_time: '',
+    modify_time: '',
   },
 ];
 
 const MOCK_DISHES_WITH_SPECIALS: Dish[] = [
   {
-    id: '1',
+    id: 1,
+    brand_id: 1,
     name: 'Special Burger',
     category: 'Burgers',
     price: 10,
@@ -38,9 +45,12 @@ const MOCK_DISHES_WITH_SPECIALS: Dish[] = [
     instock: 'yes',
     tag: 'bestseller',
     description: '',
+    create_time: '',
+    modify_time: '',
   },
   {
-    id: '2',
+    id: 2,
+    brand_id: 1,
     name: 'Pizza',
     category: 'Pizza',
     price: 12,
@@ -48,6 +58,8 @@ const MOCK_DISHES_WITH_SPECIALS: Dish[] = [
     image: '',
     instock: 'yes',
     description: '',
+    create_time: '',
+    modify_time: '',
   },
 ];
 

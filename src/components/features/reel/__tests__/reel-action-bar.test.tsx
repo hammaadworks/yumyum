@@ -5,7 +5,8 @@ import { ReelActionBar } from '@/components/features/reel/ReelActionBar';
 import { Dish } from '@/lib/types';
 
 const MOCK_DISH: Dish = {
-  id: '1',
+  id: 1,
+  brand_id: 1,
   name: 'Spicy Pizza',
   description: 'A delicious pizza with a spicy kick.',
   price: 12.99,
@@ -14,6 +15,8 @@ const MOCK_DISH: Dish = {
   image: 'pizza.jpg',
   instock: 'yes',
   veg: 'veg',
+  create_time: '',
+  modify_time: '',
 };
 
 // Mock navigator.share

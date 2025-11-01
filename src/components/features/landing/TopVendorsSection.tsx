@@ -21,8 +21,8 @@ export function TopVendorsSection() {
         const data: TopVendor[] = await response.json();
         setTopVendors(data);
       } catch (err) {
-        console.error("Failed to fetch top vendors:", err);
-        setError("Could not load top vendors.");
+        console.error('Failed to fetch top vendors:', err);
+        setError('Could not load top vendors.');
       } finally {
         setLoading(false);
       }
@@ -35,7 +35,9 @@ export function TopVendorsSection() {
     return (
       <section className="py-20 bg-[#FEF3E2]">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">Top Vendors This Week</h2>
+          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">
+            Top Vendors This Week
+          </h2>
           <p>Loading top vendors...</p>
         </div>
       </section>
@@ -46,7 +48,9 @@ export function TopVendorsSection() {
     return (
       <section className="py-20 bg-[#FEF3E2]">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">Top Vendors This Week</h2>
+          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">
+            Top Vendors This Week
+          </h2>
           <p className="text-red-500">{error}</p>
         </div>
       </section>
@@ -57,7 +61,9 @@ export function TopVendorsSection() {
     return (
       <section className="py-20 bg-[#FEF3E2]">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">Top Vendors This Week</h2>
+          <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">
+            Top Vendors This Week
+          </h2>
           <p>No top vendors to display this week.</p>
         </div>
       </section>
@@ -67,10 +73,16 @@ export function TopVendorsSection() {
   return (
     <section className="py-20 bg-[#FEF3E2]">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">Top Vendors This Week</h2>
+        <h2 className="text-3xl font-bold text-[#0B0B0B] mb-8">
+          Top Vendors This Week
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {topVendors.map((vendor) => (
-            <Link href={`/${vendor.vendor_slug}`} key={vendor.vendor_slug} passHref>
+            <Link
+              href={`/${vendor.vendor_slug}`}
+              key={vendor.vendor_slug}
+              passHref
+            >
               <Card className="h-full flex flex-col justify-between hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="flex flex-col items-center text-center">
                   <Image
@@ -83,11 +95,11 @@ export function TopVendorsSection() {
                   <CardTitle className="text-xl font-semibold text-[#0B0B0B]">
                     {vendor.name}
                   </CardTitle>
-                  <p className="text-sm text-muted-foreground">{vendor.cuisine}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {vendor.cuisine}
+                  </p>
                 </CardHeader>
-                <CardContent>
-                  {/* Additional content if needed */}
-                </CardContent>
+                <CardContent>{/* Additional content if needed */}</CardContent>
               </Card>
             </Link>
           ))}

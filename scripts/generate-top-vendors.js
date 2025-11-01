@@ -29,7 +29,11 @@ const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
 });
 
 async function generateTopVendors() {
-  if (!GA4_BIGQUERY_PROJECT_ID || !GA4_BIGQUERY_DATASET || !GA4_BIGQUERY_TABLE_PREFIX) {
+  if (
+    !GA4_BIGQUERY_PROJECT_ID ||
+    !GA4_BIGQUERY_DATASET ||
+    !GA4_BIGQUERY_TABLE_PREFIX
+  ) {
     console.error('Missing BigQuery environment variables.');
     process.exit(1);
   }
@@ -38,7 +42,9 @@ async function generateTopVendors() {
     process.exit(1);
   }
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH) {
-    console.error('Missing GOOGLE_APPLICATION_CREDENTIALS_PATH environment variable.');
+    console.error(
+      'Missing GOOGLE_APPLICATION_CREDENTIALS_PATH environment variable.',
+    );
     process.exit(1);
   }
 
@@ -50,24 +56,9 @@ async function generateTopVendors() {
   const startDate = sevenDaysAgo.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
   const endDate = lastSunday.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
 
-  const query = `
-    SELECT
-      REGEXP_EXTRACT(event_params.value.string_value, '/([a-zA-Z0-9-]+)/dashboard') as vendor_slug,
-      COUNT(1) as page_views
-    FROM
-      `${GA4_BIGQUERY_PROJECT_ID}.${GA4_BIGQUERY_DATASET}.${GA4_BIGQUERY_TABLE_PREFIX}*`,
-      UNNEST(event_params) as event_params
-    WHERE
-      _TABLE_SUFFIX BETWEEN '${startDate}' AND '${endDate}'
-      AND event_name = 'page_view'
-      AND event_params.key = 'page_location'
-      AND event_params.value.string_value LIKE '%/dashboard'
-    GROUP BY
-      vendor_slug
-    ORDER BY
-      page_views DESC
-    LIMIT 10;
-  `;
+  const tableName = `${GA4_BIGQUERY_PROJECT_ID}.${GA4_BIGQUERY_DATASET}.${GA4_BIGQUERY_TABLE_PREFIX}*`;
+
+  const query = `\n    SELECT\n      REGEXP_EXTRACT(event_params.value.string_value, '/([a-zA-Z0-9-]+)/dashboard') as vendor_slug,\n      COUNT(1) as page_views\n    FROM\n      \`${tableName}\`,\n      UNNEST(event_params) as event_params\n    WHERE\n      _TABLE_SUFFIX BETWEEN '${startDate}' AND '${endDate}'\n      AND event_name = 'page_view'\n      AND event_params.key = 'page_location'\n      AND event_params.value.string_value LIKE '%/dashboard'\n    GROUP BY\n      vendor_slug\n    ORDER BY\n      page_views DESC\n    LIMIT 10;\n  `;
 
   console.log('Executing BigQuery query...');
   const [job] = await bigquery.createQueryJob({ query });
@@ -85,7 +76,10 @@ async function generateTopVendors() {
         .single();
 
       if (mappingError || !vendorMapping) {
-        console.warn(`Vendor mapping not found for slug: ${row.vendor_slug}`, mappingError);
+        console.warn(
+          `Vendor mapping not found for slug: ${row.vendor_slug}`,
+          mappingError,
+        );
         continue;
       }
 
@@ -96,7 +90,10 @@ async function generateTopVendors() {
         .single();
 
       if (brandError || !brandData) {
-        console.warn(`Brand data not found for user_id: ${vendorMapping.user_id}`, brandError);
+        console.warn(
+          `Brand data not found for user_id: ${vendorMapping.user_id}`,
+          brandError,
+        );
         continue;
       }
 
@@ -111,7 +108,9 @@ async function generateTopVendors() {
 
   const outputPath = path.resolve(__dirname, '../public/top-vendors.json');
   fs.writeFileSync(outputPath, JSON.stringify(topVendorsData, null, 2));
-  console.log(`Generated ${topVendorsData.length} top vendors to ${outputPath}`);
+  console.log(
+    `Generated ${topVendorsData.length} top vendors to ${outputPath}`,
+  );
 }
 
 generateTopVendors().catch(console.error);

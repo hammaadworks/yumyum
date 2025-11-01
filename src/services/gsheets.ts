@@ -1,38 +1,12 @@
 import { BRAND_TTL, DISHES_TTL, STATUS_TTL } from '@/lib/constants';
-import { Brand, Dish, Status, StatusItem, DishTag } from '@/lib/types'; // Corrected import
+import { Brand, Dish, Status, StatusItem, DishTag, InStockStatus, DietaryInfo } from '@/lib/types'; // Corrected import
 import Papa from 'papaparse';
 import { sendLarkMessage } from './lark';
 import axios from 'axios';
 
-const ADMIN_SHEET_ID = process.env.NEXT_PUBLIC_ADMIN_SHEET_ID;
-
 function parseCSV(csvText: string): string[][] {
   const result = Papa.parse(csvText, { skipEmptyLines: true });
   return result.data as string[][];
-}
-
-export async function getSheetIdForSlug(slug: string): Promise<string | null> {
-  if (!ADMIN_SHEET_ID) {
-    throw new Error('Admin sheet ID is not configured.');
-  }
-  const url = `https://docs.google.com/spreadsheets/d/${ADMIN_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=vendors`;
-  try {
-    const response = await axios.get(url);
-    const csvText = response.data;
-    const rows = parseCSV(csvText);
-
-    const slugRow = rows.find((row) => row[0] === slug);
-    if (slugRow && slugRow[1]) {
-      return slugRow[1];
-    }
-    return null;
-  } catch (error) {
-    console.error('Error fetching sheet ID for slug:', error);
-    await sendLarkMessage(
-      `Critical Error: Could not resolve slug '${slug}'. Error: ${(error as Error).message}`,
-    );
-    return null;
-  }
 }
 
 // --- Helper Functions ---
@@ -156,7 +130,6 @@ async function swrFetch<T>(
 function parseBrandData(data: string[][]): Brand | null {
   if (data.length < 2) {
     sendLarkMessage('Critical Error: Brand data CSV is empty or malformed.');
-    console.error('Brand data is unexpectedly short.');
     return null;
   }
   const headers = data[0].map((h) => h.trim());
@@ -166,19 +139,14 @@ function parseBrandData(data: string[][]): Brand | null {
     brandObject[header] = values[index];
   });
 
-  const requiredFields = ['name', 'logo_url', 'cuisine'];
-  for (const field of requiredFields) {
-    if (!brandObject[field] || brandObject[field].trim() === '') {
-      sendLarkMessage(`Critical Error: Missing required brand field: ${field}`);
-      console.error(`Missing required brand field: ${field}`);
-      return null;
-    }
-  }
-
   return {
-    name: brandObject.name,
-    logo_url: brandObject.logo_url,
-    cuisine: brandObject.cuisine,
+    id: 0, // Dummy data
+    auth_user_id: '', // Dummy data
+    create_time: new Date().toISOString(), // Dummy data
+    modify_time: new Date().toISOString(), // Dummy data
+    name: brandObject.name || '',
+    logo_url: brandObject.logo_url || '',
+    cuisine: brandObject.cuisine || '',
     description: brandObject.description || '',
     payment_link: brandObject.payment_link || '',
     whatsapp: brandObject.whatsapp || '',
@@ -194,112 +162,50 @@ function parseBrandData(data: string[][]): Brand | null {
 }
 
 function parseDishesData(data: string[][]): Dish[] {
-  if (data.length < 2) {
-    sendLarkMessage('Critical Error: Dishes data CSV is empty or malformed.');
-    return [];
-  }
+  if (data.length < 2) return [];
   const headers = data[0].map((h) => h.trim());
   const rows = data.slice(1);
 
-  const dishes: Dish[] = rows
-    .map((row) => {
+  return rows.map((row, index) => {
       const dishObject: { [key: string]: string } = {};
       headers.forEach((header, index) => {
         dishObject[header] = row[index];
       });
 
       return {
-        id: dishObject.name.toLowerCase().replace(/\s+/g, '-'),
-        category: dishObject.category,
-        name: dishObject.name,
-        image: dishObject.image,
-        reel: dishObject.reel,
-        description: dishObject.description,
-        price: parseFloat(dishObject.price),
-        instock: dishObject.instock as 'yes' | 'no' | 'hide',
-        veg: dishObject.veg as 'veg' | 'non-veg',
-        tag: dishObject.tag as DishTag,
+        id: index, // Dummy data
+        brand_id: 0, // Dummy data
+        category: dishObject.category || '',
+        name: dishObject.name || '',
+        image: dishObject.image || '',
+        reel: dishObject.reel || '',
+        description: dishObject.description || '',
+        price: parseFloat(dishObject.price) || 0,
+        instock: (dishObject.instock as InStockStatus) || 'yes',
+        veg: (dishObject.veg as DietaryInfo) || 'veg',
+        tag: (dishObject.tag as DishTag) || 'normal',
+        create_time: new Date().toISOString(), // Dummy data
+        modify_time: new Date().toISOString(), // Dummy data
       };
     })
     .filter((dish) => dish.name && dish.name.trim() !== '');
-
-  return dishes;
 }
 
 const parseStatusData = (data: string[][]): Status => {
-  // Validate input data structure
-  if (!Array.isArray(data)) {
-    console.error('parseStatusData: Invalid input - not an array', data);
-    return [];
-  }
+  if (data.length < 2) return [];
+  const dataRows = data.slice(1);
 
-  if (data.length === 0) {
-    console.error('parseStatusData: Empty data');
-    return [];
-  }
-
-  try {
-    // Skip header row if present
-    const dataRows = data.length > 1 ? data.slice(1) : data;
-
-    return dataRows
-      .map((row, index) => {
-        try {
-          const [type = '', content = '', duration = '5'] = row;
-
-          // Validate type
-          if (
-            typeof type !== 'string' ||
-            !['image', 'video', 'text'].includes(type as string)
-          ) {
-            console.error(`parseStatusData: Invalid type at row ${index}`, {
-              type,
-            });
-            return null;
-          }
-
-          // Validate content
-          if (typeof content !== 'string' || !content.trim()) {
-            console.error(
-              `parseStatusData: Invalid or empty content at row ${index}`,
-              { content },
-            );
-            return null;
-          }
-
-          // Validate and parse duration
-          const parsedDuration = parseInt(duration, 10);
-          if (isNaN(parsedDuration) || parsedDuration < 1) {
-            console.warn(
-              `parseStatusData: Invalid duration at row ${index}, using default`,
-              { duration },
-            );
-            return {
-              type: type as 'image' | 'video' | 'text',
-              content: content.trim(),
-              duration: 5,
-            };
-          }
-
-          return {
-            type: type as 'image' | 'video' | 'text',
-            content: content.trim(),
-            duration: parsedDuration,
-          };
-        } catch (err) {
-          console.error(`parseStatusData: Failed to parse row ${index}:`, err, {
-            row,
-          });
-          return null;
-        }
-      })
-      .filter((item): item is StatusItem => item !== null) as Status; // Cast to Status
-  } catch (err) {
-    console.error('parseStatusData: Failed to parse status data:', err, {
-      data,
-    });
-    return [];
-  }
+  return dataRows.map((row, index) => {
+      const [type = '', content = ''] = row;
+      return {
+        id: index, // Dummy data
+        brand_id: 0, // Dummy data
+        type: type as 'image' | 'video' | 'text',
+        content: content.trim(),
+        create_time: new Date().toISOString(), // Dummy data
+      };
+    })
+    .filter((item): item is StatusItem => !!item.content);
 };
 
 export async function getBrandData(sheetId: string): Promise<Brand | null> {

@@ -1,6 +1,6 @@
 name: Update Top Vendors List
 
-on: 
+on:
   workflow_dispatch: # Allow manual trigger
   schedule:
     - cron: '0 0 * * SUN' # Run every Sunday at 00:00 UTC

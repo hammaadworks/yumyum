@@ -13,7 +13,8 @@ import { Dish } from '@/lib/types';
 
 const MOCK_DISHES: Dish[] = [
   {
-    id: '1',
+    id: 1,
+    brand_id: 1,
     name: 'In Stock Dish',
     category: 'A',
     price: 10,
@@ -21,9 +22,12 @@ const MOCK_DISHES: Dish[] = [
     image: 'https://example.com/a.png',
     description: '',
     instock: 'yes',
+    create_time: '',
+    modify_time: '',
   },
   {
-    id: '2',
+    id: 2,
+    brand_id: 1,
     name: 'Out of Stock Dish',
     category: 'B',
     price: 12,
@@ -31,9 +35,12 @@ const MOCK_DISHES: Dish[] = [
     image: 'https://example.com/b.png',
     description: '',
     instock: 'no',
+    create_time: '',
+    modify_time: '',
   },
   {
-    id: '3',
+    id: 3,
+    brand_id: 1,
     name: 'Another In Stock',
     category: 'C',
     price: 15,
@@ -41,6 +48,8 @@ const MOCK_DISHES: Dish[] = [
     image: 'https://example.com/c.png',
     description: '',
     instock: 'yes',
+    create_time: '',
+    modify_time: '',
   },
 ];
 

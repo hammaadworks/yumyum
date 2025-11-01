@@ -5,7 +5,8 @@ import { MediaDisplay } from '@/components/features/reel/MediaDisplay';
 import { Dish } from '@/lib/types';
 
 const MOCK_DISH_IMAGE_ONLY: Dish = {
-  id: '1',
+  id: 1,
+  brand_id: 1,
   name: 'Burger',
   image: 'https://example.com/burger.jpg',
   category: 'Main',
@@ -13,10 +14,13 @@ const MOCK_DISH_IMAGE_ONLY: Dish = {
   description: '',
   instock: 'yes',
   veg: 'non-veg',
+  create_time: '',
+  modify_time: '',
 };
 
 const MOCK_DISH_WITH_REEL: Dish = {
-  id: '2',
+  id: 2,
+  brand_id: 1,
   name: 'Pizza Reel',
   image: 'https://example.com/pizza.jpg',
   reel: 'https://example.com/pizza.mp4',
@@ -25,6 +29,8 @@ const MOCK_DISH_WITH_REEL: Dish = {
   description: '',
   instock: 'yes',
   veg: 'veg',
+  create_time: '',
+  modify_time: '',
 };
 
 describe('MediaDisplay Component', () => {
@@ -34,7 +40,7 @@ describe('MediaDisplay Component', () => {
     const image = screen.getByRole('img');
     expect(image).toBeInTheDocument();
     expect(image.getAttribute('src')).toContain(
-      encodeURIComponent(MOCK_DISH_IMAGE_ONLY.image),
+      encodeURIComponent(MOCK_DISH_IMAGE_ONLY.image!),
     );
     expect(screen.queryByTestId('video-element')).not.toBeInTheDocument();
   });

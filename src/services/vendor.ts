@@ -33,11 +33,29 @@ export async function getVendorMappingByUserId(
   const { data, error } = await supabase
     .from('vendor_mappings')
     .select('*')
-    .eq('user_id', userId)
+    .eq('auth_user_id', userId)
     .single();
 
   if (error && error.code !== NO_ROWS_FOUND_ERROR_CODE) {
     console.error('Error fetching vendor mapping by user ID:', error);
+    return null;
+  }
+
+  return data as VendorMapping | null;
+}
+
+export async function getVendorMappingBySlug(
+  slug: string,
+): Promise<VendorMapping | null> {
+  const supabase = createClient(); // This will be a server-side client in page.tsx
+  const { data, error } = await supabase
+    .from('vendor_mappings')
+    .select('*')
+    .eq('vendor_slug', slug)
+    .single();
+
+  if (error && error.code !== NO_ROWS_FOUND_ERROR_CODE) {
+    console.error('Error fetching vendor mapping by slug:', error);
     return null;
   }
 

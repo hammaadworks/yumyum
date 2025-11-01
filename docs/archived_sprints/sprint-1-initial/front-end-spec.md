@@ -40,7 +40,7 @@ graph TD
     end
 
     subgraph "Utility Pages"
-        U[/vendor/upload]
+        U[/[vendor-slug]/upload]
     end
 ```
 

@@ -8,8 +8,8 @@ interface CartItem extends Dish {
 interface CartState {
   items: CartItem[];
   addItem: (item: Dish) => void;
-  removeItem: (itemId: string) => void;
-  updateItemQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (itemId: number) => void;
+  updateItemQuantity: (itemId: number, quantity: number) => void;
   clearCart: () => void;
 }
 

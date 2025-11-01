@@ -17,7 +17,7 @@ export function LoginEntryPoint() {
 
   const handleLoginError = (errorMsg: string) => {
     // Display error within the form
-    console.error("Login error in modal:", errorMsg);
+    console.error('Login error in modal:', errorMsg);
   };
 
   const handleCloseModal = () => {
@@ -28,7 +28,10 @@ export function LoginEntryPoint() {
     <div className="absolute top-4 right-4 z-50">
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="bg-white text-primary hover:bg-primary hover:text-white">
+          <Button
+            variant="outline"
+            className="bg-white text-primary hover:bg-primary hover:text-white"
+          >
             Vendor Login
           </Button>
         </DialogTrigger>
