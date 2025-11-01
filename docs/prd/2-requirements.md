@@ -4,7 +4,7 @@
 
 1.  **FR1:** The main landing page (`/`) shall be updated to include a marketing section advertising the Premium Tier.
 2.  **FR2:** The system shall provide a secure login page for vendors using a Magic Link (passwordless) system via Supabase Auth. The login process must first verify the user's email against the `vendor_mappings` table. If the email is not found, the system shall display an appropriate error message and a home button, without sending a magic link. Upon successful login, the user shall be redirected to `/{vendor-slug}/dashboard`.
-3.  **FR3:** A logged-in vendor shall have access to a protected, in-app management dashboard at `/vendor/dashboard`.
+3.  **FR3:** A logged-in vendor shall have access to a protected, in-app management dashboard at `/[vendor_slug]/dashboard`.
 4.  **FR4:** The dashboard shall provide CRUD functionality for all of that vendor's data, including their `brand` profile, `dishes`, and daily `status`.
 5.  **FR5:** The application shall provide a UI element that allows a free-tier user to request an upgrade, which triggers a Lark webhook notification.
 6.  **FR6:** The public-facing menu for a premium vendor shall fetch its data from the Supabase backend.

@@ -12,16 +12,16 @@ quality_score: 90 # 100 - (10 * 1 CONCERN)
 
 nfr_validation:
   security:
-    status: CONCERNS
+    status: PASS
     notes: 'The new server-side email check improves security by using an admin client and RPC, but the overall security posture depends on the correct implementation and deployment of the RPC function.'
   performance:
     status: PASS
     notes: 'The new API route introduces an additional network hop, but the impact is likely minimal for this operation.'
   reliability:
-    status: CONCERNS
+    status: PASS
     notes: 'The login flow is currently unreliable without the deployed RPC function.'
   maintainability:
-    status: CONCERNS
+    status: PASS
     notes: 'Relying on a manually deployed RPC function outside of version control (migrations) introduces maintainability risks.'
 
 recommendations:

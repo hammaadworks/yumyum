@@ -10,6 +10,8 @@ CREATE TABLE public.brand (
   name text NOT NULL,
   logo_url text,
   cuisine text,
+  address text DEFAULT '',
+  city text DEFAULT 'Bangalore',
   description text,
   payment_link text,
   whatsapp text,

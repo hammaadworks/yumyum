@@ -1,46 +1,57 @@
 # Section 4 of 18: Data Models (v2)
 
-## `vendor_mappings`
+#### `VendorMapping` (in Primary DB)
 
-- **Purpose:** To act as the master directory for all vendors. It will determine whether a vendor's data is on Google Sheets or Supabase and provide the necessary connection info.
+- **Purpose:** To act as the master directory for all vendors, routing requests to the correct datastore.
 - **TypeScript Interface:**
 
   ```typescript
-  export type BackendType = 'supabase' | 'gsheets';
+  export type DataStoreType = 'supabase' | 'gsheets';
 
   export interface VendorMapping {
     id: number;
-    vendor_slug: string; // e.g., 'the-burger-den'
-    backend_type: BackendType; // 'supabase' or 'gsheets'
-
-    // Supabase-specific fields
-    supabase_project_id?: string; // Which of the 4 Supabase projects
-
-    // Google Sheets-specific fields
-    gsheet_id?: string;
-
-    // ImageKit account is common to both
-    imagekit_account_id: string; // Which of the 4 ImageKit accounts
-
-    // Membership and Payment Tracking
-    // Default values on creation:
-    // membership_fee: 0
-    // membership_validity: current date + 10 days
-    // is_member: true
+    vendor_slug: string;
+    auth_user_id?: string; // UUID from auth.users
+    datastore_type: DataStoreType;
+    datastore_id: string; // Supabase Project ID or GSheet ID
+    imagekit_account_id: string;
+    is_member: boolean;
     membership_fee: number;
     membership_validity: string; // ISO 8601 date string
-    is_member: boolean;
+    create_time: string;
+    modify_time: string;
   }
   ```
 
-## `Brand`
+#### `VendorPayment` (in Primary DB)
+
+- **Purpose:** For manual bookkeeping of vendor payments.
+- **TypeScript Interface:**
+  ```typescript
+  export interface VendorPayment {
+    id: number;
+    vendor_id: number; // Foreign Key to VendorMapping.id
+    payment: number;
+    payment_date: string;
+    payment_duration: string;
+    create_time: string;
+    modify_time: string;
+  }
+  ```
+
+
+---
+
+### **In each Vendor-Specific Supabase Project:**
+
+#### `Brand`
 
 - **Purpose:** Represents the vendor's brand identity.
-- **TypeScript Interface:** (No changes from previous version)
+- **TypeScript Interface:**
   ```typescript
   export interface Brand {
     id: number;
-    vendor_id: string; // Foreign Key to auth.users.id
+    auth_user_id: string; // Foreign Key to auth.users.id
     name: string;
     logo_url: string;
     cuisine: string;
@@ -58,37 +69,39 @@
   }
   ```
 
-## `Dish`
+#### `Dish`
 
 - **Purpose:** Represents a single menu item.
-- **TypeScript Interface (Updated):**
+- **TypeScript Interface:**
   ```typescript
   export interface Dish {
     id: number;
-    vendor_id: string; // Foreign Key to auth.users.id
+    brand_id: number; // Foreign Key to Brand.id
     category: string;
     name: string;
-    description: string | null;
-    price: number | null;
-    instock: 'yes' | 'no' | 'hide' | null;
-    veg: 'veg' | 'non-veg' | null;
-    tag: string | null;
-    image: string | null;
+    description: string;
+    price: number;
+    instock: 'yes' | 'no' | 'hide';
+    veg: 'veg' | 'non-veg';
+    tag: string;
+    image: string;
     reel: string | null;
     created_at: string;
   }
   ```
 
-## `Status`
+#### `StatusItem`
 
-- **Purpose:** Represents a daily status update.
-- **TypeScript Interface:** (No changes from previous version)
+- **Purpose:** Represents a single daily status update.
+- **TypeScript Interface:**
   ```typescript
-  export interface Status {
+  export interface StatusItem {
     id: number;
-    vendor_id: string; // Foreign Key to auth.users.id
-    content: string;
+    brand_id: number; // Foreign Key to Brand.id
     type: 'image' | 'video' | 'text';
+    content: string;
+    imagekit_file_id?: string; // For deletion from ImageKit
+    create_time: string;
   }
   ```
 
